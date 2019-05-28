@@ -1,6 +1,6 @@
 import csv
 import subprocess
-
+import multiprocessing as mp
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -40,11 +40,20 @@ try:
     subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
 except Exception as e:
     print(e)
-try:
-    subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" 10"], shell=True, executable='/bin/bash')
 
-except Exception as e:
-    print(e)
-finally:
-    subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
-    #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
+
+def runTrial(Trial_Number):
+    try:
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)], shell=True, executable='/bin/bash')
+
+    except Exception as e:
+        print(e)
+    
+
+        #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
+
+pool = mp.Pool(mp.cpu_count())
+r=[pool.apply_async(runTrial,args=[i]) for i in range (10)]
+p=[x.wait() for x in r]
+pool.close
+subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
