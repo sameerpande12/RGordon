@@ -319,7 +319,7 @@ int main(int argc, char** argv){
 			strcat(cmd," ");
 			itoa(indx, in);
 			strcat(cmd, in);
-			strcat(cmd, " >> ./windows");
+			strcat(cmd, " >> ./RData/windows");
 			strcat(cmd, argv[5]);
 			strcat(cmd, ".csv");
 			system(cmd);
