@@ -48,12 +48,17 @@ def runTrial(Trial_Number):
 
     except Exception as e:
         print(e)
-    
+
 
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
-r=[pool.apply_async(runTrial,args=[i]) for i in range (10)]
+r=[pool.apply_async(runTrial,args=[i]) for i in range(sys.argv[2])]
+#r = []
+#for i in range (10):
+    #time.sleep(10)
+    #r.append(pool.apply_async(runTrial, args=[i]))
+
 p=[x.wait() for x in r]
 pool.close
 subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
