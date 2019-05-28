@@ -1,0 +1,2 @@
+sudo docker run --name=gordon2 -d -v ~/../../media/atishya/6A384D7F384D4AF1/gordon_data:/home/tester/Gordon/Data --privileged -i -t b6bc0d1a8d8b bash
+sudo docker exec -i -t gordon2 bash

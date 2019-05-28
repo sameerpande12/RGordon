@@ -1,0 +1,267 @@
+ABSTRACT	
+
+-----------------------------------------------------------------------------------------------------
+1. INTRODUCTION
+	* Over 3 decade of TCP research
+	* The continuous evolution of congestion control on the internet
+	* Service level requirements are evolving (greater emphasis on latency and responsiveness, 
+	  as compared to speed)
+	* Continuous introduction of new protocols, each adding to the smorgasboard of options 	
+	  for congestion control that an engineer might have when it comes to designing their
+	  network stack
+	* For example, Youtube and Google Cloud are using BBR
+	* It is lucrative to change to such better performing congestion control algorithms
+	* Easy to change to these algorithms
+	* It is likely that with such options the Internet is not a homogeneous system of Cubic
+	  flows - as is hypothised in most TCP research
+	* In this paper, we try to study the extent to which the Internet is actually a
+	  heterogenous system of flows, and which types of flows have what component in this system
+	
+	1.1 WHY SHOULD WE MEASURE HOW CONGESTION CONTROL IS DONE ON THE INTERNET?
+		* TCP is the end-to-end logic that governs traffic flow in most of the Internet
+		* <READ MORE FROM RELEVANT PAPERS>
+		* However, it is much more important to performt his study now than ever because;
+		THE INTERNET IS HEADING FOR A PARADIGM SHIFT
+			* With increased emphasis on the responsiveness of web-applications, the 
+			  Internet has a Low-latency future. 
+			* Google has deployed BBR. Several new low latency protocols are being 	
+			  introduced.
+			* Interaction between these two classes of protocols may change the 	
+			  dynamics of the Internet.
+			* Rate based and window based protocols interact differently with the
+			  buffer
+			* The answer to this question will help designing an internet architecture 
+			  that can efficiently support both these types of protocols
+		LEVELLING THE PLAYING FIELD
+			* One of the key issues that recently proposed rate-based variants face is
+			  fairly competing with traffic on the Internet
+			* Most internet flows are hypothised to be buffer filling, and therefore
+			  don't let low latency flows achieve their latency targets or kill off
+			  delay based flows in terms of throughput
+			* Finding out what runs on the internet and characterizing how the niternet
+			  behaves (aggressive or benevolant) would help CP researchers design 
+			  protocols hat will be better at adapting to the Internet
+		
+	1.2 AIM OF THIS MEASUREMENT STUDY
+		* This measurement study tries to answer the following questions
+		* 1. What percentage of websites use what congestion control algorithms?
+		     50,000 websites were choses according to their Alexa rank. The congestion 
+		     control phase behaviour of these websites is classified into CC variants that
+		     are either 'supposed' to be frequently used (like Cubic and Compound) or 
+		     those 
+		     that have their kernel implementaions easily available on the Internet. The
+		     exact list of these protocols can be found in later sections
+		* 2. How does this percentage translate to the characteristics of web traffic on 
+		     the Internet?
+		     According to a recent report by Sandvine, 58% of the Global downstream 
+		     traffic 
+		     on the Internet is video traffic, with significant shares going to prominent
+		     video hosting websites like YouTube, Netfllix and Amazon Prime. We take 	
+		     closer look at how these websites behave
+		* 3. What Impications can we make about the behaviour of the Internet?
+		     The results of 1. and 2. may have some implications on the characterization on
+		     the general behaviour of the Internet. We try to discuss this in detail 
+		     towards the end of the paper
+
+-----------------------------------------------------------------------------------------------------
+2. RELATED WORKS
+
+Sally floyd [PAPER #1] was one of the first works to try to measure congetion control on the
+Internet.  Padhye et al. used a tool called
+TBIT to characterize the behaviour of congestion control on the
+Internet and try to classify these into well known variants. TBIT
+measures the initial window size of remote clients by dropping all
+the packets that it receives (like TCProbe). It doesn’t map out the
+entire congestion window evolution - probably because web pages
+weren’t that large back then - they even talk about the web page not
+being able to fill the initial congestion window. For differentiating
+between algorithms, it also reduces the MTU size, but it doesn’t
+continue the test over multiple connections - it has a set pattern
+of dropping and accepting the first 25 packets, and it differentiate
+between variants depending on the fast-re-transmit behaviour of
+different algorithms. NOTE: TBIT doesn’t function as an interceptor,
+it generates it’s own packets. [22] follows up on [25], providing
+results 3 years apart and discussing the evolution of the Internet
+and it’s implications. They use TBIT too, with similar measurement
+techniques (differentiating on the basis of re-transmission, SACK,
+and fast recovery behaviours.)
+
+[31] provides the most recent statistics about the percentages of
+different variants on the Internet. The measurements are limited to
+measuring only window-based variants. Their tool, CAAI was one
+of the first such TCP variant detection tools to observe the TCP
+algorithm in it’s congestion control phase by enforcing a timeout
+event.Discuss CAAI paper
+[32] was one of the first works to identify the importance of mea-
+suring the non-congestion-window based protocols on the internet.
+They realized that the compatibility of delay-based and window
+based flows was important for delay-based schemes to achieve their
+low-latency goals, and therefore set out to measure the percentage
+of delay-based protocols on the Internet. While their measurements
+in 2011 showed that only about 4% of the internet used delay-based
+protocols like YEAH, Vegas, Veno and Illinois, their measurement
+strategy had some short-comings. Like in [31], their tool, DCAAD,
+uses a timeout event to force the congestion control algorithm into
+it’s congestion avoidance mode. However, as we have seen with
+BBR, rate-based flows do not back-off after seeing a loss. Forcing
+such rate-based flows into congestion avoidance mode is only pos-
+sible through the emulation of an extremely narrow bottleneck
+near the receiver - as is done by TCProbe. Also, while their method
+might work for some delay-based schemes, they emulate a longer
+queuing delay by inflating the RTT as certain points in the connec-
+tion. Unlike TCProbe, this is not a faithful emulation of a queue,The Great Internet Census
+since queuing typically varies at the bottle depending on the oc-
+cupancy. Because of this, DCAAD might not be able to elicit the
+correct response from a non-congestion-window based scheme.
+Most of other work in the domain of TCP measurement and
+testing is for checking correctness and studying the behaviour of
+various TCP algorithms on the internet.
+
+Aside from these works, there have been a few attempts to measuring TCP on the Internet
+
+Active probing of TCP variants and studying their response was first
+discussed by [8]. They treated TCP like a black box, and tried to re-
+veal implementation flaws, protocol violations and design decisions
+of the 5 commercially available congestion control implementa-
+tions available then. However, these experiments were not carried
+over the Internet, and instead ran these algorithms in a controlled
+test-bed to study their behaviour.
+[25] was one of the first works to study the behaviour of different
+TCP protocols on the Internet.
+
+Discuss other TCP measurement techniques.
+[28] - Testing correctness of TCP implementations.
+[14] - Processing traces of an existing connection to verify correct-
+ness
+[11] - predicting throughput in Data Centres based on a Learning
+model
+[21] - Extracting characteristic features of TCP variants.
+(these works are more towards measuring TCP metrics, rather than
+the variant.)
+-----------------------------------------------------------------------------------------------------
+3. DESIGNING TCPROBE
+	* Why the existing measurement solutions will not work.
+	  There are a number of reasons for which we can't rely on the results presented in these 
+	  studies any more. Other than being obviously out-dated, the tools designed for making 
+	  measurements on the Internet by them have their limitations. The measurement tools and
+	  methodologies discussed in [Sally Floyd's paper] provided identification for a very 
+	  small subset of the deployable algorithms found today (for obvious reasons, since the
+	  tool was designed when thes algorithms didn't exist). CAAI has a wider range when it 
+	  comes to identifying variants, it is still not able to identify rate based variants.
+	* How TCProbe will combat this problem
+	  - Testing methodology that maps out entire CC phase behaviour
+	  - changes multiple parameters (controls the network the sender sees) so it's able to see 
+   	    the reaction
+	  - works for both window and rate based. (even if we run a risk of not accurately mapping 	       out the rate based behaviour in our 'window based measurements', as long as these CC
+	    protocols have a unique signature in their behaviour, that's good enough for 
+	    identifications)
+	  - measurement and identification are decoupled. So we can easily classify future variants
+	  - gives information about unknown protocols
+	  - The only thing our measurement methodology is susceptable to is random loss on the 
+	    Internet, but we deal with it in the 'Adapting to Internet tests section'
+	* TCProbe measurement methodology
+	  - Basic measurement methodology is as follows:
+
+	We wanted to differentiate between congestion control algorithms
+based on how they vary their congestion window sizes or send-
+ing rates throughout the connection. In this interest, we designed
+TCProbe, a measurement tool that functions as a packet interceptor
+(Figure 2) between the sender and the receiver. It is implemented
+using Netfilter Queues, and counts the congestion window sizes as
+discussed below.
+Through the course of a test, the probe makes multiple connec-
+tions with the server. In each of these connections, it measures the
+a different congestion window - i.e. in the first connection it will
+measure the first window’s size, in the second the second window,
+and so on. Like TBIT in [25] and [22], TCProbe starts by making
+a connection and dropping all the packets it receives. In this case,
+the number of packets it receives before getting a re-transmission
+of the first packet will be the size of the first congestion window
+- C 1 . In the next connection, it will accept and acknowledge C 1
+packets, and start dropping again till it receives a re-transmission
+for the C 1 +1 th packet. The probe follows this strategy to measure
+any congestion window C n , given by accepting (C 1 + C 2 + C 3 + ... +
+C (n-1) ) number of packets, and then dropping them until it receives
+a re-transmission.
+Apart from being able to count the congestion window sizes, we
+also wanted to emulate some common stimuli that elicit character-
+istic responses from certain congestion control algorithms.
+Reaction to Loss. Most window based congestion control mech-
+anism infer congestion after seeing a packet loss, and adjust their
+congestion window growth functions accordingly. These behaviours
+are often characteristic of that particular TCP variants, and measur-
+ing this change would be a good way to discern between variants.
+To see this change, we introduce a loss-emulation mechanism in
+the packet counting procedure discussed before. Say we want to
+emulate a loss of the 20 th packet. While measuring the window that
+contains this packet (Figure 3), we operate as usual - accepting the
+first 19 packets and then dropping packets till a re-transmission of
+he 20 th packet is received. In the next connection however, we ac-
+cept all but the 20 th packet. Then, once we receive a re-transmission
+of our previously dropped 20 th apcket, we continue dropping till
+the next re-transmission. The window that TCProbe measures in
+this connection, therefore become the effective loss-window of the
+connection - since the sender will react to the intermediate loss
+of the 20 th packet. Figure 4 shows a sample cubic flow reacting to
+such losses emulated by TCProbe.
+Change in Bottleneck bandwidth. Rate based congestion con-
+trol schemes often ignore loss as a sign of congestion, and instead
+adjust their sending rates according the the bandwidth that they re-
+ceive at the bottleneck. For example, congestion control algorithms
+like BBR try to match the bottleneck bandwidth with periodic prob-
+ing for change in bandwidth. This behaviour should ideally reflect
+in the measured congestion window sizes. To see this behaviour,
+TCProbe controls the rate it which it dequeues packets from the
+queue. This effectively does two things - firstly, with a low enough
+rate, it allow TCProbe to move the bottleneck of the connection lo-
+cally to an observable space where it can see the flow interact with
+the Buffer. Secondly, now that the end-point congestion control
+algorithm optimizes for this local bottle-neck, it can vary the this
+bottleneck bandwidth and see the congestion control algorithm’s
+reaction. Figure 5) shows a sample BBR flow’s measured congestion
+window sizes while interacting with this localized bottleneck.
+
+	3.1 PARAMETERIZATION
+		* One of the things that we wanted the probe to handle was forcing flows that 
+	          don't react to loss into their congestion control phase. CC that do that are 
+	          BBR, PCC etc. however, they have a unique way in which they exit slow start,
+		  which is through <BANDWIDTH, RECEIVE RATE ETC>. In this interest, we have
+		  engineered a localised bottle neck in our probe. If we squeeze this bottleneck
+		  small enough, we would be ablt to directly dictate the bandwidth that the flow 
+		  gets on the INternet too.
+		* For this, we inflate RTT, and have a per packet delay in the locally maintained 
+		  queue. The delays emulated in these featurres can be calculated as follows:
+
+		  <LITTLES LAW PROOF>
+		* <ON SETTING DROP POINT, MTU SIZE AND WEB-PAGE SIZE>
+
+	3.2 ADAPTING TO INTERNET TESTS
+		* while this methodology is great for mappig out the CC behaviour of any TCP 
+		  algorithm, the accuracy of the measurements made by this tool are susceptable to
+		  only one thing. Loss.
+		* explain how they are susceptable to loss on th Internet
+		* <EXPLAIN HOW THIS LOSS WOULD ALWAYS MEAN THAT MOST OF THE TIME THERE IS NEGATIVE
+		   NOISE>
+		* Hence, we take the maximum measured window size over multiple runs
+		* Number of runs graph
+
+-----------------------------------------------------------------------------------------------------
+4. CLASSIFICATION AND IDENTIFICATION
+	
+
+Characterization of flows.
+
+	4.1 IDENTIFICATION PARAMETERS
+
+	4.2 ACCURACY
+
+-----------------------------------------------------------------------------------------------------
+5. RESULTS
+
+	5.1 ANOMALIES
+
+-----------------------------------------------------------------------------------------------------
+6. CONCLUSION
+
+-----------------------------------------------------------------------------------------------------
+
