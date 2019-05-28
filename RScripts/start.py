@@ -146,29 +146,6 @@ while i < start + len(urlInfos):
             time.sleep(10)
             #input()
 
-            """
-            while urlInfos[j][0] == urlInfos[i][1]:
-                try:
-                    subprocess.call(["./multi-launch.sh "+urlInfos[j][2]], shell=True, executable='/bin/bash')
-                except Exception as e:
-                    print(e)
-                finally:
-                    subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
-
-                type = tcpClassify.classify()
-                csvOutputFile = open("./analysisResult.csv", 'a')
-                csvWriter = csv.writer(csvOutputFile)
-                csvWriter.writerow([urlInfos[i][1], type, urlInfos[j][2]])
-                csvOutputFile.close()
-                csvOutputFile = open("./domainResult.csv", 'a')
-                csvWriter = csv.writer(csvOutputFile)
-                csvWriter.writerow([urlInfos[i][1]])
-                csvOutputFile.close()
-                input()
-                j += 1
-            #targetURL = urlInfos[i][2]
-            i = j
-            """
 
     else:
         analysisResult.close()

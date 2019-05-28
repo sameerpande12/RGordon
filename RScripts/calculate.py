@@ -34,8 +34,14 @@ else:
 print(targetURL, delayTime)
 
 try:
+    subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
+    subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
+    subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')
+    subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
+    
+try:
     subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" 10"], shell=True, executable='/bin/bash')
-    #subprocess.call(["./multi-launch.sh "+targetURL+" 10"], shell=True, executable='/bin/bash')
+
 except Exception as e:
     print(e)
 finally:
