@@ -1,5 +1,9 @@
+#input format is  python3 calculate.py <url-without http eg. www.youtube.com> <numTrials>
+
 import csv
 import subprocess
+import os
+import signal
 import multiprocessing as mp
 from urllib.request import Request
 from urllib.request import urlopen
@@ -9,6 +13,7 @@ import re
 import sys
 
 url = sys.argv[1]
+numTrials=int(sys.argv[2])
 targetURL = "http://"+sys.argv[1]
 try:
     response = subprocess.check_output(
@@ -34,6 +39,7 @@ else:
 print(targetURL, delayTime)
 
 try:
+    subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')
@@ -54,7 +60,7 @@ def runTrial(Trial_Number):
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
-r=[pool.apply_async(runTrial,args=[i]) for i in range(int(sys.argv[2]))]
+r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
 #r = []
 #for i in range (10):
     #time.sleep(10)
@@ -63,3 +69,20 @@ r=[pool.apply_async(runTrial,args=[i]) for i in range(int(sys.argv[2]))]
 p=[x.wait() for x in r]
 pool.close
 subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
+
+
+####calculating the max from here on"
+windows = list()
+counter=0
+for i in range(numTrials):
+    infile="./RData/windows"+str(i)+".csv"
+    read=open(infile,'r')
+    line=[int(x) for x in read.readline().split(' ')]
+
+    windows.append((line[0],line))
+    read.close()
+
+windows.sort(key=lambda tup: tup[0], reverse=True)
+
+maxValues = windows[0][1]
+subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
