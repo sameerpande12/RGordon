@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <linux/types.h>
-#include <linux/netfilter.h>		
+#include <linux/netfilter.h>
 #include <libnetfilter_queue/libnetfilter_queue.h>
 #include <linux/tcp.h>
 #include <linux/ip.h>
@@ -61,8 +61,8 @@ _Bool isRetrans( int seq ){
 	return 0;
 }
 
-char* itoa(int n, char *number) 
-{ 
+char* itoa(int n, char *number)
+{
 	int digit, i=0, j=0, temp = n;
 	i=0;
 	if(n <= 0)
@@ -81,9 +81,9 @@ char* itoa(int n, char *number)
 		number[j]=number[i-j-1];
 		number[i-j-1]=temp;
 		j++;
-	} 
+	}
 	return number;
-} 
+}
 
 void split( char string[], int start, int end){
 	char str[10];
@@ -103,7 +103,7 @@ int getBuff(){
 		if (file != NULL) {
 			char stats [60];
 			fgets(stats,sizeof stats,file);
-			split(stats, 12, 18); 
+			split(stats, 12, 18);
 		}
 	return atoi(buffSize);
 }
@@ -140,18 +140,18 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 	header = nfq_get_msg_packet_hdr(nfa);
 	id = ntohl(header->packet_id);
 	unsigned int ret = nfq_get_payload(nfa, &pkt);
-	
+
 	unsigned int by = 0;
 	for (int i = 24; i < 28; i++) {
 		by = (unsigned int) pkt[i];
 		tseq += by << 8*(24-i);
 	}
-	
+
 	if(tseq == randomSeq){
 		return nfq_set_verdict(qh, id, NF_ACCEPT, 0, NULL);
 	}
 	else if(acceptWindow < cap){
-		
+
 		if(acceptWindow == emuDrop){
 			ss=0;
 			acceptWindow++;
@@ -164,7 +164,7 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 		}
 	}
 	else if( isRetrans(tseq) ){
-		nextVal = acceptWindow + dropWindow;	
+		nextVal = acceptWindow + dropWindow;
 		done=1;
 		return nfq_set_verdict(qh, id, NF_ACCEPT, 0, NULL);
 	}
@@ -208,17 +208,16 @@ int main(int argc, char **argv)
 
 	int lastAccept = 0;
 
-	char line [128]; 
-    	while (fgets(line, sizeof line, ofile) != NULL) 
-	{
-		indx++; 
+	char line [128];
+  while (fgets(line, sizeof line, ofile) != NULL){
+		indx++;
 		lastWindow = atoi(line);
 		if(inputting==0){
 			if(getWinSize(line)>DROPWINDOW){
 				emuDrop = lastAccept;
 				inputting=1;
 			}
-		}	
+		}
     		lastAccept = lastWindow;
 	}
     	cap=atoi(line);
@@ -259,7 +258,7 @@ int main(int argc, char **argv)
 
 	fd = nfq_fd(h);
 	int counter=0;
-	
+
 	/*
 	argv[1] - target URL
 	argv[2] - first delay
@@ -274,10 +273,10 @@ int main(int argc, char **argv)
 	signal(SIGCHLD, SIG_IGN);
 	//Launch wget request in  a separate thread
 	pid_t pid = fork();
-	
+
 	if(pid==0){
-		time_t sec1, sec2; 
-		//as desktop client 
+		time_t sec1, sec2;
+		//as desktop client
 		//char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O /dev/null '";
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
@@ -285,9 +284,9 @@ int main(int argc, char **argv)
 		strcat(get, argv[1]);
 		strcat(get, "\"");
 		printf("%s\n", get);
-		sec1 = time(NULL); 
+		sec1 = time(NULL);
 		system(get);
-		sec2 = time(NULL); 
+		sec2 = time(NULL);
 		printf("=========DONE WITH WGET!: %ld\n", sec2-sec1);
 		// nfq_destroy_queue(qh);
 		// destroySession(h, qh);
@@ -303,12 +302,12 @@ int main(int argc, char **argv)
 
 		// while (done == 0 && (rv = recv(fd, buf, sizeof(buf), 0)) && rv >= 0){
 		while (done == 0){
-			time_t sec1, sec2; 
+			time_t sec1, sec2;
 			// printf("not done yet!!\n");
-			sec1 = time(NULL); 
+			sec1 = time(NULL);
 			if((rv = recv(fd, buf, sizeof(buf), 0)) && rv >= 0){
-				sec2 = time(NULL); 
-				// printf("RECV TIME %ld\n", sec2-sec1); 
+				sec2 = time(NULL);
+				// printf("RECV TIME %ld\n", sec2-sec1);
 				usleep(delay);
 				nfq_handle_packet(h, buf, rv);
 				if(counter>switchPoint) delay=nextDelay;
@@ -326,7 +325,7 @@ int main(int argc, char **argv)
 				}
 			}else{
 				sec2 = time(NULL);
-				printf("RECV BREAKOUT TIME %ld\n", sec2-sec1); 
+				printf("RECV BREAKOUT TIME %ld\n", sec2-sec1);
 				break;
 			}
 		}
@@ -364,7 +363,7 @@ int main(int argc, char **argv)
 			strcat(cmd, argv[5]);
 			strcat(cmd, ".csv");
 			system(cmd);
-	}	
+	}
 
-	return 0; 
+	return 0;
 }
