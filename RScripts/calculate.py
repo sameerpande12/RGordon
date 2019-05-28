@@ -1,6 +1,6 @@
 import csv
 import subprocess
-import tcpClassify
+
 from urllib.request import Request
 from urllib.request import urlopen
 from urllib.error import HTTPError
@@ -38,7 +38,8 @@ try:
     subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')
     subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
-    
+except Exception as e:
+    print(e)
 try:
     subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" 10"], shell=True, executable='/bin/bash')
 
