@@ -11,18 +11,18 @@ https.get('http://localhost:3000', (resp) => {
   // The whole response has been received. Print out the result.
     resp.on('end', (req,res) => {
       data=JSON.parse(data);
-      const pyProg= spawn('python3',["calculate.py","www.youtube.com","10"]);
-      
+      const pyProg= spawn('python3',["calculate.py",data.url,data.trials,data.sigma_cwnd,data.cwnd,data.rtt]);
+
       pyProg.stdout.on('data', function(data) {
 
         console.log(data.toString());
-        
+
        });
 
       pyProg.stderr.on('data', (data) => {
         console.log(`stderr: ${data}`);
       });
-      
+
       pyProg.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
       });
@@ -30,5 +30,5 @@ https.get('http://localhost:3000', (resp) => {
 
 }).on("error", (err) => {
   console.log("Error: " + err.message);
- 
+
 });

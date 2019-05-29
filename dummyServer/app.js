@@ -9,6 +9,9 @@ app.use('/',function(req,res){
   res.json({
     fname:'Calculate',
     url:'www.youtube.com',
+    sigma_cwnd:143,
+    cwnd:48,
+    rtt:19,
     trials:10
   });
   

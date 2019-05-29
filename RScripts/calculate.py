@@ -14,6 +14,9 @@ import sys
 
 url = sys.argv[1]
 numTrials=int(sys.argv[2])
+sigma_cwnd= (sys.argv[3])
+cwnd = (sys.argv[4])
+rtt = (sys.argv[5])
 targetURL = "http://"+sys.argv[1]
 try:
     response = subprocess.check_output(
@@ -51,7 +54,7 @@ except Exception as e:
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt], shell=True, executable='/bin/bash')
 
     except Exception as e:
         print(e)
