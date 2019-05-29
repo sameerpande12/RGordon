@@ -1,6 +1,9 @@
 const https = require('http');
+const request = require('request');
+
 const spawn = require("child_process").spawn;
 https.get('http://localhost:3000', (resp) => {
+
    let data = '';
 
     // A chunk of data has been recieved.
@@ -25,6 +28,16 @@ https.get('http://localhost:3000', (resp) => {
 
       pyProg.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
+        request.post(
+          'http://localhost:3000',
+          { json: { name: 'ironman' } },
+          function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                console.log(body);
+            }
+          }
+         );
+
       });
     });
 

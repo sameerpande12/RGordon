@@ -2,19 +2,29 @@ var express = require('express');
 var app = express();
 var logger = require('morgan');
 app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 
 
-app.use('/',function(req,res){
+app.get('/',function(req,res){
   res.json({
     fname:'Calculate',
     url:'www.youtube.com',
     sigma_cwnd:143,
     cwnd:48,
     rtt:19,
-    trials:10
+    trials:1
   });
   
+})
+
+
+app.post('/',function(req,res){
+  console.log(req.body);
+  res.status(200);
+  res.json({fname:"Done"});
+  res.end();
 })
 
 /*var createError = require('http-errors');
