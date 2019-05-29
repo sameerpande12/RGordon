@@ -86,3 +86,5 @@ windows.sort(key=lambda tup: tup[0], reverse=True)
 
 maxValues = windows[0][1]
 subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
+
+sys.stdout.flush()
