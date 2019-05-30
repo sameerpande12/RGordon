@@ -45,7 +45,6 @@ print(targetURL, delayTime)
 
 try:
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
-    subprocess.call(["echo "+url+" > ./RData/current_url.txt"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')

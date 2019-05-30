@@ -31,7 +31,7 @@ https.get('http://localhost:3000', (resp) => {
       pyProg.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
         var text = fs.readFileSync("./RData/windows.csv","utf-8");
-        var url = ((fs.readFileSync("./RData/current_url.txt","utf-8")).split('\n'))[0];
+        
         var tmp = ((text.split("\n"))[0]).split(' ');
         var values = [];
         tmp.forEach( function(str){values.push(parseInt(str));});
