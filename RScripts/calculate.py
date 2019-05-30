@@ -17,6 +17,8 @@ numTrials=int(sys.argv[2])
 sigma_cwnd= (sys.argv[3])
 cwnd = (sys.argv[4])
 rtt = (sys.argv[5])
+emuDrop = (sys.argv[6])
+
 targetURL = "http://"+sys.argv[1]
 try:
     response = subprocess.check_output(
@@ -43,6 +45,7 @@ print(targetURL, delayTime)
 
 try:
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
+    subprocess.call(["echo "+url+" > ./RData/current_url.txt"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')
@@ -54,7 +57,7 @@ except Exception as e:
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop], shell=True, executable='/bin/bash')
 
     except Exception as e:
         print(e)

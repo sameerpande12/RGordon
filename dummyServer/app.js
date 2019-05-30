@@ -14,7 +14,8 @@ app.get('/',function(req,res){
     sigma_cwnd:143,
     cwnd:48,
     rtt:19,
-    trials:1
+    trials:5,
+    emuDrop:(-1)
   });
   
 })
