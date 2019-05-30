@@ -10,12 +10,13 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/',function(req,res){
   res.json({
     fname:'Calculate',
-    url:'www.youtube.com',
-    sigma_cwnd:143,
-    cwnd:48,
-    rtt:19,
+    url:'www.pandesameer.com',
+    sigma_cwnd:43,
+    cwnd:0,
+    rtt:1,
     trials:5,
-    emuDrop:(-1)
+    emuDrop:(-1),
+    chancesLeft:5
   });
   
 })
