@@ -56,7 +56,7 @@ except Exception as e:
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh "+targetURL+" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop +" >> logs.csv"], shell=True, executable='/bin/bash')
 
     except Exception as e:
         print(e)
@@ -92,4 +92,4 @@ windows.sort(key=lambda tup: tup[0], reverse=True)
 maxValues = windows[0][1]
 subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
 
-sys.stdout.flush()
+#sys.stdout.flush()

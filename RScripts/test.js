@@ -14,8 +14,8 @@ https.get('http://localhost:3000', (resp) => {
 
   // The whole response has been received. Print out the result.
     resp.on('end', (req,res) => {
-      data=JSON.parse(data);
 
+      data=JSON.parse(data);
       const pyProg= spawn('python3',["calculate.py",data.url,data.trials,data.sigma_cwnd,data.cwnd,data.rtt,data.emuDrop]);
 
       pyProg.stdout.on('data', function(data) {
@@ -31,17 +31,22 @@ https.get('http://localhost:3000', (resp) => {
       pyProg.on('close', (code) => {
         console.log(`child process exited with code ${code}`);
         var text = fs.readFileSync("./RData/windows.csv","utf-8");
-        
+
         var tmp = ((text.split("\n"))[0]).split(' ');
         var values = [];
         tmp.forEach( function(str){values.push(parseInt(str));});
         var postData ='';
         if(values[0]==0 && values[1]==0){
           postData = { json: {message_type:"Error",rtt:data.rtt,url:data.url,chancesLeft:data.chancesLeft-1 } };
+
+        }
+        else if(values[1]==0){
+          postData = { json: {message_type:"Complete",rtt:data.rtt,url:data.url} };
         }
         else{
          postData = { json: { message_type:"Done" ,cwnd: values[1], sigma_cwnd: values[0],rtt:values[2],url:data.url } };
         }
+        console.log(postData);
         request.post(
           'http://localhost:3000',
           postData,
