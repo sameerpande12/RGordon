@@ -15,7 +15,7 @@ var emuDrop = -1;
 app.get('/',function(req,res){
   res.json({
     fname:'Calculate',
-    url:'www.twitter.com',
+    url:'www.youtube.com',
     sigma_cwnd:sigma_cwnd,
     cwnd:cwnd,
     rtt:rtt,
