@@ -1,4 +1,4 @@
-for x in {1..5}
+for x in {1..30}
 do
   echo $x
   node test.js
