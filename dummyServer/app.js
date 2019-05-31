@@ -5,12 +5,13 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var sigma_cwnd = 0;
-var cwnd = 0;
-var rtt = 1;
+var sigma_cwnd = 109;
+var cwnd = 57;
+var rtt = 9;
 var trials = 15;
 var chancesLeft = 5;
 var emuDrop = -1;
+var assigned = false;
 
 app.get('/',function(req,res){
   res.json({
@@ -23,22 +24,83 @@ app.get('/',function(req,res){
     emuDrop:emuDrop,
     chancesLeft:chancesLeft
   });
-
+   console.log("Sending: "+ sigma_cwnd+" "+cwnd+" "+"emu "+emuDrop+" chances: "+chancesLeft);
 })
 
 
 app.post('/',function(req,res){
+  console.log("received");
   console.log(req.body);
-
-  if(req.body.cwnd > 80){
-    emuDrop = sigma_cwnd;
+  /*if(req.message_type == "Done"){
+      if(req.body.cwnd > 80 && !assigned){
+        emuDrop = sigma_cwnd;
+        assigned = true;
+      }
+      sigma_cwnd = req.body.sigma_cwnd;
+      cwnd = req.body.cwnd;
+      rtt = rtt+1;
   }
-  sigma_cwnd = req.body.sigma_cwnd;
-  cwnd = req.body.cwnd;
-  rtt = rtt+1;
-  res.status(200);
-  res.json({fname:"Done"});
-  res.end();
+  else if(req.message_type == "Complete"){
+      sigma_cwnd = 0;
+      cwnd = 0;
+      rtt = 1;
+      chancesLeft = 5;
+      emuDrop = 10000;
+
+  }
+  else if(req.message_type == "Error"){
+    if(req.chancesLeft <=0){
+      sigma_cwnd = 0;
+      cwnd = 0;
+      rtt = 1;
+      chancesLeft = 5;
+      emuDrop = 10000;
+    }
+    else{
+       chancesLeft = req.chancesLeft;
+    }
+  }*/
+  var mtype = req.body.message_type;
+  if(mtype == "Done"){
+
+        if(req.body.cwnd > 80 && !assigned){
+          emuDrop = sigma_cwnd;
+          assigned = true;
+        }
+        sigma_cwnd = req.body.sigma_cwnd;
+        cwnd = req.body.cwnd;
+        rtt = rtt+1;
+        chancesLeft = 5;
+   }
+   else if(mtype == "Error"){
+
+     chancesLeft = req.body.chancesLeft;
+     if(chancesLeft < 1){
+       sigma_cwnd = 0;
+       cwnd = 0;
+       rtt= 1;
+       chancesLeft = 5;
+       emu = 100000;
+       assigned = false;
+
+     }
+
+   }
+   else if(mtype == "Complete"){
+     sigma_cwnd = 0;
+     cwnd = 0;
+     rtt= 1;
+     chancesLeft = 5;
+     emu = 100000;
+     assigned = false;
+
+
+   }
+
+
+      res.status(200);
+      res.json({fname:"One communitcation done"});
+      res.end();
 })
 
 

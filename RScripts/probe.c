@@ -240,10 +240,10 @@ int main(int argc, char** argv){
 		//char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O /dev/null '";
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
-		
+
 		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPage";
 		strcat(get,argv[5]);
-		strcat(get," -T 15 -nv \"");
+		strcat(get," -T 15 -q \"");
 		strcat(get, argv[1]);
 		strcat(get, "\"");
 		printf("%s\n", get);
