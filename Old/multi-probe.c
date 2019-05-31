@@ -350,7 +350,9 @@ int main(int argc, char **argv)
 			char window[5];
 			char in[5];
 			char cmd[]="echo ";
+			char emu[5];
 			//write data to windows.csv
+			itoa(emuDrop,emu);
 			itoa(nextVal, number);
 			strcat(cmd, number);
 			strcat(cmd," ");
@@ -359,6 +361,8 @@ int main(int argc, char **argv)
 			strcat(cmd," ");
 			itoa(indx, in);
 			strcat(cmd, in);
+			strcat(cmd," emu ");
+			strcat(cmd,emu);
 			strcat(cmd, " >> ../Data/windows");
 			strcat(cmd, argv[5]);
 			strcat(cmd, ".csv");
