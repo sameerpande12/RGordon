@@ -5,9 +5,9 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var sigma_cwnd = 1011;
-var cwnd = 3;
-var rtt = 18;
+var sigma_cwnd = 1122;
+var cwnd = 101;
+var rtt = 21;
 var trials = 15;
 var chancesLeft = 5;
 var emuDrop = 109;
@@ -31,35 +31,7 @@ app.get('/',function(req,res){
 app.post('/',function(req,res){
   console.log("received");
   console.log(req.body);
-  /*if(req.message_type == "Done"){
-      if(req.body.cwnd > 80 && !assigned){
-        emuDrop = sigma_cwnd;
-        assigned = true;
-      }
-      sigma_cwnd = req.body.sigma_cwnd;
-      cwnd = req.body.cwnd;
-      rtt = rtt+1;
-  }
-  else if(req.message_type == "Complete"){
-      sigma_cwnd = 0;
-      cwnd = 0;
-      rtt = 1;
-      chancesLeft = 5;
-      emuDrop = 10000;
 
-  }
-  else if(req.message_type == "Error"){
-    if(req.chancesLeft <=0){
-      sigma_cwnd = 0;
-      cwnd = 0;
-      rtt = 1;
-      chancesLeft = 5;
-      emuDrop = 10000;
-    }
-    else{
-       chancesLeft = req.chancesLeft;
-    }
-  }*/
   var mtype = req.body.message_type;
   if(mtype == "Done"){
 

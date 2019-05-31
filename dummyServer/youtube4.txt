@@ -210,4 +210,51 @@ received
   url: 'www.youtube.com',
   chancesLeft: 0
 }
-Sending: 0 0 emu 109 chances: 5
+
+> myapp@0.0.0 start /home/sameerpande34/RGordon/dummyServer
+> node ./bin/www
+
+
+> myapp@0.0.0 start /home/sameerpande34/RGordon/dummyServer
+> node ./bin/www
+
+Sending: 1122 101 emu 109 chances: 5
+received
+{
+  message_type: 'Error',
+  rtt: 21,
+  url: 'www.youtube.com',
+  chancesLeft: 4
+}
+Sending: 1122 101 emu 109 chances: 4
+received
+{
+  message_type: 'Error',
+  rtt: 21,
+  url: 'www.youtube.com',
+  chancesLeft: 3
+}
+Sending: 1122 101 emu 109 chances: 3
+received
+{
+  message_type: 'Error',
+  rtt: 21,
+  url: 'www.youtube.com',
+  chancesLeft: 2
+}
+Sending: 1122 101 emu 109 chances: 2
+received
+{
+  message_type: 'Error',
+  rtt: 21,
+  url: 'www.youtube.com',
+  chancesLeft: 1
+}
+Sending: 1122 101 emu 109 chances: 1
+received
+{
+  message_type: 'Error',
+  rtt: 21,
+  url: 'www.youtube.com',
+  chancesLeft: 0
+}
