@@ -1,0 +1,429 @@
+
+> myapp@0.0.0 start /home/sameerpande34/RGordon/dummyServer
+> node ./bin/www
+
+Sending: 0 0 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 1,
+  rtt: 1,
+  url: 'www.youtube.com'
+}
+Sending: 1 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 2,
+  rtt: 2,
+  url: 'www.youtube.com'
+}
+Sending: 2 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 3,
+  rtt: 3,
+  url: 'www.youtube.com'
+}
+Sending: 3 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 4,
+  rtt: 4,
+  url: 'www.youtube.com'
+}
+Sending: 4 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 5,
+  rtt: 5,
+  url: 'www.youtube.com'
+}
+Sending: 5 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 6,
+  rtt: 6,
+  url: 'www.youtube.com'
+}
+Sending: 6 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 7,
+  rtt: 7,
+  url: 'www.youtube.com'
+}
+Sending: 7 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 11,
+  sigma_cwnd: 18,
+  rtt: 8,
+  url: 'www.youtube.com'
+}
+Sending: 18 11 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 5,
+  sigma_cwnd: 23,
+  rtt: 9,
+  url: 'www.youtube.com'
+}
+Sending: 23 5 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 1,
+  sigma_cwnd: 24,
+  rtt: 10,
+  url: 'www.youtube.com'
+}
+Sending: 24 1 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 2,
+  sigma_cwnd: 26,
+  rtt: 11,
+  url: 'www.youtube.com'
+}
+Sending: 26 2 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 28,
+  sigma_cwnd: 54,
+  rtt: 12,
+  url: 'www.youtube.com'
+}
+Sending: 54 28 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 42,
+  sigma_cwnd: 96,
+  rtt: 13,
+  url: 'www.youtube.com'
+}
+Sending: 96 42 emu 100000 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 89,
+  sigma_cwnd: 185,
+  rtt: 14,
+  url: 'www.youtube.com'
+}
+Sending: 185 89 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 88,
+  sigma_cwnd: 273,
+  rtt: 15,
+  url: 'www.youtube.com'
+}
+Sending: 273 88 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 143,
+  sigma_cwnd: 416,
+  rtt: 16,
+  url: 'www.youtube.com'
+}
+Sending: 416 143 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 143,
+  sigma_cwnd: 559,
+  rtt: 17,
+  url: 'www.youtube.com'
+}
+Sending: 559 143 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 150,
+  sigma_cwnd: 709,
+  rtt: 18,
+  url: 'www.youtube.com'
+}
+Sending: 709 150 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 105,
+  sigma_cwnd: 814,
+  rtt: 19,
+  url: 'www.youtube.com'
+}
+Sending: 814 105 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 109,
+  sigma_cwnd: 923,
+  rtt: 20,
+  url: 'www.youtube.com'
+}
+Sending: 923 109 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 101,
+  sigma_cwnd: 1024,
+  rtt: 21,
+  url: 'www.youtube.com'
+}
+Sending: 1024 101 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 1127,
+  rtt: 22,
+  url: 'www.youtube.com'
+}
+Sending: 1127 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 104,
+  sigma_cwnd: 1231,
+  rtt: 23,
+  url: 'www.youtube.com'
+}
+Sending: 1231 104 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 1334,
+  rtt: 24,
+  url: 'www.youtube.com'
+}
+Sending: 1334 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 1437,
+  rtt: 25,
+  url: 'www.youtube.com'
+}
+
+Sending: 1437 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 102,
+  sigma_cwnd: 1539,
+  rtt: 27,
+  url: 'www.youtube.com'
+}
+Sending: 1539 102 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 1642,
+  rtt: 28,
+  url: 'www.youtube.com'
+}
+Sending: 1642 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 105,
+  sigma_cwnd: 1747,
+  rtt: 29,
+  url: 'www.youtube.com'
+}
+Sending: 1747 105 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 105,
+  sigma_cwnd: 1852,
+  rtt: 30,
+  url: 'www.youtube.com'
+}
+Sending: 1852 105 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 1955,
+  rtt: 31,
+  url: 'www.youtube.com'
+}
+Sending: 1955 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 105,
+  sigma_cwnd: 2060,
+  rtt: 32,
+  url: 'www.youtube.com'
+}
+Sending: 2060 105 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 2163,
+  rtt: 33,
+  url: 'www.youtube.com'
+}
+Sending: 2163 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 102,
+  sigma_cwnd: 2265,
+  rtt: 34,
+  url: 'www.youtube.com'
+}
+Sending: 2265 102 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 103,
+  sigma_cwnd: 2368,
+  rtt: 35,
+  url: 'www.youtube.com'
+}
+Sending: 2368 103 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 102,
+  sigma_cwnd: 2470,
+  rtt: 36,
+  url: 'www.youtube.com'
+}
+Sending: 2470 102 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 70,
+  sigma_cwnd: 2540,
+  rtt: 37,
+  url: 'www.youtube.com'
+}
+Sending: 2540 70 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 70,
+  sigma_cwnd: 2610,
+  rtt: 38,
+  url: 'www.youtube.com'
+}
+Sending: 2610 70 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 70,
+  sigma_cwnd: 2680,
+  rtt: 39,
+  url: 'www.youtube.com'
+}
+Sending: 2680 70 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 70,
+  sigma_cwnd: 2750,
+  rtt: 40,
+  url: 'www.youtube.com'
+}
+Sending: 2750 70 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 71,
+  sigma_cwnd: 2821,
+  rtt: 41,
+  url: 'www.youtube.com'
+}
+Sending: 2821 71 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 71,
+  sigma_cwnd: 2892,
+  rtt: 42,
+  url: 'www.youtube.com'
+}
+Sending: 2892 71 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 70,
+  sigma_cwnd: 2962,
+  rtt: 43,
+  url: 'www.youtube.com'
+}
+Sending: 2962 70 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 72,
+  sigma_cwnd: 3034,
+  rtt: 44,
+  url: 'www.youtube.com'
+}
+Sending: 3034 72 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 72,
+  sigma_cwnd: 3106,
+  rtt: 45,
+  url: 'www.youtube.com'
+}
+Sending: 3106 72 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 71,
+  sigma_cwnd: 3177,
+  rtt: 46,
+  url: 'www.youtube.com'
+}
+Sending: 3177 71 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 69,
+  sigma_cwnd: 3246,
+  rtt: 47,
+  url: 'www.youtube.com'
+}
+Sending: 3246 69 emu 96 chances: 5
+received
+{
+  message_type: 'Done',
+  cwnd: 72,
+  sigma_cwnd: 3318,
+  rtt: 48,
+  url: 'www.youtube.com'
+}
+Sending: 3318 72 emu 96 chances: 5
