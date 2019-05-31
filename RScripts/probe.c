@@ -243,7 +243,7 @@ int main(int argc, char** argv){
 
 		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPage";
 		strcat(get,argv[5]);
-		strcat(get," -T 15 -q \"");
+		strcat(get," -T 15  \"");
 		strcat(get, argv[1]);
 		strcat(get, "\"");
 		printf("%s\n", get);

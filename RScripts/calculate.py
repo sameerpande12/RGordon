@@ -44,10 +44,11 @@ else:
 print(targetURL, delayTime)
 
 try:
+    subprocess.call(["rm -f index*"],shell=True,executable='/bin/bash')
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
-    subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')
+    #subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')--now done inside runner.sh 
     subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo rm ./RData/windows*"],shell=True,executable='/bin/bash')
 except Exception as e:
@@ -65,13 +66,13 @@ def runTrial(Trial_Number):
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
-r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
+r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
 #r = []
 #for i in range (10):
-    #time.sleep(10)
+#    time.sleep(10)
     #r.append(pool.apply_async(runTrial, args=[i]))
 
-p=[x.wait() for x in r]
+#p=[x.wait() for x in r]
 pool.close
 subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
 

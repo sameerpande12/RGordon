@@ -5,12 +5,18 @@ var app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-var sigma_cwnd = 1122;
-var cwnd = 101;
-var rtt = 21;
-var trials = 15;
-var chancesLeft = 5;
+var sigma_cwnd = 1527;
+var cwnd = 104;
 var emuDrop = 109;
+var rtt = 22;
+
+/*var sigma_cwnd = 0;
+var cwnd = 0;
+var emuDrop = 100000;
+var rtt = 17;
+*/
+var trials = 10;
+var chancesLeft = 5;
 var assigned = true;
 
 app.get('/',function(req,res){
