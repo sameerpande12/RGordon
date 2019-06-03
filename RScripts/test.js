@@ -11,7 +11,7 @@ var pingServer = function(){
    if(isFree){
      isFree = false;
      var path = '';
-     request.post('http://localhost:3000/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body) => {
+     request.post('http://localhost:3000/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body)  {
 
         let data = '';
          resp.on('data', (chunk) => {
@@ -20,15 +20,15 @@ var pingServer = function(){
          resp.on('end', (req,res) => {
                data=JSON.parse(data);
                if(data.message == "JOB"){
-                 var startRTT = int(data.startRTT);
-                 var endRTT = int(data.endRTT);
+                 var startRTT = parseInt(data.startRTT);
+                 var endRTT = parseInt(data.endRTT);
+                 var emuDrop = parseInt( data.start_emudrop);
+                 var chances_left = parseInt(data.chances_left);
+                 var trials = parseInt(data.trials);
+                 var cwnd = parseInt(data.cwnd);
+                 var sigma_cwnd = parseInt(data.sigma_cwnd);
                  var url = data.url;
-                 var emuDrop = data.start_emudrop;
-                 var chances_left = data.chances_left;
-                 var trials = data.trials;
-                 var cwnd = data.cwnd;
-                 var sigma_cwnd = data.sigma_cwnd;
-                 for(rnum=startRTT;rnum<=endRTT;rnum++){
+                 for(rnum=startRTT;(rnum<=endRTT)&&(!isFree);rnum++){
                      const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
 
                      pyProg.stdout.on('data', function(data) {
@@ -50,13 +50,13 @@ var pingServer = function(){
                        tmp.forEach( function(str){values.push(parseInt(str));});
                        var postData ='';
                        if(values[0]==0 && values[1]==0){
-                            postData = { json: {last_error:"error",last_rtt_done:rnum,url:url,chances_left:chances_left-1,viewpoint:viewPoint } };
+                            postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left-1).toString(),viewpoint:viewPoint } };
                             path = '/api/worker/updateError';
 
                        }
                        else if(values[1]==0){
 
-                            postData = { json: {last_rtt_done:rnum,url:url,viewpoint:viewPoint} };
+                            postData = { json: {last_rtt_done:rnum.toString(),url:url,viewpoint:viewPoint} };
                             path = '/api/worker/complete';
                        }
                        else{
@@ -70,7 +70,7 @@ var pingServer = function(){
                              cwnd = values[1];//update cwnd and sigma_cwnd
                              sigma_cwnd = values[0];
 
-                            postData = { json: { cwnd: values[1], sigma_cwnd: values[0],last_rtt_done:values[2],url:url,emuDrop:emuDrop,viewpoint:viewPoint } };
+                            postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
                        }
                        console.log(postData);
                        request.post(
@@ -85,7 +85,7 @@ var pingServer = function(){
                         );
                         if(values[1]==0){//i.e either complete or error
                           isFree=true;
-                          break;
+
                         }
 
                      });
