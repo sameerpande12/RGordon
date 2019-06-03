@@ -12,10 +12,10 @@ var rtt = 27;
 var assigned = true;
 */
 
-var sigma_cwnd = 0;
-var cwnd = 0;
+var sigma_cwnd = 43;
+var cwnd = 13;
 var emuDrop = 100000;
-var rtt = 1;
+var rtt = 11;
 var assigned = false;
 
 var trials = 10;

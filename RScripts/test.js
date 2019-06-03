@@ -3,6 +3,8 @@ const request = require('request');
 const fs = require("fs");
 const spawn = require("child_process").spawn;
 var isFree = true;
+var defaultEmu = 100000;
+var threshold = 80;
 var pingServer = function(){
    if(isFree){
      isFree = false;
@@ -44,10 +46,17 @@ var pingServer = function(){
 
              }
              else if(values[1]==0){
+
                postData = { json: {message_type:"Complete",rtt:data.rtt,url:data.url} };
              }
              else{
-              postData = { json: { message_type:"Done" ,cwnd: values[1], sigma_cwnd: values[0],rtt:values[2],url:data.url } };
+               var emuDrop = data.emuDrop;
+               if(emuDrop==defaultEmu){
+                 if(values[1]>threshold){
+                   emuDrop = data.sigma_cwnd;
+                 }
+               }
+              postData = { json: { message_type:"Done" ,cwnd: values[1], sigma_cwnd: values[0],rtt:values[2],url:data.url,emuDrop:emuDrop } };
              }
              console.log(postData);
              request.post(
@@ -73,4 +82,4 @@ var pingServer = function(){
    }
 
 }
-setInterval(pingServer,10000);
+setInterval(pingServer,2000);
