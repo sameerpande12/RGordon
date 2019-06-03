@@ -29,11 +29,15 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd.toString(),
     cwnd:cwnd.toString(),
     startRTT:rtt.toString(),
-    endRTT:rtt.toString(),
+    endRTT:(rtt+3).toString(),
     trials:trials.toString(),
     start_emudrop:emuDrop.toString(),
     chances_left:chancesLeft.toString()
   });
+
+
+  res.end();
+
    console.log("Sending: "+ sigma_cwnd+" "+cwnd+" "+"emu "+emuDrop+" chances: "+chancesLeft);
 })
 
