@@ -1,5 +1,6 @@
 const https = require('https');
 const request = require('request');
+const request_pn = require('request-promise-native');
 const fs = require("fs");
 const spawn = require("child_process").spawn;
 var isFree = true;
@@ -8,7 +9,7 @@ var threshold = 80;
 const viewPoint = "Singapore";
 
 var pingServer = function(){
-  console.log(isFree);
+//  console.log(isFree);
    if(isFree){
      isFree = false;
      var path = '';
@@ -29,67 +30,71 @@ var pingServer = function(){
                  var sigma_cwnd = parseInt(data.sigma_cwnd);
                  var url = data.url;
                  var rnum = startRTT;
-                 var useloop = true;
+                 //var useloop = true;
 
-                 console.log("Entering "+rnum);
-                 const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
+                const evaluate = function(){
 
-                 pyProg.on('close', (code) => {
-                   console.log("calculate.py done for "+rnum);
-                   console.log(`child process exited with code ${code}`);
-                   var text = fs.readFileSync("./RData/windows.csv","utf-8");
+                    if(rnum<=endRTT) {
+                      console.log("Entering "+rnum);
+                      const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
 
-                   var tmp = ((text.split("\n"))[0]).split(' ');
-                   var values = [];
-                   tmp.forEach( function(str){values.push(parseInt(str));});
-                   var postData ='';
-                   if(values[0]==0 && values[1]==0){
-                        postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left-1).toString(),viewpoint:viewPoint } };
-                        path = '/api/worker/updateError';
+                      pyProg.on('close', (code) => {
+                           console.log("calculate.py done for "+rnum);
+                           console.log(`child process exited with code ${code}`);
+                           var text = fs.readFileSync("./RData/windows.csv","utf-8");
 
-                   }
-                   else if(values[1]==0){
+                           var tmp = ((text.split("\n"))[0]).split(' ');
+                           var values = [];
+                           tmp.forEach( function(str){values.push(parseInt(str));});
+                           var postData ='';
+                           if(values[0]==0 && values[1]==0){
+                                postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left-1).toString(),viewpoint:viewPoint } };
+                                path = '/api/worker/updateError';
 
-                        postData = { json: {last_rtt_done:rnum.toString(),url:url,viewpoint:viewPoint} };
-                        path = '/api/worker/complete';
-                   }
-                   else{
-                         path = '/api/worker/update';
-
-                         if(emuDrop==defaultEmu){
-                           if(values[1]>threshold){
-                             emuDrop = sigma_cwnd;//last sigma_cwnd before updating
                            }
-                         }
-                         cwnd = values[1];//update cwnd and sigma_cwnd
-                         sigma_cwnd = values[0];
+                           else if(values[1]==0){
 
-                        postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
-                   }
-                   console.log(rnum);
-                   console.log(postData);
+                                postData = { json: {last_rtt_done:rnum.toString(),url:url,viewpoint:viewPoint} };
+                                path = '/api/worker/complete';
+                           }
+                           else{
+                                 path = '/api/worker/update';
 
-                   request.post(
-                             'http://localhost:3000'+path,
-                             postData,
-                             function (err, response, ack_body) {
-                                         if (!err && response.statusCode == 200) {
-                                             console.log(ack_body);
+                                 if(emuDrop==defaultEmu){
+                                   if(values[1]>threshold){
+                                     emuDrop = sigma_cwnd;//last sigma_cwnd before updating
+                                   }
+                                 }
+                                 cwnd = values[1];//update cwnd and sigma_cwnd
+                                 sigma_cwnd = values[0];
 
-                                         }
-                                         else console.log("some error");
-                                         if(values[1]==0 || rnum==endRTT){//i.e either complete or error
-
-                                         }
-                               isFree= true;
-
-                             }
-                    );
+                                postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
+                           }
 
 
-                 });
-            //}
 
+                            request.post(
+                                     'http://localhost:3000'+path,
+                                     postData,
+                                     function (err, response, ack_body) {
+                                       if(values[1]==0 || rnum==endRTT)isFree= true;
+                                       if (!err && response.statusCode == 200)
+                                                     console.log(ack_body);
+                                       else console.log("some error");
+                                       //useloop = true;
+                                       rnum++;
+                                       if(rnum<=endRTT)evaluate();
+                                     }
+                            );
+
+
+                         });
+                     }
+                    else{
+                       console.log("DONE");
+                     }
+                  }
+                evaluate();
 
               }
 
