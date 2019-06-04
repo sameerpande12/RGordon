@@ -40,7 +40,9 @@ var pingServer = function(){
                     if(rnum<=endRTT) {
                       console.log("Entering "+rnum);
                       const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
-
+                      pyProg.stderr.on('data', (data) => {
+                        console.log(`stderr: ${data}`);
+                      });
                       pyProg.on('close', (code) => {
                            console.log("calculate.py done for "+rnum);
                            console.log(`child process exited with code ${code}`);
@@ -75,7 +77,7 @@ var pingServer = function(){
                            }
 
 
-                            console.log("About to post "+postData);
+                            console.log(postData.json);
                             request.post(
                                      domain+path,
                                      postData,
