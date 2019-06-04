@@ -19,7 +19,7 @@ cwnd = (sys.argv[4])
 rtt = (sys.argv[5])
 emuDrop = (sys.argv[6])
 
-targetURL = "http://"+sys.argv[1]
+targetURL = sys.argv[1]
 try:
     response = subprocess.check_output(
         ['ping', '-c', '1', url],
