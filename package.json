@@ -1,0 +1,28 @@
+{
+  "name": "RGordon",
+  "version": "1.0.0",
+  "description": "Localised bottlenecks for server transport layer protocol analysis.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sameerpande12/RGordon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sameerpande12/RGordon/issues"
+  },
+  "homepage": "https://github.com/sameerpande12/RGordon#readme",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "https": "^1.0.0",
+    "morgan": "^1.9.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.7"
+  }
+}
