@@ -66,9 +66,9 @@ def runTrial(Trial_Number):
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
-#r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
-#p=[x.wait() for x in r]
-r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
+r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
+p=[x.wait() for x in r]
+#r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
 pool.close
 subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
 
