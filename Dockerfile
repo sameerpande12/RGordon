@@ -25,12 +25,6 @@ RUN sudo apt-get install -y python python3 python3-pip && \
 RUN sudo echo "dash dash/sh boolean false" | sudo debconf-set-selections
 RUN sudo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
-RUN mkdir -p ./Gordon/Scripts && \
-    mkdir -p ./Gordon/Data && \
-    mkdir -p ./Gordon/Windows
-
-COPY ./multi-probe.c ./Gordon/
-COPY ./Data/windows.csv ./Data/buff.csv ./Gordon/Data/
-COPY ./Scripts/multi-prober ./Scripts/clean.sh ./Scripts/multi-launch.sh ./Scripts/getmedian.py ./Scripts/start.py ./Scripts/tcpClassify.py ./Scripts/sanitized-links.csv ./Scripts/retestLinks.csv ./Scripts/domainResult.csv ./Scripts/analysisResult.csv ./Gordon/Scripts/
+ADD . /home/tester
 
 CMD ["/bin/bash"]

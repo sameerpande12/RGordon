@@ -1,4 +1,5 @@
-file =  open('sanitized-links.csv','r')
+import sys
+file =  open(sys.argv[1],'r')
 count = 0
 mlist = []
 while True:
@@ -15,7 +16,7 @@ ofile=open("output.txt","a+")
 for tup in mlist:
     str1 = str(tup[0])
     str2=""
-    i=3
+    i=2
     j=len(tup[1])-2
     while(i <= j):
         str2+=tup[1][i]
