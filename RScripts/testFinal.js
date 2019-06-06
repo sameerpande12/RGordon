@@ -7,9 +7,9 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://172.26.191.175:4000';
+var domain = 'http://localhost:3000';
 var start = Date.now();
-fs.writeFile("time.txt","Starting at "+start,(err)=>{});
+//fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
 var pingServer = function(){
 //  console.log(isFree);
@@ -36,6 +36,7 @@ var pingServer = function(){
                  var url = body.data[0].url;
                  var rnum = startRTT;
                  //var useloop = true;
+                 console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
 
                 const evaluate = function(){
                      //console.log("entering evaluate "+(rnum).toString+ " "+str(endRTT)+ " "(rnum<=endRTT));
@@ -77,8 +78,8 @@ var pingServer = function(){
 
                                 postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
                            }
-                           fs.appendFile("time.txt","\n",(err)=>{});
-                           fs.appendFile("time.txt",Date.now() - start,(err)=>{});
+                           //fs.appendFile("time.txt","\n",(err)=>{});
+                           //fs.appendFile("time.txt",Date.now() - start,(err)=>{});
 
                             console.log(postData.json);
                             request.post(
