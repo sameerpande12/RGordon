@@ -46,10 +46,9 @@ print(targetURL, delayTime)
 try:
     subprocess.call(["rm -f index*"],shell=True,executable='/bin/bash')
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
-    subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
-    subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
-    #subprocess.call(["sudo ifconfig ingress mtu 100"],shell=True,executable='/bin/bash')--now done inside runner.sh
-    subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
+    #subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
+    #subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
+    #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
     subprocess.call(["sudo rm ./RData/windows*"],shell=True,executable='/bin/bash')
 except Exception as e:
     print(e)

@@ -7,7 +7,7 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://172.26.191.175:4000';
+var domain = 'http://localhost:3000';
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
@@ -44,7 +44,7 @@ var pingServer = function(){
                       console.log("Entering "+rnum);
                       const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
                       pyProg.stderr.on('data', (data) => {
-                      //  console.log(`stderr: ${data}`);
+                        console.log(`stderr: ${data}`);
                       });
                       pyProg.on('close', (code) => {
                            console.log("calculate.py done for "+rnum);
@@ -76,7 +76,7 @@ var pingServer = function(){
                                  cwnd = values[1];//update cwnd and sigma_cwnd
                                  sigma_cwnd = values[0];
 
-                                postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emudrop:emuDrop.toString(),viewpoint:viewPoint } };
+                                postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
                            }
                            //fs.appendFile("time.txt","\n",(err)=>{});
                            //fs.appendFile("time.txt",Date.now() - start,(err)=>{});

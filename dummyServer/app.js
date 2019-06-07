@@ -30,7 +30,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd.toString(),
     cwnd:cwnd.toString(),
     startRTT:rtt.toString(),
-    endRTT:(rtt+3).toString(),
+    endRTT:(rtt+1).toString(),
     trials:trials.toString(),
     start_emudrop:emuDrop.toString(),
     chances_left:chancesLeft.toString()
