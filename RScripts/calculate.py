@@ -80,15 +80,21 @@ windows = list()
 counter=0
 for i in range(numTrials):
     infile="./RData/windows"+str(i)+".csv"
-    read=open(infile,'r')
-    line=[int(x) for x in read.readline().split(' ')]
+    try:
+        read=open(infile,'r')
+        line=[int(x) for x in read.readline().split(' ')]
 
-    windows.append((line[0],line))
-    read.close()
+        windows.append((line[0],line))
+        read.close()
+    except Exception as e:
+        print(e)
 
 windows.sort(key=lambda tup: tup[0], reverse=True)
-
-maxValues = windows[0][1]
-subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
+maxvalues=[]
+try:
+    maxValues = windows[0][1]
+    subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
+except Exception as e:
+    subprocess.call(["echo \""+str(0)+" "+str(0)+" "+rtt +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
 
 #sys.stdout.flush()
