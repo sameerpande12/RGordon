@@ -23,6 +23,6 @@ for tup in mlist:
         if(i<j):
             str2+=','
         i=i+1
-        ofile.write(str1+" "+str2+"\n")
+    ofile.write(str1+" "+str2+"\n")
 ofile.close()
 file.close()
