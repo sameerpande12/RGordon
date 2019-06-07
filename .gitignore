@@ -1,5 +1,5 @@
 RData/
-prober
+RScripts/prober
 logs
 *.log
 log*
