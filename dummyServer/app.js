@@ -30,7 +30,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd.toString(),
     cwnd:cwnd.toString(),
     startRTT:rtt.toString(),
-    endRTT:(rtt+1).toString(),
+    endRTT:(rtt).toString(),
     trials:trials.toString(),
     start_emudrop:emuDrop.toString(),
     chances_left:chancesLeft.toString()
@@ -64,7 +64,7 @@ app.post('/api/worker/update',function(req,res){
 app.post('/api/worker/updateError',function(req,res){
   console.log("received");
   console.log(req.body);
-     chancesLeft = parseInt(req.body.chancesLeft);
+     chancesLeft = parseInt(req.body.chances_left);
      if(chancesLeft < 1){
        sigma_cwnd = 0;
        cwnd = 0;
