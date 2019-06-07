@@ -11,7 +11,6 @@ var domain = 'http://172.26.191.175:4000';
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
-
 const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate){
    //console.log("entering evaluate "+(rnum).toString+ " "+str(endRTT)+ " "(rnum<=endRTT));
   console.log("I AM HERE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
@@ -49,7 +48,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         cwnd = values[1];//update cwnd and sigma_cwnd
         sigma_cwnd = values[0];
 
-        postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
+        postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emudrop:emuDrop.toString(),viewpoint:viewPoint } };
       }
       //fs.appendFile("time.txt","\n",(err)=>{});
       //fs.appendFile("time.txt",Date.now() - start,(err)=>{});
@@ -83,7 +82,6 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     console.log("One task done");
   }
 };
-
 
 var pingServer = function(){
   console.log("Every 2 seconds");

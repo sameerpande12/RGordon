@@ -7,6 +7,9 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
+var domain = 'http://localhost:3000';
+var start = Date.now();
+//fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
 var pingServer = function(){
 //  console.log(isFree);
@@ -14,30 +17,35 @@ var pingServer = function(){
      isFree = false;
      var path = '';
      console.log("Asking for a job");
-     request.post('http://localhost:3000/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body)  {
+     request.post(domain+'/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body)  {
 
 
 
-              var data=resp.body;
-              console.log(data);
-               if(data.message == "JOB"){
-                 var startRTT = parseInt(data.startRTT);
-                 var endRTT = parseInt(data.endRTT);
-                 var emuDrop = parseInt( data.start_emudrop);
-                 var chances_left = parseInt(data.chances_left);
-                 var trials = parseInt(data.trials);
-                 var cwnd = parseInt(data.cwnd);
-                 var sigma_cwnd = parseInt(data.sigma_cwnd);
-                 var url = data.url;
+              var body=resp.body;
+              console.log(body);
+
+               if(body.message == "JOB"){
+
+                 var startRTT = parseInt(body.data[0].startRTT);
+                 var endRTT = parseInt(body.data[0].endRTT);
+                 var emuDrop = parseInt( body.data[0].start_emudrop);
+                 var chances_left = parseInt(body.data[0].chances_left);
+                 var trials = parseInt(body.data[0].trials);
+                 var cwnd = parseInt(body.data[0].cwnd);
+                 var sigma_cwnd = parseInt(body.data[0].sigma_cwnd);
+                 var url = body.data[0].url;
                  var rnum = startRTT;
                  //var useloop = true;
+                 console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
 
                 const evaluate = function(){
-
+                     //console.log("entering evaluate "+(rnum).toString+ " "+str(endRTT)+ " "(rnum<=endRTT));
                     if(rnum<=endRTT) {
                       console.log("Entering "+rnum);
                       const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
-
+                      pyProg.stderr.on('data', (data) => {
+                        console.log(`stderr: ${data}`);
+                      });
                       pyProg.on('close', (code) => {
                            console.log("calculate.py done for "+rnum);
                            console.log(`child process exited with code ${code}`);
@@ -70,11 +78,12 @@ var pingServer = function(){
 
                                 postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emuDrop:emuDrop.toString(),viewpoint:viewPoint } };
                            }
+                           //fs.appendFile("time.txt","\n",(err)=>{});
+                           //fs.appendFile("time.txt",Date.now() - start,(err)=>{});
 
-
-
+                            console.log(postData.json);
                             request.post(
-                                     'http://localhost:3000'+path,
+                                     domain+path,
                                      postData,
                                      function (err, response, ack_body) {
                                        if(values[1]==0 || rnum==endRTT)isFree= true;
@@ -94,10 +103,12 @@ var pingServer = function(){
                          });;
                      }
                     else{
-                       console.log("DONE");
+                       console.log("One task done");
                      }
-                  }
+                  };
+
                 evaluate();
+
 
               }
 
