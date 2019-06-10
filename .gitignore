@@ -1,5 +1,6 @@
 RData/
 RScripts/prober
+status*
 logs
 *.log
 log*

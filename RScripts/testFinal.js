@@ -17,7 +17,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     console.log("Entering "+rnum);
     const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
     pyProg.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
+      //console.log(`stderr: ${data}`);
     });
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
@@ -60,10 +60,10 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
           if(values[1]==0 || rnum==endRTT){
             isFree= true;
           }
-         
+
           if (!err && response.statusCode == 200){
             console.log(ack_body);
-          }else{ 
+          }else{
             console.log("some error");
           }
           //useloop = true;
