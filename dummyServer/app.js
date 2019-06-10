@@ -25,6 +25,7 @@ var trials = 10;
 var chancesLeft = 5;
 
 app.post('/api/worker/job',function(req,res){
+  console.log("Sending job-----------------------------------------------------------------------");
   res.json({
     message:'JOB',
     //url:"www.google.co.in/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA#imgrc=_",

@@ -12,12 +12,12 @@ var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
 const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate){
-   //console.log("entering evaluate "+(rnum).toString+ " "+str(endRTT)+ " "(rnum<=endRTT));
+   console.log("entering evaluate "+(rnum).toString+ " "+(endRTT)+ " "+(rnum<=endRTT));
   if(rnum<=endRTT) {
     console.log("Entering "+rnum);
     const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
     pyProg.stderr.on('data', (data) => {
-      console.log(`stderr: ${data}`);
+      //console.log(`stderr: ${data}`);
     });
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
@@ -74,6 +74,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         postData,
         function (err, response, ack_body) {
           if(values[1]==0 || rnum==endRTT){
+            console.log("Making isFree true 1");
             isFree= true;
           }
 
@@ -124,20 +125,24 @@ var pingServer = function(){
                           evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
                         }else{
                           console.log("no Job---no Job");
+                          console.log("Making isFree true 2");
                           isFree = true;
                         }
                 }
                 else{
+                  console.log("Making isFree true 3");
                   isFree = true;
                 //  console.log("No repsonse");
                 }
             }).on("error", (err) => {
+              console.log("Making isFree true 4");
              console.log("Error: " + err.message);
 
            });
           }
     }
     catch(err){
+      console.log("Making isFree true 5");
       isFree = true;
       console.log(err);
     }
