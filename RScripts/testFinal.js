@@ -99,40 +99,45 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
 
 var pingServer = function(){
   //console.log("Every 2 seconds");
-  if(isFree){
-    isFree = false;
-    var path = '';
-    console.log("Asking for a job");
-    request.post(domain+'/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body)  {
-         if(typeof resp != 'undefined'){
-                var body=resp.body;
-                console.log(body);
-                if(body.message == "JOB"){
-                  var startRTT = parseInt(body.data[0].startRTT);
-                  var endRTT = parseInt(body.data[0].endRTT);
-                  var emuDrop = parseInt( body.data[0].start_emudrop);
-                  var chances_left = parseInt(body.data[0].chances_left);
-                  var trials = parseInt(body.data[0].trials);
-                  var cwnd = parseInt(body.data[0].cwnd);
-                  var sigma_cwnd = parseInt(body.data[0].sigma_cwnd);
-                  var url = body.data[0].url;
-                  var rnum = startRTT;
-                  //var useloop = true;
-                  console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
-                  evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
-                }else{
-                  console.log("no Job---no Job");
-                  isFree = true;
+  try{
+          if(isFree){
+            isFree = false;
+            var path = '';
+            console.log("Asking for a job");
+            request.post(domain+'/api/worker/job',{json:{viewpoint:viewPoint}} ,function(error,resp,body)  {
+                 if(typeof resp != 'undefined'){
+                        var body=resp.body;
+                        console.log(body);
+                        if(body.message == "JOB"){
+                          var startRTT = parseInt(body.data[0].startRTT);
+                          var endRTT = parseInt(body.data[0].endRTT);
+                          var emuDrop = parseInt( body.data[0].start_emudrop);
+                          var chances_left = parseInt(body.data[0].chances_left);
+                          var trials = parseInt(body.data[0].trials);
+                          var cwnd = parseInt(body.data[0].cwnd);
+                          var sigma_cwnd = parseInt(body.data[0].sigma_cwnd);
+                          var url = body.data[0].url;
+                          var rnum = startRTT;
+                          //var useloop = true;
+                          console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
+                          evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
+                        }else{
+                          console.log("no Job---no Job");
+                          isFree = true;
+                        }
                 }
-        }
-        else{
-          isFree = true;
-        //  console.log("No repsonse");
-        }
-    }).on("error", (err) => {
-     console.log("Error: " + err.message);
+                else{
+                  isFree = true;
+                //  console.log("No repsonse");
+                }
+            }).on("error", (err) => {
+             console.log("Error: " + err.message);
 
-   });
-  }
+           });
+          }
+    }
+    catch(err){
+      console.log(err);
+    }
 }
 setInterval(pingServer,2000);
