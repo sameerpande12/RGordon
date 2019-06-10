@@ -1,7 +1,9 @@
 RData/
-RScripts/prober
 status*
 logs
+Logs
+stats
+prober*
 *.log
 log*
 indexPage*
