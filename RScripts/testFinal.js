@@ -7,12 +7,12 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-//var domain = 'http://localhost:3000';
-var domain = '172.26.191.175:4000';//atishya pc
+var domain = 'http://localhost:3000';
+//var domain = '172.26.191.175:4000';//atishya pc
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
-const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate){
+const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index,data){
    console.log("entering evaluate "+(rnum).toString+ " "+(endRTT)+ " "+(rnum<=endRTT));
   if(rnum<=endRTT) {
     console.log("Entering "+rnum);
@@ -74,20 +74,22 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         domain+path,
         postData,
         function (err, response, ack_body) {
-          if(values[1]==0 || rnum==endRTT){
-            console.log("Making isFree true 1");
-            isFree= true;
-          }
-
           if (!err && response.statusCode == 200){
             console.log(ack_body);
           }else{
             console.log("some error");
           }
+
+          if(values[1]==0 || rnum==endRTT){
+            //console.log("Making isFree true 1");
+            runJob(index,data);
+          }
+
+
           //useloop = true;
           rnum++;
           if(rnum<=endRTT && values[1]!=0){
-            evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
+            evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index,data);
           }
         }
       );
@@ -99,6 +101,28 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     console.log("One task done");
   }
 };
+
+var runJob= function(index,data){
+
+  if(index>=data.length){
+    console.log("Making isFree true 1");
+    isFree =true;
+  }
+  else{
+    var path = '';
+    var startRTT = parseInt(data[index].startRTT);
+    var endRTT = parseInt(data[index].endRTT);
+    var emuDrop = parseInt( data[index].start_emudrop);
+    var chances_left = parseInt(data[index].chances_left);
+    var trials = parseInt(data[index].trials);
+    var cwnd = parseInt(data[index].cwnd);
+    var sigma_cwnd = parseInt(data[index].sigma_cwnd);
+    var url = data[index].url;
+    var rnum = startRTT;
+    console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
+    evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index+1,data);
+  }
+}
 
 var pingServer = function(){
   //console.log("Every 2 seconds");
@@ -112,18 +136,7 @@ var pingServer = function(){
                         var body=resp.body;
                         console.log(body);
                         if(body.message == "JOB"){
-                          var startRTT = parseInt(body.data[0].startRTT);
-                          var endRTT = parseInt(body.data[0].endRTT);
-                          var emuDrop = parseInt( body.data[0].start_emudrop);
-                          var chances_left = parseInt(body.data[0].chances_left);
-                          var trials = parseInt(body.data[0].trials);
-                          var cwnd = parseInt(body.data[0].cwnd);
-                          var sigma_cwnd = parseInt(body.data[0].sigma_cwnd);
-                          var url = body.data[0].url;
-                          var rnum = startRTT;
-                          //var useloop = true;
-                          console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
-                          evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
+                          runJob(0,body.data);
                         }else{
                           console.log("no Job---no Job");
                           console.log("Making isFree true 2");
@@ -136,6 +149,7 @@ var pingServer = function(){
                 //  console.log("No repsonse");
                 }
             }).on("error", (err) => {
+              isFree = true;
               console.log("Making isFree true 4");
              console.log("Error: " + err.message);
 

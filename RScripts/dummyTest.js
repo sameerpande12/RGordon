@@ -149,6 +149,7 @@ var pingServer = function(){
                 //  console.log("No repsonse");
                 }
             }).on("error", (err) => {
+              isFree = true;
               console.log("Making isFree true 4");
              console.log("Error: " + err.message);
 
