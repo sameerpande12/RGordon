@@ -15,11 +15,11 @@ var assigned = true;
 */
 
 
-var sigma_cwnd1 = 0;
-var cwnd1 = 0;
-var emuDrop1 = 100000;
-var rtt1 = 1;
-var assigned1 = false;
+var sigma_cwnd1 = 5551;
+var cwnd1 = 15;
+var emuDrop1 = 99;
+var rtt1 = 73;
+var assigned1 = true;
 var trials1 = 10;
 var chancesLeft1 = 5;
 var url1 = "https://www.youtube.com";
@@ -52,7 +52,7 @@ app.post('/api/worker/job',function(req,res){
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
     },
-    {
+    /*{
       //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
       //url:"https://sg.yahoo.com/?p=us",
     url:url2,
@@ -64,7 +64,7 @@ app.post('/api/worker/job',function(req,res){
     trials:trials2.toString(),
     start_emudrop:emuDrop2.toString(),
     chances_left:chancesLeft2.toString()
-    }
+  }*/
 
    ]
   });
