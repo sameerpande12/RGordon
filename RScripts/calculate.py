@@ -47,8 +47,12 @@ else:
 print(targetURL, delayTime)
 
 try:
-    subprocess.call(["rm -f index*"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f indexPages/index*"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f Logs/log*"],shell=True,executable='/bin/bash')
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./Logs"],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./indexPages"],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./stats"],shell=True,executable='/bin/bash')
     #subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     #subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
@@ -59,7 +63,7 @@ except Exception as e:
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> log"+str(Trial_Number)], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> Logs/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
 
     except Exception as e:
         print(e)

@@ -241,14 +241,22 @@ int main(int argc, char** argv){
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
 
-		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPage";
+		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages/indexPage";
 		strcat(get,argv[5]);
 		strcat(get," -T 15  \"");
 		strcat(get, argv[1]);
-		strcat(get, "\"");
+		strcat(get, "\" ; echo $? > stats/status");
+		strcat(get,argv[5]);
 		printf("%s\n", get);
 		sec1 = time(NULL);
-		system(get);
+		 system(get);
+		/*char update[]="echo ";
+		char code[10];
+		itoa(status,code);
+		strcat(update,code);
+		strcat(update, " > status");
+		strcat(update,argv[5]);
+		system(update);*/
 		sec2 = time(NULL);
 		printf("=========DONE WITH WGET!: %ld\n", sec2-sec1);
 		// nfq_destroy_queue(qh);
