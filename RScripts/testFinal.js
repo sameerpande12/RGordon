@@ -7,7 +7,8 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://localhost:3000';
+//var domain = 'http://localhost:3000';
+var domain = '172.26.191.175:4000';//atishya pc
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
