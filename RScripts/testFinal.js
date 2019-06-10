@@ -85,7 +85,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
           //useloop = true;
           rnum++;
           if(rnum<=endRTT && values[1]!=0){
-            evaluate();
+            evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path, evaluate);
           }
         }
       );
@@ -138,6 +138,7 @@ var pingServer = function(){
           }
     }
     catch(err){
+      isFree = true;
       console.log(err);
     }
 }
