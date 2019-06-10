@@ -17,7 +17,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     console.log("Entering "+rnum);
     const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
     pyProg.stderr.on('data', (data) => {
-      //console.log(`stderr: ${data}`);
+      console.log(`stderr: ${data}`);
     });
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
@@ -44,14 +44,14 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
                         console.log(err);
                   }
         }
-        if(isError){
+        //if(isError){
             postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left-1).toString(),viewpoint:viewPoint } };
             path = '/api/worker/updateError';
-        }
-        else{
+        //}
+        /*else{
           postData = { json: {last_rtt_done:rnum.toString(),url:url,viewpoint:viewPoint} };
           path = '/api/worker/complete';
-        }
+        }*/
       }
       else{
         path = '/api/worker/update';
