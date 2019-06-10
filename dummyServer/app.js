@@ -14,7 +14,7 @@ var rtt = 1;
 var assigned = true;
 */
 
-
+/*
 var sigma_cwnd1 = 5551;
 var cwnd1 = 15;
 var emuDrop1 = 99;
@@ -23,7 +23,16 @@ var assigned1 = true;
 var trials1 = 10;
 var chancesLeft1 = 5;
 var url1 = "https://www.youtube.com";
+*/
 
+var sigma_cwnd1 = 0;
+var cwnd1 = 0;
+var emuDrop1 = 100000;
+var rtt1 = 0;
+var assigned1 = true;
+var trials1 = 10;
+var chancesLeft1 = 5;
+var url1 = "https://www.baidu.com/s?wd=%E5%A5%94%E9%A9%B0suv&rsf=62040005&rsp=8&f=1&oq=%E5%A5%94%E9%A9%B0%E5%85%A8%E7%90%83%E6%80%BB%E8%A3%81%E9%80%80%E4%BC%91&tn=SE_fengyunbangBD_x3kuz7ef&ie=utf-8&usm=2&rsv_pq=c61eee1c000041e4&rsv_t=d45dpRU%2B8rg%2FMIcsRj6i%2FXLrRh9XVv8UWZAOCO84rlxyGMUKMWEDMd1jt4TI6FjNG9gWbMk2YVdsqdl7QpRsVA&rqlang=cn&rs_src=0&rsv_pq=c61eee1c000041e4&rsv_t=d45dpRU%2B8rg%2FMIcsRj6i%2FXLrRh9XVv8UWZAOCO84rlxyGMUKMWEDMd1jt4TI6FjNG9gWbMk2YVdsqdl7QpRsVA";
 
 var sigma_cwnd2 = 0;
 var cwnd2 = 0;
