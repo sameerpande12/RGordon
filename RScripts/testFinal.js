@@ -7,7 +7,7 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://137.132.83.199:4000';
+var domain = 'http://localhost:3000';
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
@@ -45,7 +45,8 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
                   }
         }
         //if(isError){
-            postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left-1).toString(),viewpoint:viewPoint } };
+            chances_left = chances_left -1;
+            postData = { json: {last_error:"error",last_rtt_done:rnum.toString(),url:url,chances_left:(chances_left).toString(),viewpoint:viewPoint } };
             path = '/api/worker/updateError';
         //}
         /*else{
@@ -83,7 +84,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
           }
           //useloop = true;
           rnum++;
-          if(rnum<=endRTT){
+          if(rnum<=endRTT && values[1]!=0){
             evaluate();
           }
         }
