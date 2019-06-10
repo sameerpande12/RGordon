@@ -16,5 +16,5 @@ sudo apt-get install -y iputils-ping
 sudo apt-get install -y wget
 sudo apt-get install -y psmisc
 sudo apt install -y net-tools
-
+npm install
 
