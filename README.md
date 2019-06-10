@@ -17,5 +17,5 @@ Localised bottlenecks for server transport layer protocol analysis.
 
 ## Actual Runs
 1. Run the following command  
-```$ node RScripts/testFinal.js```  
+```$ node RScripts/worker.js```  
 
