@@ -29,7 +29,7 @@ var sigma_cwnd1 = 0;
 var cwnd1 = 0;
 var emuDrop1 = 100000;
 var rtt1 = 0;
-var assigned1 = true;
+var assigned1 = false;
 var trials1 = 3;
 var chancesLeft1 = 5;
 var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
@@ -37,9 +37,9 @@ var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_s
 var sigma_cwnd2 = 0;
 var cwnd2 = 0;
 var emuDrop2 = 100000;
-var rtt2 = 1;
+var rtt2 = 0;
 var assigned2 = false;
-var trials2 = 10;
+var trials2 = 3;
 var chancesLeft2 = 5;
 var url2 ="https://www.google.com";
 
@@ -61,7 +61,7 @@ app.post('/api/worker/job',function(req,res){
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
     },
-    /*{
+    {
       //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
       //url:"https://sg.yahoo.com/?p=us",
     url:url2,
@@ -69,11 +69,11 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd2.toString(),
     cwnd:cwnd2.toString(),
     startRTT:rtt2.toString(),
-    endRTT:(rtt2+3).toString(),
+    endRTT:(rtt2+1).toString(),
     trials:trials2.toString(),
     start_emudrop:emuDrop2.toString(),
     chances_left:chancesLeft2.toString()
-  }*/
+  }
 
    ]
   });
