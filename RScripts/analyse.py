@@ -17,7 +17,7 @@ cwnd = 0
 rtt = 0
 emuDrop = 100000
 
-for i in range(20):
+for i in range(numTrials):
     subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)],shell=True,executable='/bin/bash')
     infile = './RData/windows.csv'
     try:
