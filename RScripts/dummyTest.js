@@ -67,7 +67,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         cwnd = values[1];//update cwnd and sigma_cwnd
         sigma_cwnd = values[0];
 
-        postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emudrop:emuDrop.toString(),viewpoint:viewPoint } };
+        postData = { json: { cwnd: values[1].toString(), sigma_cwnd: values[0].toString(),last_rtt_done:values[2].toString(),url:url,emudrop:emuDrop.toString(),viewpoint:viewPoint,max_trials:trials } };
       }
 
       console.log(postData.json);
