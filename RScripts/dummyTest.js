@@ -24,7 +24,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
       console.log(`child process exited with code ${code}`);
-      var text = fs.readFileSync("./RData"+str(jobID)+"/windows.csv","utf-8");
+      var text = fs.readFileSync("./RData"+(jobID.toString())+"/windows.csv","utf-8");
 
       var tmp = ((text.split("\n"))[0]).split(' ');
       var values = [];
@@ -35,7 +35,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         for( iter = 0;iter<trials;iter++){
                   var content;
                   try{
-                            var fileSize = ((fs.readFileSync("./indexPages"+str(jobID)+"/size.txt","utf-8")).split("\n"))[0];
+                            var fileSize = ((fs.readFileSync("./indexPages"+(jobID.toString())+"/size.txt","utf-8")).split("\n"))[0];
                             fileSize = parseInt(statusCode);
                             if(fileSize != 0){
                               isError = false;
@@ -125,7 +125,7 @@ var runJob= function(index,data){
     var chances_left = parseInt(data[index].chances_left);
     var trials = parseInt(data[index].trials);
     var cwnd = parseInt(data[index].cwnd);
-    var sigma_cwnd = parseInt(data[index].sigma_cwnd);leng
+    var sigma_cwnd = parseInt(data[index].sigma_cwnd);
     var url = data[index].url;
     var rnum = startRTT;
     console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);

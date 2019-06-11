@@ -193,7 +193,7 @@ int main(int argc, char** argv){
   char buf[4096] __attribute__((aligned));
   indx=atoi(argv[8]);
   emuDrop=atoi(argv[9]);
-	jobID=(argv[10]);
+	char * jobID=(argv[10]);
 	cap =atoi(argv[6]);
   h = nfq_open();
 	if (!h) {
@@ -248,7 +248,7 @@ int main(int argc, char** argv){
 		strcat(get,argv[5]);
 		strcat(get," -T 10  \"");
 		strcat(get, argv[1]);
-		strcat(get, "\" ; echo $? > stats")
+		strcat(get, "\" ; echo $? > stats");
 		strcat(get,jobID);
 		strcat(get,"/status");
 		strcat(get,argv[5]);
