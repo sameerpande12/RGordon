@@ -193,6 +193,7 @@ int main(int argc, char** argv){
   char buf[4096] __attribute__((aligned));
   indx=atoi(argv[8]);
   emuDrop=atoi(argv[9]);
+	jobID=(argv[10]);
 	cap =atoi(argv[6]);
   h = nfq_open();
 	if (!h) {
@@ -241,11 +242,15 @@ int main(int argc, char** argv){
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
 
-		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages/indexPage";
+		char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages";
+    strcat(get,jobID);
+		strcat(get,"/indexPage");
 		strcat(get,argv[5]);
 		strcat(get," -T 10  \"");
 		strcat(get, argv[1]);
-		strcat(get, "\" ; echo $? > stats/status");
+		strcat(get, "\" ; echo $? > stats")
+		strcat(get,jobID);
+		strcat(get,"/status");
 		strcat(get,argv[5]);
 		printf("%s\n", get);
 		sec1 = time(NULL);
@@ -330,7 +335,9 @@ int main(int argc, char** argv){
 			strcat(cmd," ");
 			itoa(indx, in);
 			strcat(cmd, in);
-			strcat(cmd, " >> ./RData/windows");
+			strcat(cmd, " >> ./RData");
+			strcat(cmd,jobID);
+			strcat(cmd,"/windows");
 			strcat(cmd, argv[5]);
 			strcat(cmd, ".csv");
 			system(cmd);

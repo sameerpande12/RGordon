@@ -18,6 +18,8 @@ sigma_cwnd= (sys.argv[3])
 cwnd = (sys.argv[4])
 rtt = (sys.argv[5])
 emuDrop = (sys.argv[6])
+jobID = sys.argv[7]
+
 
 targetURL = sys.argv[1]
 response = None
@@ -47,24 +49,24 @@ else:
 print(targetURL, delayTime)
 
 try:
-    subprocess.call(["rm -f indexPages/index*"],shell=True,executable='/bin/bash')
-    subprocess.call(["rm -f indexPages/size.txt"],shell=True,executable='/bin/bash')
-    subprocess.call(["rm -f Logs/log*"],shell=True,executable='/bin/bash')
-    subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
-    subprocess.call(["mkdir -p ./Logs"],shell=True,executable='/bin/bash')
-    subprocess.call(["mkdir -p ./indexPages"],shell=True,executable='/bin/bash')
-    subprocess.call(["mkdir -p ./stats"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f indexPages"+jobID+"/index*"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f indexPages"+jobID+"/size.txt"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f Logs"+jobID+"/log*"],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./RData"+jobID],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./Logs"+jobID],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./indexPages"+jobID],shell=True,executable='/bin/bash')
+    subprocess.call(["mkdir -p ./stats"+jobID],shell=True,executable='/bin/bash')
     #subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
     #subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
     #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
-    subprocess.call(["sudo rm ./RData/windows*"],shell=True,executable='/bin/bash')
+    subprocess.call(["sudo rm ./RData"+jobID+"/windows*"],shell=True,executable='/bin/bash')
 except Exception as e:
     print(e)
 
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> Logs/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> Logs"+jobID+"/log"+str(Trial_Number)+" "+jobID], shell=True, executable='/bin/bash')
 
     except Exception as e:
         print(e)
@@ -73,31 +75,31 @@ def runTrial(Trial_Number):
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
+#r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
+#p=[x.wait() for x in r]
 r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
-p=[x.wait() for x in r]
-#r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
 pool.close
-subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
+##subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")- in the modified code you cannot call clean.sh from here
 
 ###to Store the size of maximum page that has been accessed from wget
-subprocess.call(["./updateSize.sh "+str(numTrials)],shell=True,executable='/bin/bash')
-file="./indexPages/size.txt"
-maxSize=0
-try:
-    read=open(file,'r')
-    line=[int(x) for x in read.readline().split(' ')]
-    maxSize=max(line)
-    read.close()
-except Exception as e:
-    print(e)
+#subprocess.call(["./updateSize.sh "+str(numTrials)],shell=True,executable='/bin/bash')
+#file="./indexPages/size.txt"
+#maxSize=0
+#try:
+    #read=open(file,'r')
+    #line=[int(x) for x in read.readline().split(' ')]
+    #maxSize=max(line)
+    #read.close()
+#except Exception as e:
+    #print(e)
 
-subprocess.call(["echo "+str(maxSize)+" > ./indexPages/size.txt"],shell=True,executable='/bin/bash')
+#subprocess.call(["echo "+str(maxSize)+" > ./indexPages/size.txt"],shell=True,executable='/bin/bash')
 
 ####calculating the max from here on"
 windows = list()
 counter=0
 for i in range(numTrials):
-    infile="./RData/windows"+str(i)+".csv"
+    infile="./RData"+jobID+"/windows"+str(i)+".csv"
     try:
         read=open(infile,'r')
         line=[int(x) for x in read.readline().split(' ')]
@@ -111,8 +113,8 @@ windows.sort(key=lambda tup: tup[0], reverse=True)
 maxvalues=[]
 try:
     maxValues = windows[0][1]
-    subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
+    subprocess.call(["echo \""+str(maxValues[0])+" "+str(maxValues[1])+" "+str(maxValues[2]) +"\" > ./RData"+jobID+"/windows.csv"],shell=True,executable='/bin/bash')
 except Exception as e:
-    subprocess.call(["echo \""+str(0)+" "+str(0)+" "+rtt +"\" > ./RData/windows.csv"],shell=True,executable='/bin/bash')
+    subprocess.call(["echo \""+str(0)+" "+str(0)+" "+rtt +"\" > ./RData"+jobID+"/windows.csv"],shell=True,executable='/bin/bash')
 
 #sys.stdout.flush()

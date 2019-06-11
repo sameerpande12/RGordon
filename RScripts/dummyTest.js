@@ -13,18 +13,18 @@ var domain = 'http://localhost:3000';
 var start = Date.now();
 //fs.writeFile("time.txt","Starting at "+start,(err)=>{});
 
-const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index,data){
+const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,jobID/*,runJob,index,data*/){//It will complete startRTT to endRTT
    console.log("entering evaluate "+(rnum).toString+ " "+(endRTT)+ " "+(rnum<=endRTT));
   if(rnum<=endRTT) {
     console.log("Entering "+rnum);
-    const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop]);
+    const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop,jobID]);
     pyProg.stderr.on('data', (data) => {
       //console.log(`stderr: ${data}`);
     });
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
       console.log(`child process exited with code ${code}`);
-      var text = fs.readFileSync("./RData/windows.csv","utf-8");
+      var text = fs.readFileSync("./RData"+str(jobID)+"/windows.csv","utf-8");
 
       var tmp = ((text.split("\n"))[0]).split(' ');
       var values = [];
@@ -35,7 +35,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         for( iter = 0;iter<trials;iter++){
                   var content;
                   try{
-                            var fileSize = ((fs.readFileSync("./indexPages/size.txt","utf-8")).split("\n"))[0];
+                            var fileSize = ((fs.readFileSync("./indexPages"+str(jobID)+"/size.txt","utf-8")).split("\n"))[0];
                             fileSize = parseInt(statusCode);
                             if(fileSize != 0){
                               isError = false;
@@ -82,15 +82,21 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
           }
 
           if(values[1]==0 || rnum==endRTT){
-            //console.log("Making isFree true 1");
-            runJob(index,data);
+          //  runJob(index,data);
+            jobsCompleted=jobsCompleted+1;
+            if(jobsCompleted == numJobs){
+              const clean = spawn('bash',['clean.sh']);
+              isFree=true;
+
+              console.log("Making isFree true because jobs are completed");
+            }
           }
 
 
           //useloop = true;
           rnum++;
           if(rnum<=endRTT && values[1]!=0){
-            evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index,data);
+            evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,jobID/*,runJob,index,data*/);
           }
         }
       );
@@ -103,6 +109,8 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
   }
 };
 
+var numJobs=0;
+var jobsCompleted=0;
 var runJob= function(index,data){
 
   if(index>=data.length){
@@ -117,11 +125,11 @@ var runJob= function(index,data){
     var chances_left = parseInt(data[index].chances_left);
     var trials = parseInt(data[index].trials);
     var cwnd = parseInt(data[index].cwnd);
-    var sigma_cwnd = parseInt(data[index].sigma_cwnd);
+    var sigma_cwnd = parseInt(data[index].sigma_cwnd);leng
     var url = data[index].url;
     var rnum = startRTT;
     console.log("python3 calculate.py"+url + " "+ trials+ " "+sigma_cwnd + " "+cwnd + " "+rnum +" "+ emuDrop);
-    evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,runJob,index+1,data);
+    evaluate(startRTT, endRTT, emuDrop, chances_left, trials, cwnd, sigma_cwnd, url, rnum, path,index/*,runJob,index+1,data*/);
   }
 }
 
@@ -137,7 +145,12 @@ var pingServer = function(){
                         var body=resp.body;
                         console.log(body);
                         if(body.message == "JOB"){
-                          runJob(0,body.data);
+                          //runJob(0,body.data);
+                          numJobs=body.data.length;
+                          jobsCompleted=0;
+                          for(iter=0;iter<body.data.length;iter++){
+                            runJob(iter,body.data);
+                          }
                         }else{
                           console.log("no Job---no Job");
                           console.log("Making isFree true 2");
