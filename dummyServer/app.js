@@ -30,7 +30,7 @@ var cwnd1 = 0;
 var emuDrop1 = 100000;
 var rtt1 = 0;
 var assigned1 = true;
-var trials1 = 10;
+var trials1 = 3;
 var chancesLeft1 = 5;
 var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
 
@@ -56,7 +56,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd1.toString(),
     cwnd:cwnd1.toString(),
     startRTT:rtt1.toString(),
-    endRTT:(rtt1+3).toString(),
+    endRTT:(rtt1+1).toString(),
     trials:trials1.toString(),
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()

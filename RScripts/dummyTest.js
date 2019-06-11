@@ -19,7 +19,7 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
     console.log("Entering "+rnum);
     const pyProg= spawn('python3',["calculate.py",url,trials,sigma_cwnd,cwnd,rnum,emuDrop,jobID]);
     pyProg.stderr.on('data', (data) => {
-      //console.log(`stderr: ${data}`);
+      console.log(`stderr: ${data}`);
     });
     pyProg.on('close', (code) => {
       console.log("calculate.py done for "+rnum);
