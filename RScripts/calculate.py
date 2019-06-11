@@ -48,6 +48,7 @@ print(targetURL, delayTime)
 
 try:
     subprocess.call(["rm -f indexPages/index*"],shell=True,executable='/bin/bash')
+    subprocess.call(["rm -f indexPages/size.txt"],shell=True,executable='/bin/bash')
     subprocess.call(["rm -f Logs/log*"],shell=True,executable='/bin/bash')
     subprocess.call(["mkdir -p ./RData"],shell=True,executable='/bin/bash')
     subprocess.call(["mkdir -p ./Logs"],shell=True,executable='/bin/bash')
@@ -72,12 +73,25 @@ def runTrial(Trial_Number):
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
 pool = mp.Pool(mp.cpu_count())
-r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
+r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
 p=[x.wait() for x in r]
 #r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
 pool.close
 subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")
 
+###to Store the size of maximum page that has been accessed from wget
+subprocess.call(["./updateSize.sh "+str(numTrials)],shell=True,executable='/bin/bash')
+file="./indexPages/size.txt"
+maxSize=0
+try:
+    read=open(file,'r')
+    line=[int(x) for x in read.readline().split(' ')]
+    maxSize=max(line)
+    read.close()
+except Exception as e:
+    print(e)
+
+subprocess.call(["echo "+str(maxSize)+" > ./indexPages/size.txt"],shell=True,executable='/bin/bash')
 
 ####calculating the max from here on"
 windows = list()

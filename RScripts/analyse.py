@@ -37,6 +37,12 @@ for i in range(numTrials):
             read.close()
             file.write("%d\n" % line[1])
         file.close()
+
+        for j in range(numTrials):
+            subprocess.call(["ls -s ./indexPages/indexPage"+str(j)+" >> ./Analysis/"+folder+"/size.txt"],shell=True,executable='/bin/bash')
+
+
+
     except Exception as e:
         print(e)
 

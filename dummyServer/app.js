@@ -32,7 +32,7 @@ var rtt1 = 0;
 var assigned1 = true;
 var trials1 = 10;
 var chancesLeft1 = 5;
-var url1 = "https://www.baidu.com/s?wd=%E5%A5%94%E9%A9%B0suv&rsf=62040005&rsp=8&f=1&oq=%E5%A5%94%E9%A9%B0%E5%85%A8%E7%90%83%E6%80%BB%E8%A3%81%E9%80%80%E4%BC%91&tn=SE_fengyunbangBD_x3kuz7ef&ie=utf-8&usm=2&rsv_pq=c61eee1c000041e4&rsv_t=d45dpRU%2B8rg%2FMIcsRj6i%2FXLrRh9XVv8UWZAOCO84rlxyGMUKMWEDMd1jt4TI6FjNG9gWbMk2YVdsqdl7QpRsVA&rqlang=cn&rs_src=0&rsv_pq=c61eee1c000041e4&rsv_t=d45dpRU%2B8rg%2FMIcsRj6i%2FXLrRh9XVv8UWZAOCO84rlxyGMUKMWEDMd1jt4TI6FjNG9gWbMk2YVdsqdl7QpRsVA";
+var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
 
 var sigma_cwnd2 = 0;
 var cwnd2 = 0;
@@ -96,7 +96,7 @@ app.post('/api/worker/update',function(req,res){
           sigma_cwnd1 = req.body.sigma_cwnd;
           cwnd1 = req.body.cwnd;
           rtt1 = rtt1+1;
-          chancesLeft1 = 5;
+          //chancesLeft1 = 5;
     }
     else {
       if(req.body.cwnd > 80 && !assigned1){
@@ -106,7 +106,7 @@ app.post('/api/worker/update',function(req,res){
         sigma_cwnd2 = req.body.sigma_cwnd;
         cwnd2 = req.body.cwnd;
         rtt2 = rtt2+1;
-        chancesLeft2 = 5;
+        //chancesLeft2 = 5;
 
     }
     res.status(200);

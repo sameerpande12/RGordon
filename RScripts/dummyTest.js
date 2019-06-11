@@ -35,9 +35,9 @@ const evaluate = function(startRTT, endRTT, emuDrop, chances_left, trials, cwnd,
         for( iter = 0;iter<trials;iter++){
                   var content;
                   try{
-                            var statusCode = ((fs.readFileSync("./stats/status"+iter,"utf-8")).split("\n"))[0];
-                            statusCode = parseInt(statusCode);
-                            if(statusCode == 0){
+                            var fileSize = ((fs.readFileSync("./indexPages/size.txt","utf-8")).split("\n"))[0];
+                            fileSize = parseInt(statusCode);
+                            if(fileSize != 0){
                               isError = false;
                               break;
                             }
