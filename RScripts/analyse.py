@@ -17,7 +17,7 @@ cwnd = 0
 rtt = 0
 emuDrop = 100000
 
-for i in range(20):
+for i in range(0):
     subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)],shell=True,executable='/bin/bash')
     infile = './RData/windows.csv'
     try:
@@ -39,3 +39,18 @@ for i in range(20):
         file.close()
     except Exception as e:
         print(e)
+
+
+path="./Analysis/"+folder+"/"
+file = open(path+"analysis.txt","w+")
+for i in range(numTrials):
+    contents=[]
+    with open(path+str(i)) as f:
+        for line in f:
+            contents.append( int((line.strip().split(' '))[0]))
+    count = 0
+    for j in contents:
+        if(j>0):
+            count=count+1
+    file.write(str(i)+"-> "+str(count)+" "+str(len(contents))+"\n")
+file.close()
