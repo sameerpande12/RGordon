@@ -77,7 +77,13 @@ def runTrial(Trial_Number):
 pool = mp.Pool(mp.cpu_count())
 #r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
 #p=[x.wait() for x in r]
-r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
+#r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
+#r=[]
+#for i in range(numTrials):
+    #time.sleep(1);
+    #r.append(pool.apply_async(runTrial,args=[i]))
+for i in range(numTrials):
+    runTrial(i)
 pool.close
 ##subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")- in the modified code you cannot call clean.sh from here
 
