@@ -8,7 +8,7 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://localhost:4000';
+var domain = 'http://137.132.83.199:4000';;
 var start = Date.now();
 
 var pingServer = function(){
