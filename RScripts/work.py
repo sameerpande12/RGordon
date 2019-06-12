@@ -62,7 +62,7 @@ def runJob(i,data):
 if data['message']=='JOB':
 
 
-    pool = mp.Pool(mp.cpu_count())
+    pool = mp.Pool(max(mp.cpu_count(), 5))
     print(len(data['data']))
     r=[pool.apply_async(runJob,args=[i,data['data']]) for i in range(len(data['data']))]
     p=[x.wait() for x in r]
