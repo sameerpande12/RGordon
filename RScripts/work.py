@@ -56,7 +56,7 @@ def runJob(i,data):
             sigma_cwnd=values[0]
             postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
         headers={'Content-type':'application/json','Accept':'text/plain'}
-        requests.post(server+path,data=json.dumps(postData))
+        requests.post(server+path,data=json.dumps(postData),headers=headers)
         rnum=rnum+1
 
 if data['message']=='JOB':
