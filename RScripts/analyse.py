@@ -6,11 +6,12 @@ import re
 url = sys.argv[1]
 folder = sys.argv[2]
 numTrials = int(sys.argv[3])
+jobID = sys.argv[4]
 threshold = 80
 
 emuUpdated = False
 
-subprocess.call(["mkdir -p ./Analysis/"+folder],shell=True,executable='/bin/bash')
+subprocess.call(["mkdir -p ./Analysis/"+folder+"("jobID+")"],shell=True,executable='/bin/bash')
 
 sigma_cwnd = 0
 cwnd = 0
@@ -18,8 +19,8 @@ rtt = 0
 emuDrop = 100000
 
 for i in range(numTrials):
-    subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)],shell=True,executable='/bin/bash')
-    infile = './RData/windows.csv'
+    subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)+" "+jobID],shell=True,executable='/bin/bash')
+    infile = './RData'+jobID+'/windows.csv'
     try:
         read = open(infile,'r')
         line =[int(x) for x in read.readline().split(' ')]
@@ -30,16 +31,16 @@ for i in range(numTrials):
         cwnd = int(line[1])
         rtt = int(line[2])+1
         read.close()
-        file = open("./Analysis/"+folder+"/"+str(rtt-1),"w+")
+        file = open("./Analysis/"+folder+"("jobID+")"+"/"+str(rtt-1),"w+")
         for j in range(numTrials):
-            read = open("./RData/windows"+str(j)+".csv","r")
+            read = open("./RData"+jobID+"/windows"+str(j)+".csv","r")
             line =[int(x) for x in read.readline().split(' ')]
             read.close()
             file.write("%d\n" % line[1])
         file.close()
 
         for j in range(numTrials):
-            subprocess.call(["ls -s ./indexPages/indexPage"+str(j)+" >> ./Analysis/"+folder+"/size.txt"],shell=True,executable='/bin/bash')
+            subprocess.call(["ls -s ./indexPages"+jobID+"/indexPage"+str(j)+" >> ./Analysis/"+folder+"("+jobID+")"+"/size.txt"],shell=True,executable='/bin/bash')
 
 
 
@@ -47,7 +48,7 @@ for i in range(numTrials):
         print(e)
 
 
-path="./Analysis/"+folder+"/"
+path="./Analysis/"+folder+"("+jobID+")/"
 file = open(path+"analysis.txt","w+")
 for i in range(numTrials):
     contents=[]

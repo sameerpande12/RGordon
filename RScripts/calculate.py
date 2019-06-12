@@ -82,18 +82,18 @@ pool.close
 ##subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")- in the modified code you cannot call clean.sh from here
 
 ###to Store the size of maximum page that has been accessed from wget
-#subprocess.call(["./updateSize.sh "+str(numTrials)],shell=True,executable='/bin/bash')
-#file="./indexPages/size.txt"
-#maxSize=0
-#try:
-    #read=open(file,'r')
-    #line=[int(x) for x in read.readline().split(' ')]
-    #maxSize=max(line)
-    #read.close()
-#except Exception as e:
-    #print(e)
+subprocess.call(["./updateSize.sh "+str(numTrials)+" "+jobID],shell=True,executable='/bin/bash')
+file="./indexPages"+jobID+"/size.txt"
+maxSize=0
+try:
+    read=open(file,'r')
+    line=[int(x) for x in read.readline().split(' ')]
+    maxSize=max(line)
+    read.close()
+except Exception as e:
+    print(e)
 
-#subprocess.call(["echo "+str(maxSize)+" > ./indexPages/size.txt"],shell=True,executable='/bin/bash')
+subprocess.call(["echo "+str(maxSize)+" > ./indexPages"+jobID+"/size.txt"],shell=True,executable='/bin/bash')
 
 ####calculating the max from here on"
 windows = list()
