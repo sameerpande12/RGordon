@@ -214,7 +214,7 @@ int main(int argc, char** argv){
 	}
 
 	//printf("binding this socket to queue '0'\n");
-	qh = nfq_create_queue(h,  atoi(argv[5]), &cb, NULL);
+	qh = nfq_create_queue(h,  atoi(argv[10]), &cb, NULL);
 	if (!qh) {
 		fprintf(stderr, "error during nfq_create_queue()\n");
 		exit(1);

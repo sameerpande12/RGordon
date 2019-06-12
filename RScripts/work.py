@@ -64,9 +64,9 @@ if data['message']=='JOB':
 
     pool = mp.Pool(mp.cpu_count())
     print(len(data['data']))
-    #r=[pool.apply_async(runJob,args=[i,data['data']]) for i in range(len(data['data']))]
-    #p=[x.wait() for x in r]
-    #pool.close()
-    for i in range(len(data['data'])):
-        runJob(i,data['data'])
+    r=[pool.apply_async(runJob,args=[i,data['data']]) for i in range(len(data['data']))]
+    p=[x.wait() for x in r]
+    pool.close()
+    # for i in range(len(data['data'])):
+    #     runJob(i,data['data'])
     subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')

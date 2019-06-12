@@ -25,26 +25,26 @@ targetURL = sys.argv[1]
 response = None
 delayTime = 50
 
-try:
-    response = subprocess.check_output(
-        ['ping', '-c', '1', url],
-        stderr=subprocess.STDOUT,  # get all output
-        universal_newlines=True  # return string not bytes
-    )
-except subprocess.CalledProcessError:
-    response = None
+# try:
+#     response = subprocess.check_output(
+#         ['ping', '-c', '1', url],
+#         stderr=subprocess.STDOUT,  # get all output
+#         universal_newlines=True  # return string not bytes
+#     )
+# except subprocess.CalledProcessError:
+#     response = None
 
-if response == None:
-    pingTime = -1
-else:
-    pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
+# if response == None:
+#     pingTime = -1
+# else:
+#     pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
 
-if int(pingTime/2) >= 50:
-    delayTime = 1
-elif pingTime == -1:
-    delayTime = 50
-else:
-    delayTime = 50 - int(pingTime/2)
+# if int(pingTime/2) >= 50:
+#     delayTime = 1
+# elif pingTime == -1:
+#     delayTime = 50
+# else:
+#     delayTime = 50 - int(pingTime/2)
 
 print(targetURL, delayTime)
 
@@ -67,14 +67,13 @@ except Exception as e:
 def runTrial(Trial_Number):
     try:
         subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> Logs"+jobID+"/log"+str(Trial_Number)+" "+jobID], shell=True, executable='/bin/bash')
-
     except Exception as e:
         print(e)
 
 
         #subprocess.call(["cp ../Data/windows.csv ../Windows/"+url+".csv"], shell=True, executable="/bin/bash")
 
-pool = mp.Pool(mp.cpu_count())
+# pool = mp.Pool(mp.cpu_count())
 #r=[pool.apply_async(runTrial,args=[i]) for i in range(numTrials)]
 #p=[x.wait() for x in r]
 #r=[pool.apply(runTrial,args=[i]) for i in range(numTrials)]
@@ -84,7 +83,7 @@ pool = mp.Pool(mp.cpu_count())
     #r.append(pool.apply_async(runTrial,args=[i]))
 for i in range(numTrials):
     runTrial(i)
-pool.close
+# pool.close
 ##subprocess.call(["./clean.sh"], shell=True, executable="/bin/bash")- in the modified code you cannot call clean.sh from here
 
 ###to Store the size of maximum page that has been accessed from wget

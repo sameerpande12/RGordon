@@ -8,7 +8,7 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-var domain = 'http://localhost:3000';
+var domain = 'http://localhost:4000';
 var start = Date.now();
 
 var pingServer = function(){
@@ -30,6 +30,10 @@ var pingServer = function(){
                             }
                           });
                           const work = spawn('python3',["work.py","jobs.json",domain]);
+                          work.stderr.setEncoding('utf8');
+                          work.stderr.on("data",recvData=>{
+                            console.log("stderr: ", recvData);
+                          });
                           work.on("data",recvData=>{
                             console.log(recvData);
                           });
