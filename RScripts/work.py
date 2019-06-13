@@ -59,8 +59,7 @@ def runJob(i,data):
 
 
     for j in range(endRTT-startRTT+1):
-        if(chances_left<=0):
-            break
+
         subprocess.call(["python3 calculate.py \""+url + "\" "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)+" "+str(delayTime)],shell=True,executable='/bin/bash')
 
         infile="./RData"+str(jobID)+"/windows"+".csv"
@@ -69,7 +68,9 @@ def runJob(i,data):
         values=line
         postData=''
         path=''
+        toBreak=False
         if (values[1] == 0):
+            toBreak=True
             chances_left=chances_left-1
             postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
             path='/api/worker/updateError'
@@ -84,7 +85,10 @@ def runJob(i,data):
             postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
         headers={'Content-type':'application/json','Accept':'text/plain'}
         requests.post(server+path,data=json.dumps(postData),headers=headers)
+        if(toBreak):
+            break
         rnum=rnum+1
+
 
 if data['message']=='JOB':
 
