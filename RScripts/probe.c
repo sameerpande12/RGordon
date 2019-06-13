@@ -246,7 +246,7 @@ int main(int argc, char** argv){
     strcat(get,jobID);
 		strcat(get,"/indexPage");
 		strcat(get,argv[5]);
-		strcat(get," -T 5  \"");
+		strcat(get," -T 10  \"");
 		strcat(get, argv[1]);
 		strcat(get, "\" ; echo $? > stats");
 		strcat(get,jobID);
@@ -318,7 +318,7 @@ int main(int argc, char** argv){
 		if(PRINTBUFF && atoi(argv[5])==1){
 			printf("-->%d\n", indx);
 			for(int i=0; i<dropWindow; i++){
-				printf("\n%f %d", (indx*1.0)+(i*1.0/dropWindow), buff[i]);
+				printf("\n%f %d", (indx*1.0)+(i*1.0Account number:133730206276/dropWindow), buff[i]);
 			}
 			printf("\n\n");
 		}
