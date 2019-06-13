@@ -2,9 +2,9 @@ import requests
 import json
 import subprocess
 import time
-domain = 'http://137.132.83.199:4000';;
-# domain = 'http://localhost:3000';
-# domain='http://172.26.191.175:4000';
+domain = 'http://137.132.83.199:4000'
+# domain = 'http://localhost:3000'
+# domain='http://172.26.191.175:4000'
 
 path="/api/worker/job"
 isFree=True;
