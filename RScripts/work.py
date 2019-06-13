@@ -13,28 +13,53 @@ data = json.load(json_file)
 
 def runJob(i,data):
     startRTT=int(data[i]['startRTT'])
-    print("startRTT %d" %(startRTT))
+    # print("startRTT %d" %(startRTT))
     endRTT=int((data[i]['endRTT']))
-    print("endRTT %d" %(endRTT))
+    # print("endRTT %d" %(endRTT))
     emuDrop = int((data[i]['start_emudrop']))
-    print("emu %d" %(emuDrop))
+    # print("emu %d" %(emuDrop))
     chances_left=int((data[i]['chances_left']))
-    print("chances %d" %(chances_left))
+    # print("chances %d" %(chances_left))
     trials=int((data[i]['trials']))
-    print("trials %d" %(trials))
+    # print("trials %d" %(trials))
     cwnd=int((data[i]['cwnd']))
-    print("cwnd %d" %(cwnd))
+    # print("cwnd %d" %(cwnd))
     sigma_cwnd=int((data[i]['sigma_cwnd']))
-    print("scwnd %d" %(sigma_cwnd))
+    # print("scwnd %d" %(sigma_cwnd))
     url=(data[i]['url'])
-    print("url "+ url)
+    # print("url "+ url)
     viewPoint=data[i]['viewpoint']
     rnum=startRTT
     jobID=i
     rnum=startRTT
 
+    targetURL=url
+    response=None
+    delayTime=50
+    try:
+        response = subprocess.check_output(
+            ['ping', '-c', '1', url],
+            stderr=subprocess.STDOUT,  # get all output
+            universal_newlines=True  # return string not bytes
+        )
+    except subprocess.CalledProcessError:
+        response = None
+
+    if response == None:
+        pingTime = -1
+    else:
+        pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
+
+    if int(pingTime/2) >= 50:
+        delayTime = 1
+    elif pingTime == -1:
+        delayTime = 50
+    else:
+        delayTime = 50 - int(pingTime/2)
+
+
     for j in range(endRTT-startRTT+1):
-        subprocess.call(["python3 calculate.py \""+url + "\" "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)],shell=True,executable='/bin/bash')
+        subprocess.call(["python3 calculate.py \""+url + "\" "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)+" "+str(delayTime)],shell=True,executable='/bin/bash')
 
         infile="./RData"+str(jobID)+"/windows"+".csv"
         read=open(infile,'r')

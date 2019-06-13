@@ -19,11 +19,11 @@ cwnd = (sys.argv[4])
 rtt = (sys.argv[5])
 emuDrop = (sys.argv[6])
 jobID = sys.argv[7]
+delayTime = int(sys.argv[8]);
 
 
 targetURL = sys.argv[1]
 response = None
-delayTime = 50
 
 # try:
 #     response = subprocess.check_output(
