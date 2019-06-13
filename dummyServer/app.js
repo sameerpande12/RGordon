@@ -56,7 +56,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd1.toString(),
     cwnd:cwnd1.toString(),
     startRTT:rtt1.toString(),
-    endRTT:(rtt1+50).toString(),
+    endRTT:(rtt1).toString(),
     trials:trials1.toString(),
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
@@ -69,7 +69,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd2.toString(),
     cwnd:cwnd2.toString(),
     startRTT:rtt2.toString(),
-    endRTT:(rtt2+50).toString(),
+    endRTT:(rtt2).toString(),
     trials:trials2.toString(),
     start_emudrop:emuDrop2.toString(),
     chances_left:chancesLeft2.toString()
