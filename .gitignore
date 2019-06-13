@@ -2,8 +2,8 @@ RScripts/jobs.json
 RData*/
 status*
 logs
-Logs
-stats
+Logs*/
+stats*/
 RScripts/prober
 *.log
 log*
