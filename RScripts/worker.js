@@ -8,9 +8,9 @@ var isFree = true;
 var defaultEmu = 100000;
 var threshold = 80;
 const viewPoint = "Singapore";
-// var domain = 'http://137.132.83.199:4000';;
+var domain = 'http://137.132.83.199:4000';;//hydra
 // var domain = 'http://localhost:3000';
-var domain='http://172.26.191.175:4000';
+// var domain='http://172.26.191.175:4000';//atishya-pc
 var start = Date.now();
 
 var pingServer = function(){
