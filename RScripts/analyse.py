@@ -3,35 +3,30 @@ import os
 import sys
 import re
 
-url = sys.argv[1]
-folder = sys.argv[2]
-numTrials = int(sys.argv[3])
-jobID = sys.argv[4]
+
+folder = sys.argv[1]
+numTrials = int(sys.argv[2])
+jobID = sys.argv[3]
 threshold = 80
 
-emuUpdated = False
+
 
 subprocess.call(["mkdir -p ./Analysis/"+folder+"("jobID+")"],shell=True,executable='/bin/bash')
 
-sigma_cwnd = 0
-cwnd = 0
-rtt = 0
-emuDrop = 100000
-
 for i in range(numTrials):
-    subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)+" "+jobID],shell=True,executable='/bin/bash')
+    #subprocess.call(["python3 calculate.py "+url+" "+str(numTrials)+" "+str(sigma_cwnd)+" "+str(cwnd)+" "+str(rtt)+" "+str(emuDrop)+" "+jobID],shell=True,executable='/bin/bash')
     infile = './RData'+jobID+'/windows.csv'
     try:
-        read = open(infile,'r')
-        line =[int(x) for x in read.readline().split(' ')]
-        if(line[1]>80 and (not emuUpdated)):
-            emuDrop = sigma_cwnd
-            emuUpdated = True
-        sigma_cwnd = int(line[0])
-        cwnd = int(line[1])
-        rtt = int(line[2])+1
+         read = open(infile,'r')
+         line =[int(x) for x in read.readline().split(' ')]
+        # if(line[1]>80 and (not emuUpdated)):
+        #     emuDrop = sigma_cwnd
+        #     emuUpdated = True
+        # sigma_cwnd = int(line[0])
+        #cwnd = int(line[1])
+        rtt = int(line[2])
         read.close()
-        file = open("./Analysis/"+folder+"("jobID+")"+"/"+str(rtt-1),"w+")
+        file = open("./Analysis/"+folder+"("jobID+")"+"/"+str(rtt),"w+")
         for j in range(numTrials):
             read = open("./RData"+jobID+"/windows"+str(j)+".csv","r")
             line =[int(x) for x in read.readline().split(' ')]
@@ -40,7 +35,7 @@ for i in range(numTrials):
         file.close()
 
         for j in range(numTrials):
-            subprocess.call(["ls -s ./indexPages"+jobID+"/indexPage"+str(j)+" >> ./Analysis/"+folder+"("+jobID+")"+"/size.txt"],shell=True,executable='/bin/bash')
+            subprocess.call(["cp ./indexPages"+jobID+"/indexPage"+str(j)+"/size.txt >> ./Analysis/"+folder+"("+jobID+")"+"/size.txt"],shell=True,executable='/bin/bash')
 
 
 

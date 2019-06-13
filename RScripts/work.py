@@ -59,6 +59,8 @@ def runJob(i,data):
 
 
     for j in range(endRTT-startRTT+1):
+        if(chances_left<=0):
+            break
         subprocess.call(["python3 calculate.py \""+url + "\" "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)+" "+str(delayTime)],shell=True,executable='/bin/bash')
 
         infile="./RData"+str(jobID)+"/windows"+".csv"
