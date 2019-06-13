@@ -34,7 +34,7 @@ def runJob(i,data):
     rnum=startRTT
 
     for j in range(endRTT-startRTT+1):
-        subprocess.call(["python3 calculate.py "+url + " "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)],shell=True,executable='/bin/bash')
+        subprocess.call(["python3 calculate.py \""+url + "\" "+ str(trials)+ " "+str(sigma_cwnd )+ " "+str(cwnd )+ " "+str(rnum) +" "+ str(emuDrop)+" "+str(jobID)],shell=True,executable='/bin/bash')
 
         infile="./RData"+str(jobID)+"/windows"+".csv"
         read=open(infile,'r')
