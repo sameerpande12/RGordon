@@ -19,4 +19,7 @@ def pingServer():
 
 while(True):
     time.sleep(2)
-    pingServer()
+    try:
+        pingServer()
+    except Exception as e:
+        print(e)
