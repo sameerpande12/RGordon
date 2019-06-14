@@ -1,7 +1,9 @@
 RScripts/jobs.json
 RData*/
 status*
+.fuse*
 logs
+wget*
 Logs*/
 stats*/
 RScripts/prober
