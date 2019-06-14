@@ -184,6 +184,15 @@ static int cb(struct nfq_q_handle *qh, struct nfgenmsg *nfmsg,
 
 
 
+
+
+
+
+
+
+
+
+
 int main(int argc, char** argv){
 
   struct nfq_handle *h;
@@ -242,7 +251,7 @@ int main(int argc, char** argv){
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
 
-		char get[] ="wget -q -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages";
+		char get[] ="wget -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages";
     strcat(get,jobID);
 		strcat(get,"/indexPage");
 		strcat(get,argv[5]);
@@ -321,7 +330,7 @@ int main(int argc, char** argv){
 					printf("\n%f %d", (indx*1.0)+(i*1.0/dropWindow), buff[i]);
 				}
 				printf("\n\n");
-	   }
+	   		}
 			char number[5];
 			char window[5];
 			char in[5];
@@ -342,8 +351,5 @@ int main(int argc, char** argv){
 			strcat(cmd, ".csv");
 			system(cmd);
 	}
-
-
-
-
+	return 0;
 }
