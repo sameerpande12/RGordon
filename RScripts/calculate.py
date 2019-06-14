@@ -66,7 +66,7 @@ except Exception as e:
 
 def runTrial(Trial_Number):
     try:
-        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" >> Logs"+jobID+"/log"+str(Trial_Number)+" "+jobID], shell=True, executable='/bin/bash')
+        subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+sigma_cwnd+ " "+cwnd + " "+rtt+" "+emuDrop+" "+jobID+" >> Logs"+jobID+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
     except Exception as e:
         print(e)
 

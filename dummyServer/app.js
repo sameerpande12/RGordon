@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var logger = require('morgan');
+var fs = require('fs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
