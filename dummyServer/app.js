@@ -61,8 +61,8 @@ app.post('/api/worker/job',function(req,res){
     trials:trials1.toString(),
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
-  },
-    {
+  }
+/* ,   {
       //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
       //url:"https://sg.yahoo.com/?p=us",
     url:url2,
@@ -75,7 +75,7 @@ app.post('/api/worker/job',function(req,res){
     start_emudrop:emuDrop2.toString(),
     chances_left:chancesLeft2.toString()
   }
-
+*/
    ]
   });
 
