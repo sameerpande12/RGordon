@@ -12,8 +12,9 @@ from urllib.error import HTTPError
 import re
 import sys
 domain = 'http://137.132.83.199:4000'
-#domain = 'http://localhost:3000'
+# domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
+numParallelJobs=4
 
 path="/api/worker/job"
 #isFree=True;
@@ -28,11 +29,14 @@ def pingServer():
     response=response.json()
     print(response)
     if(response['message']=='JOB'):
-        pool = mp.Pool(max(mp.cpu_count(), 5))
         #print(len(response['data']))
-        r=[pool.apply_async(runJob,args=[i,response['data']]) for i in range(len(response['data']))]
-        p=[x.wait() for x in r]
-        pool.close()
+        jobNum=0
+        while True:
+            pool = mp.Pool(max(mp.cpu_count(), 5))
+            r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
+            p=[x.wait() for x in r]
+            pool.close()
+            jobNum=jobNum+numParallelJobs
         #for i in range(len(response['data'])):
         #    print("Calling RunJob "+str(i))
         #    runJob(i,response['data'])
@@ -41,83 +45,84 @@ def pingServer():
 
 def runJob(i,data):
     # print("Entered runJob "+str(i))
-    startRTT=int(data[i]['startRTT'])
-    # print("startRTT %d" %(startRTT))
-    endRTT=int((data[i]['endRTT']))
-    # print("endRTT %d" %(endRTT))
-    emuDrop = int((data[i]['start_emudrop']))
-    # print("emu %d" %(emuDrop))
-    chances_left=int((data[i]['chances_left']))
-    # print("chances %d" %(chances_left))
-    trials=int((data[i]['trials']))
-    # print("trials %d" %(trials))
-    cwnd=int((data[i]['cwnd']))
-    # print("cwnd %d" %(cwnd))
-    sigma_cwnd=int((data[i]['sigma_cwnd']))
-    # print("scwnd %d" %(sigma_cwnd))
-    url=(data[i]['url'])
-    # print("url "+ url)
-    viewPoint=data[i]['viewpoint']
-    rnum=startRTT
-    jobID=i
-    rnum=startRTT
+    if i<len(data):
+        startRTT=int(data[i]['startRTT'])
+        # print("startRTT %d" %(startRTT))
+        endRTT=int((data[i]['endRTT']))
+        # print("endRTT %d" %(endRTT))
+        emuDrop = int((data[i]['start_emudrop']))
+        # print("emu %d" %(emuDrop))
+        chances_left=int((data[i]['chances_left']))
+        # print("chances %d" %(chances_left))
+        trials=int((data[i]['trials']))
+        # print("trials %d" %(trials))
+        cwnd=int((data[i]['cwnd']))
+        # print("cwnd %d" %(cwnd))
+        sigma_cwnd=int((data[i]['sigma_cwnd']))
+        # print("scwnd %d" %(sigma_cwnd))
+        url=(data[i]['url'])
+        # print("url "+ url)
+        viewPoint=data[i]['viewpoint']
+        rnum=startRTT
+        jobID=i
+        rnum=startRTT
 
-    targetURL=url
-    response=None
-    delayTime=50
-    try:
-        response = subprocess.check_output(
-            ['ping', '-c', '1', url],
-            stderr=subprocess.STDOUT,  # get all output
-            universal_newlines=True  # return string not bytes
-        )
-    except subprocess.CalledProcessError:
-        response = None
+        targetURL=url
+        response=None
+        delayTime=50
+        try:
+            response = subprocess.check_output(
+                ['ping', '-c', '1', url],
+                stderr=subprocess.STDOUT,  # get all output
+                universal_newlines=True  # return string not bytes
+            )
+        except subprocess.CalledProcessError:
+            response = None
 
-    if response == None:
-        pingTime = -1
-    else:
-        pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
-
-    if int(pingTime/2) >= 50:
-        delayTime = 1
-    elif pingTime == -1:
-        delayTime = 50
-    else:
-        delayTime = 50 - int(pingTime/2)
-
-
-    for j in range(endRTT-startRTT+1):
-        # print("Calling Calculate")
-        calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime))
-        infile="./RData"+str(jobID)+"/windows"+".csv"
-        read=open(infile,'r')
-        line=[int (x) for x in read.readline().split(' ')]
-        values=line
-        print(line)
-        postData=''
-        path=''
-        toBreak=False
-        if (values[1] == 0):
-            toBreak=True
-            chances_left=chances_left-1
-            postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
-            path='/api/worker/updateError'
-
+        if response == None:
+            pingTime = -1
         else:
-            path='/api/worker/update'
-            if(emuDrop==defaultEmu):
-                if(values[1]>threshold):
-                    emuDrop=sigma_cwnd
-            cwnd=values[1]
-            sigma_cwnd=values[0]
-            postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
-        headers={'Content-type':'application/json','Accept':'text/plain'}
-        #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
-        requests.post(domain+path,data=json.dumps(postData),headers=headers)
-        if(toBreak):
-            break
-        rnum=rnum+1
+            pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
+
+        if int(pingTime/2) >= 50:
+            delayTime = 1
+        elif pingTime == -1:
+            delayTime = 50
+        else:
+            delayTime = 50 - int(pingTime/2)
+
+
+        for j in range(endRTT-startRTT+1):
+            # print("Calling Calculate")
+            calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime))
+            infile="./RData"+str(jobID)+"/windows"+".csv"
+            read=open(infile,'r')
+            line=[int (x) for x in read.readline().split(' ')]
+            values=line
+            print(line)
+            postData=''
+            path=''
+            toBreak=False
+            if (values[1] == 0):
+                toBreak=True
+                chances_left=chances_left-1
+                postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+                path='/api/worker/updateError'
+
+            else:
+                path='/api/worker/update'
+                if(emuDrop==defaultEmu):
+                    if(values[1]>threshold):
+                        emuDrop=sigma_cwnd
+                cwnd=values[1]
+                sigma_cwnd=values[0]
+                postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
+            headers={'Content-type':'application/json','Accept':'text/plain'}
+            #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
+            requests.post(domain+path,data=json.dumps(postData),headers=headers)
+            if(toBreak):
+                break
+            rnum=rnum+1
 
 def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
     # print("Entering Calculate")
