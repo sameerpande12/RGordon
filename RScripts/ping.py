@@ -32,7 +32,7 @@ def pingServer():
         #print(len(response['data']))
         jobNum=0
         while True:
-            if(jobNum >= len(data)):
+            if(jobNum >= len(response['data'])):
                 break
             pool = mp.Pool(max(mp.cpu_count(), 5))
             r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
