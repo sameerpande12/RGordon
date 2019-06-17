@@ -38,11 +38,11 @@ def pingServer():
             r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
             p=[x.wait() for x in r]
             pool.close()
+            subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
             jobNum=jobNum+numParallelJobs
         #for i in range(len(response['data'])):
         #    print("Calling RunJob "+str(i))
         #    runJob(i,response['data'])
-        subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
 
 
 def runJob(i,data):
