@@ -11,8 +11,8 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
-# domain = 'http://137.132.83.199:4000'
-domain = 'http://localhost:3000'
+domain = 'http://137.132.83.199:4000'
+# domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
 numParallelJobs=2
 
@@ -57,8 +57,7 @@ def runJob(i,data):
         # print("emu %d" %(emuDrop))
         chances_left=int((data[i]['chances_left']))
         # print("chances %d" %(chances_left))
-        # trials=int((data[i]['trials']))
-        trials=1
+        trials=int((data[i]['trials']))
         # print("trials %d" %(trials))
         cwnd=int((data[i]['cwnd']))
         # print("cwnd %d" %(cwnd))
@@ -120,7 +119,7 @@ def runJob(i,data):
                         emuDrop=sigma_cwnd
                 cwnd=values[1]
                 sigma_cwnd=values[0]
-                # trials = getNewNumTrials(trials,jobID)
+                trials = getNewNumTrials(trials,jobID)
                 subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
                 print(postData)

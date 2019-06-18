@@ -26,10 +26,10 @@ var chancesLeft1 = 5;
 var url1 = "https://www.youtube.com";
 */
 
-var sigma_cwnd1 = 0;
-var cwnd1 = 0;
+var sigma_cwnd1 = 118;
+var cwnd1 = 51;
 var emuDrop1 = 100000;
-var rtt1 = 0;
+var rtt1 = 8;
 var assigned1 = false;
 var trials1 = 10;
 var chancesLeft1 = 5;
@@ -132,6 +132,7 @@ app.post('/api/worker/update',function(req,res){
         }
           sigma_cwnd1 = req.body.sigma_cwnd;
           cwnd1 = req.body.cwnd;
+          trials1=req.body.max_trials;
           console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt1);
           rtt1 = rtt1+1;
           //chancesLeft1 = 5;
