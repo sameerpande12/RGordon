@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var logger = require('morgan');
 var fs = require('fs');
-app.use(logger('dev'));
+// app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,7 +33,9 @@ var rtt1 = 0;
 var assigned1 = false;
 var trials1 = 10;
 var chancesLeft1 = 5;
-var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+// var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+var url1="https://hao.360.cn/";
+
 
 var sigma_cwnd2 = 0;
 var cwnd2 = 0;
@@ -44,8 +46,41 @@ var trials2 = 10;
 var chancesLeft2 = 5;
 var url2 ="https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl";
 
+var sigma_cwnd3 = 0;
+var cwnd3 = 0;
+var emuDrop3 = 100000;
+var rtt3 = 0;
+var assigned3 = false;
+var trials3 = 10;
+var chancesLeft3 = 5;
+// var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+var url3="https://hao.360.cn/";
+
+
+var sigma_cwnd4 = 0;
+var cwnd4 = 0;
+var emuDrop4 = 100000;
+var rtt4 = 0;
+var assigned4 = false;
+var trials4 = 10;
+var chancesLeft4 = 5;
+// var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+var url4="https://hao.360.cn/";
+
+
+var sigma_cwnd5 = 0;
+var cwnd5 = 0;
+var emuDrop5 = 100000;
+var rtt5 = 0;
+var assigned5 = false;
+var trials5 = 10;
+var chancesLeft5 = 5;
+var url5="https://hao.360.cn/";
+
+
+
 app.post('/api/worker/job',function(req,res){
-  console.log("Sending job-----------------------------------------------------------------------");
+  // console.log("Sending job-----------------------------------------------------------------------");
   res.json({
     message:'JOB',
     //url:"www.google.co.in/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA#imgrc=_",
@@ -62,7 +97,7 @@ app.post('/api/worker/job',function(req,res){
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
   }
- ,   {
+ /*,   {
       //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
       //url:"https://sg.yahoo.com/?p=us",
     url:url2,
@@ -75,20 +110,21 @@ app.post('/api/worker/job',function(req,res){
     start_emudrop:emuDrop2.toString(),
     chances_left:chancesLeft2.toString()
   }
-
+*/
    ]
   });
 
 
   res.end();
 
-   console.log("Sending: "+ sigma_cwnd1+" "+cwnd1+" "+"emu "+emuDrop1+" chances: "+chancesLeft1);
+   // console.log("Sending: "+ sigma_cwnd1+" "+cwnd1+" "+"emu "+emuDrop1+" chances: "+chancesLeft1);
 })
 
 
 app.post('/api/worker/update',function(req,res){
-  console.log("received");
-  console.log(req.body);
+  // console.log("received");
+  // console.log(req.body);
+
   if(req.body.url==url1){
         if(req.body.cwnd > 80 && !assigned1){
             emuDrop1 = sigma_cwnd1;
@@ -96,6 +132,7 @@ app.post('/api/worker/update',function(req,res){
         }
           sigma_cwnd1 = req.body.sigma_cwnd;
           cwnd1 = req.body.cwnd;
+          console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt1);
           rtt1 = rtt1+1;
           //chancesLeft1 = 5;
     }
@@ -107,6 +144,7 @@ app.post('/api/worker/update',function(req,res){
         sigma_cwnd2 = req.body.sigma_cwnd;
         cwnd2 = req.body.cwnd;
         rtt2 = rtt2+1;
+        console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt2);
         //chancesLeft2 = 5;
 
     }
@@ -116,8 +154,8 @@ app.post('/api/worker/update',function(req,res){
 })
 
 app.post('/api/worker/updateError',function(req,res){
-  console.log("received");
-  console.log(req.body);
+  // console.log("received");
+  // console.log(req.body);
      chancesLeft1 = parseInt(req.body.chances_left);
      if(req.body.url == url1){
          if(chancesLeft1 < 1){

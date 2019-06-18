@@ -12,12 +12,13 @@ from urllib.error import HTTPError
 import re
 import sys
 # domain = 'http://137.132.83.199:4000'
-domain = 'http://localhost:3000'
-# domain='http://172.26.191.175:4000'
+# domain = 'http://localhost:3000'
+domain='http://172.26.191.175:4000'
 numParallelJobs=2
 
 path="/api/worker/job"
 #isFree=True;
+minimumTrials=5
 threshold=80
 defaultEmu=100000
 
@@ -118,7 +119,7 @@ def runJob(i,data):
                         emuDrop=sigma_cwnd
                 cwnd=values[1]
                 sigma_cwnd=values[0]
-                trials = getNewNumTrials(trials,jobID)
+                # trials = getNewNumTrials(trials,jobID)
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
                 print(postData)
             headers={'Content-type':'application/json','Accept':'text/plain'}
@@ -129,9 +130,38 @@ def runJob(i,data):
             rnum=rnum+1
 
 def getNewNumTrials(trials,jobID):
-    newNumTrials = (trials)
-    return newNumTrials
 
+    newNumTrials = (trials)
+    try:
+        fileName='./RData'+str(jobID)+'/windows'
+        cwnds=[]
+        cwnds_nz=[]
+        for i in range(trials):
+            file = open(fileName+str(i)+".csv",'r')
+            line=[int(x)  for x in file.readline().split(' ')]
+            file.close()
+            cwnds.append(line[1])
+            if(line[1]>0):
+                cwnds_nz.append(line[1])
+        max_cwnd=max(cwnds)
+        if(len(cwnds_nz)>0.3*len(cwnds)):
+            if(max_cwnd > 20):
+                values_in_range=0
+                for i in cwnds_nz:
+                    if(i > 0.9* max_cwnd):
+                        values_in_range=values_in_range+1
+                if(values_in_range > 0.2*len(cwnds)):
+                    numTrials=trials-2
+                elif(values_in_range < 0.1*len(cwnds)):
+                    numTrials=trials+2
+        else:
+            newNumTrials=trials+2
+
+        if(newNumTrials < minimumTrials ):
+            newNumTrials=minimumTrials
+        return newNumTrials
+    except Exception as e:
+        print(e)
 def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
     # print("Entering Calculate")
     targetURL=url
