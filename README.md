@@ -3,14 +3,12 @@ Localised bottlenecks for server transport layer protocol analysis.
 
 ## Dependancies:
 ```quick_dependancies.sh```
-----------------------------
 
-###Configuration:
+## Configuration:
+
 ```cd RScripts```
 ```./configure.sh```
 
-#### Runnning tests:
------------------
 ##### Trial runs with dummy Server
 1. Launch dummy server  
 ```$cd dummyServer```  
