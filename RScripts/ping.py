@@ -57,7 +57,8 @@ def runJob(i,data):
         # print("emu %d" %(emuDrop))
         chances_left=int((data[i]['chances_left']))
         # print("chances %d" %(chances_left))
-        trials=int((data[i]['trials']))
+        # trials=int((data[i]['trials']))
+        trials=1
         # print("trials %d" %(trials))
         cwnd=int((data[i]['cwnd']))
         # print("cwnd %d" %(cwnd))
@@ -119,7 +120,6 @@ def runJob(i,data):
                         emuDrop=sigma_cwnd
                 cwnd=values[1]
                 sigma_cwnd=values[0]
-                trials=1
                 # trials = getNewNumTrials(trials,jobID)
                 subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
