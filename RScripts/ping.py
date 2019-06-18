@@ -11,8 +11,8 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
-domain = 'http://137.132.83.199:4000'
-# domain = 'http://localhost:3000'
+# domain = 'http://137.132.83.199:4000'
+domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
 numParallelJobs=2
 
@@ -118,13 +118,19 @@ def runJob(i,data):
                         emuDrop=sigma_cwnd
                 cwnd=values[1]
                 sigma_cwnd=values[0]
+                trials = getNewNumTrials(trials,jobID)
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
+                print(postData)
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
             if(toBreak):
                 break
             rnum=rnum+1
+
+def getNewNumTrials(trials,jobID):
+    newNumTrials = (trials)
+    return newNumTrials
 
 def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
     # print("Entering Calculate")
@@ -143,16 +149,16 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
         #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
         subprocess.call(["sudo rm ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
         def runTrial(Trial_Number):
-            print("entering trial "+str(Trial_Number))
+            # print("entering trial "+str(Trial_Number))
             try:
                 subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+str(sigma_cwnd)+ " "+str(cwnd) + " "+str(rtt)+" "+str(emuDrop)+" "+str(jobID)+" >> Logs"+str(jobID)+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
-                print("Exitting trial " +str(Trial_Number))
+                # print("Exitting trial " +str(Trial_Number))
             except Exception as e:
                 print(e)
 
         for i in range(numTrials):
             runTrial(i)
-            print("Exitted trial "+str(i))
+            # print("Exitted trial "+str(i))
         windows = list()
         counter=0
         for i in range(numTrials):
