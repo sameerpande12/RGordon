@@ -26,15 +26,15 @@ var chancesLeft1 = 5;
 var url1 = "https://www.youtube.com";
 */
 
-var sigma_cwnd1 = 118;
-var cwnd1 = 51;
+var sigma_cwnd1 = 0;
+var cwnd1 = 0;
 var emuDrop1 = 100000;
-var rtt1 = 8;
+var rtt1 = 0;
 var assigned1 = false;
-var trials1 = 10;
+var trials1 = 5;
 var chancesLeft1 = 5;
 // var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-var url1="https://hao.360.cn/";
+var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
 
 
 var sigma_cwnd2 = 0;
