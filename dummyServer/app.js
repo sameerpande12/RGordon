@@ -31,10 +31,11 @@ var cwnd1 = 0;
 var emuDrop1 = 100000;
 var rtt1 = 0;
 var assigned1 = false;
-var trials1 = 5;
+var trials1 = 10;
 var chancesLeft1 = 5;
 // var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
+// var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
+var url1 = 'https://dll.z1.fm/music/9/b9/chotkij_paca_-_taksist_(zf.fm).mp3?download=force';
 
 
 var sigma_cwnd2 = 0;
@@ -65,7 +66,7 @@ var assigned4 = false;
 var trials4 = 10;
 var chancesLeft4 = 5;
 // var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-var url4="https://hao.360.cn/";
+var url4="http://iptorrents.com";
 
 
 var sigma_cwnd5 = 0;
