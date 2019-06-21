@@ -120,7 +120,7 @@ def runJob(i,data):
                 cwnd=values[1]
                 sigma_cwnd=values[0]
                 # trials = getNewNumTrials(trials,jobID)
-                subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
+                # subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
                 print(postData)
             headers={'Content-type':'application/json','Accept':'text/plain'}
