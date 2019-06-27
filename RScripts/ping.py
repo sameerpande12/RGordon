@@ -11,11 +11,11 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
-domain = 'http://10.255.255.1:4000'
+# domain = 'http://10.255.255.1:4000'
 # domain = 'http://137.132.83.199:4000'
-# domain = 'http://localhost:3000'
+domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
-numParallelJobs=40
+numParallelJobs=2
 
 path="/api/worker/job"
 #isFree=True;
@@ -23,6 +23,9 @@ minimumTrials=5
 threshold=80
 defaultEmu=100000
 
+r=[]#make sure that you make this empty list after pingServer
+nextJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
+maxJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
 
 def pingServer():
     postData={'viewpoint':"Singapore"}
@@ -32,19 +35,26 @@ def pingServer():
     print(response)
     if(response['message']=='JOB'):
         #print(len(response['data']))
-        jobNum=0
-        while True:
-            if(jobNum >= len(response['data'])):
-                break
-            pool = mp.Pool(max(mp.cpu_count(), 5))
-            r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
-            p=[x.wait() for x in r]
-            pool.close()
-            subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
-            jobNum=jobNum+numParallelJobs
-        #for i in range(len(response['data'])):
-        #    print("Calling RunJob "+str(i))
-        #    runJob(i,response['data'])
+        nextJobID=0#to store the first job yet to be asssigned
+        maxJobID=len(response['data'])
+        pool = mp.Pool(max(mp.cpu_count(),5))
+
+        nextJobID+=numParallelJobs#increased before assigning the jobs in order to avoid reworking in worst case
+        r = [pool.apply_async(runJob,args=[i,response['data']]) for i in range(numParallelJobs)]
+        p=[x.wait() for x in r]
+        pool.close()
+        r=[]#restoring the default values for global parameters so that they
+        nextJobID=0#
+        maxJobs=0#
+        # while True:
+        #     if(jobNum >= len(response['data'])):
+        #         break
+        #     pool = mp.Pool(max(mp.cpu_count(), 5))
+            # r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
+        #     p=[x.wait() for x in r]
+        #     pool.close()
+        #     subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
+        #     jobNum=jobNum+numParallelJobs
 
 
 def runJob(i,data):
@@ -130,6 +140,10 @@ def runJob(i,data):
             if(toBreak):
                 break
             rnum=rnum+1
+            if(nextJobID <= maxJobID):
+                nextJobID=nextJobID+1
+                r.append(pool.apply_async(runJob,args=[nextJobID-1,data]))
+                time.sleep(0.1)
 
 def getNewNumTrials(trials,jobID):
 
@@ -179,7 +193,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
         #subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
         #subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
         #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
-        subprocess.call(["sudo rm ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
+        subprocess.call(["sudo rm -f ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
         def runTrial(Trial_Number):
             # print("entering trial "+str(Trial_Number))
             try:

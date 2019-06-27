@@ -29,13 +29,14 @@ var url1 = "https://www.youtube.com";
 var sigma_cwnd1 = 0;
 var cwnd1 = 0;
 var emuDrop1 = 100000;
-var rtt1 = 0;
+var rtt1 = 1;
 var assigned1 = false;
 var trials1 = 10;
 var chancesLeft1 = 5;
 // var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
 // var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
-var url1 = 'https://dll.z1.fm/music/9/b9/chotkij_paca_-_taksist_(zf.fm).mp3?download=force';
+// var url1 = 'https://dll.z1.fm/music/9/b9/chotkij_paca_-_taksist_(zf.fm).mp3?download=force';
+var url1 = 'https://nl.xhamster.com/users/oceanbreeze833';
 
 
 var sigma_cwnd2 = 0;
@@ -93,7 +94,7 @@ app.post('/api/worker/job',function(req,res){
     sigma_cwnd:sigma_cwnd1.toString(),
     cwnd:cwnd1.toString(),
     startRTT:rtt1.toString(),
-    endRTT:(rtt1+4).toString(),
+    endRTT:(rtt1+49).toString(),
     trials:trials1.toString(),
     start_emudrop:emuDrop1.toString(),
     chances_left:chancesLeft1.toString()
