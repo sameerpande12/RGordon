@@ -1,5 +1,0 @@
-file			           tool      Deviation from original Tool                            url
-apnmedia-1.csv		RGordon    drop at 40
-apnmedia-2.csv    RGordon    drop at 40. BDP halved (=25) (4000 6000)
-apnmedia-3.csv    RGordon    drop at 40. BDP doubled (=100)(mm-delay set to 100ms)
-tokopedia-1.csv   RGordon    drop at 40. BDP doubled (=100)(mm-delay set to 100 ms) 
