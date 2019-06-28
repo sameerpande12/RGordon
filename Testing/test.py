@@ -27,6 +27,7 @@ def runJob(url_id,profile_id):
     print(url)
     trials =url_data['trials']
     print(trials)
+    name = url_data['name']
 
     response = None
     try:
@@ -52,6 +53,7 @@ def runJob(url_id,profile_id):
 
     command=("mm-delay "+str(delayTime)+" ./mlaunch.sh \""+url+"\" "+ str(trials)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(drop)+" "+str(bneck_transition))
     subprocess.call([command],shell=True,executable='/bin/bash')
+    subprocess.call(["cp Data/windows.csv Observations/Data/"+name+"-"+profile_id+".csv"],shell=True,executable='/bin/bash')
 
 
 runJob(0,0)
