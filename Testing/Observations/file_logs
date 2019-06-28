@@ -1,0 +1,5 @@
+file_name           url                                                                     drop  mm_delay   delay_1   delay_2  BDP transition_point
+apnmedia-1.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe       40    50           2000    3000    50      1500
+apnmedia-2.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe       40    50           4000    6000    25      1500
+apnmedia-3.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe       40    100          2000    3000    100     1500
+tokopedia-1.csv     https://www.tokopedia.com/hot/peralatan-gambar-sekolah                   40    100          2000    3000    100     1500

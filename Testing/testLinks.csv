@@ -1,2 +1,2 @@
-url                                                     sigma_cwnd cwnd emuDrop startRTT endRTT trials chances
-https://www.tokopedia.com/hot/peralatan-gambar-sekolah    0         0     100000 0          50    10    2
+id                      url                                 domain            trials
+0   https://www.tokopedia.com/hot/peralatan-gambar-sekolah   tokopedia         10

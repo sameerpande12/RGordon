@@ -8,8 +8,12 @@ START=1
 END=$2
 DELAY1=$3
 DELAY2=$4
-EMUDROP=$5
+DROP=$5
+TRANSITION_POINT=$6
+#Transition point is the point after which delay is changed to delay_2
 
+mkdir -p Data
+cat "0 0 0">Data/windows.csv
 for (( c=$START; c<=$END; c++ ))
 do
 echo "0 0 0" > Data/windows$c.csv
@@ -24,14 +28,15 @@ do
 #python getmedian.py $i
 	for (( j=$START; j<=$END; j++ ))
 	do
-		sudo iptables -I INPUT -p tcp -d 100.64.0.2 -m state --state ESTABLISHED -j NFQUEUE --queue-num 0
+		ip="$(ifconfig | grep -A 1 'ingress' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
+		sudo iptables -I INPUT -p tcp -d $ip -m state --state ESTABLISHED -j NFQUEUE --queue-num 0
 		echo "--------------------------------- RTT-$i, TRIAL-$j ----------------------"
-		sudo ./mprober "$1" $DELAY1 $DELAY2 1500 "$j" $EMUDROP >> Data/buff.csv
+		sudo ./mprober "$1" $DELAY1 $DELAY2 $TRANSITION_POINT "$j" $DROP >> Data/buff.csv
 		sudo killall wget
 		rm -f index*
 		sudo iptables --flush
 	done
-python Scripts/getmedian.py $i $END
+python getMax.py $i $END
 if [ `tail -n 1 Data/windows.csv | cut -d" " -f2` == "0" ]; then
 	exit 0
 fi
