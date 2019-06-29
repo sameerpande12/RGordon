@@ -11,7 +11,6 @@ DELAY2=$4
 DROP=$5
 TRANSITION_POINT=$6
 #Transition point is the point after which delay is changed to delay_2
-
 mkdir -p Data
 cat "0 0 0">Data/windows.csv
 for (( c=$START; c<=$END; c++ ))

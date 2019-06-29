@@ -17,10 +17,10 @@ for i in range(int(sys.argv[2])):
         counter=counter+1
     read.close()
 
-print windows
+# print windows
 windows.sort()
 median=int(windows[counter-1])
-print windows
+# print windows
 
 outfile="Data/windows.csv"
 out = open(outfile, 'r')
@@ -32,9 +32,9 @@ out.close()
 
 out=open(outfile, 'a')
 
-print median, line.split(' ')[0]
+# print median, line.split(' ')[0]
 cap=median+int(line.split(' ')[0])
-print cap
+# print cap
 
 out.write(str(cap)+" "+str(median)+" "+str(sys.argv[1])+"\n")
 out.close()
