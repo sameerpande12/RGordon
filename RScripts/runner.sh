@@ -1,5 +1,6 @@
+mtuvalue=$8
 sudo sysctl net.ipv4.tcp_sack=0
-sudo ifconfig ingress mtu 100
+sudo ifconfig ingress mtu $mtuvalue
 ip="$(ifconfig | grep -A 1 'ingress' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 # echo $MAHIMAHI_BASE >> a.txt
 # echo $ip >> b.txt

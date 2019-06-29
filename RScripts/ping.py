@@ -66,6 +66,7 @@ def runJob(i,data):
         # print("scwnd %d" %(sigma_cwnd))
         url=(data[i]['url'])
         # print("url "+ url)
+        mtu = int(data[i]['mtu'])
         viewPoint=data[i]['viewpoint']
         rnum=startRTT
         jobID=i
@@ -183,7 +184,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
         def runTrial(Trial_Number):
             # print("entering trial "+str(Trial_Number))
             try:
-                subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+str(sigma_cwnd)+ " "+str(cwnd) + " "+str(rtt)+" "+str(emuDrop)+" "+str(jobID)+" >> Logs"+str(jobID)+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
+                subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+str(sigma_cwnd)+ " "+str(cwnd) + " "+str(rtt)+" "+str(emuDrop)+" "+str(jobID)+" "+str(mtu)+" >> Logs"+str(jobID)+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
                 # print("Exitting trial " +str(Trial_Number))
             except Exception as e:
                 print(e)
