@@ -13,7 +13,7 @@
 *						   ./prober www.facebook.com 5000 8000 1000
 */
 #define OWD 125
-// #define DROPWINDOW 40
+#define DROPWINDOW 80
 #define PRINTBUFF 0
 #define true 1
 #define false 0
@@ -34,7 +34,6 @@
 #include <math.h>
 #include <signal.h>
 
-int DROPWINDOW=80;
 int drop = 1;
 int acceptWindow = 0;
 int dropWindow = 0;
@@ -196,7 +195,6 @@ int getWinSize( char line[] ){
 
 int main(int argc, char **argv)
 {
-	DROPWINDOW=atoi(argv[6]);
 	struct nfq_handle *h;
 	struct nfq_q_handle *qh;
 	int fd;
@@ -205,7 +203,7 @@ int main(int argc, char **argv)
 	int lastWindow;
 	int inputting = 0;
 
-	char outfile[30] = "../Data/windows.csv";
+	char outfile[30] = "Data/windows.csv";
 	FILE *ofile = fopen(outfile, "rw");
 
 	int lastAccept = 0;
@@ -339,7 +337,7 @@ int main(int argc, char **argv)
 			strcat(cmd," ");
 			itoa(indx, in);
 			strcat(cmd, in);
-			strcat(cmd, " >> ../Data/windows");
+			strcat(cmd, " >> Data/windows");
 			strcat(cmd, argv[5]);
 			strcat(cmd, ".csv");
 			system(cmd);

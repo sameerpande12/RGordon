@@ -1,2 +1,2 @@
-id                      url                                  name            trials
-0   https://www.tokopedia.com/hot/peralatan-gambar-sekolah   tokopedia         10
+id                      url                                  name            trials rtts
+0   https://www.tokopedia.com/hot/peralatan-gambar-sekolah   tokopedia         10    50

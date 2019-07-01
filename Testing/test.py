@@ -1,6 +1,7 @@
 import pandas as pd
 import subprocess
 import re
+import os
 subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
 
 df_link=pd.read_csv('testLinks.csv',delim_whitespace=True)
@@ -35,7 +36,9 @@ def runJob(url_id,profile_id):
     print(trials)
     fname = url_data['name']
     print(fname)
-    
+    rtts=url_data['rtts']
+    print(rtts)
+
     response = None
     try:
         response = subprocess.check_output(
@@ -58,16 +61,17 @@ def runJob(url_id,profile_id):
     else:
         delayTime = delayTime - int(pingTime/2)
 
-    command=("mm-delay "+str(delayTime)+" ./mlaunch.sh \""+url+"\" "+ str(trials)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(drop)+" "+str(bneck_transition))
+    command=("mm-delay "+str(delayTime)+" ./mlaunch.sh \""+url+"\" "+ str(trials)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(drop)+" "+str(bneck_transition)+" "+str(rtts))
     subprocess.call([command],shell=True,executable='/bin/bash')
 
     command="cp Data/windows.csv Observations/Data/"+fname+"-"+str(profile_id)+".csv"
     subprocess.call([command],shell=True,executable='/bin/bash')
 
+    os.chdir("Observations")
     command="echo "+fname+"-"+str(profile_id)+".csv  "+url+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(bdp1)+" "+str(bdp2)+" "+str(bneck_transition)+" >> file_logs.csv"
     subprocess.call([command],shell=True,executable='/bin/bash')
 
     command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)
     subprocess.call([command],shell=True,executable='/bin/bash')
 
-runJob(0,0)
+runJob(0,6)

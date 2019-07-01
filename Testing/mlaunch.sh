@@ -10,6 +10,7 @@ DELAY1=$3
 DELAY2=$4
 DROP=$5
 TRANSITION_POINT=$6
+RTTS=$7
 #Transition point is the point after which delay is changed to delay_2
 mkdir -p Data
 cat "0 0 0">Data/windows.csv
@@ -20,11 +21,8 @@ done
 
 echo "0 0 0" > Data/windows.csv
 echo "0 0" > Data/buff.csv
-
-for i in {1..50}
+for  (( i=0; i< $RTTS; i++ ))
 do
-#sudo iptables -I INPUT -p tcp -d 100.64.0.2 -m state --state ESTABLISHED -j NFQUEUE --queue-num 0
-#python getmedian.py $i
 	for (( j=$START; j<=$END; j++ ))
 	do
 		ip="$(ifconfig | grep -A 1 'ingress' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
@@ -35,10 +33,10 @@ do
 		rm -f index*
 		sudo iptables --flush
 	done
-python getMax.py $i $END
-if [ `tail -n 1 Data/windows.csv | cut -d" " -f2` == "0" ]; then
+	python getMax.py $i $END
+	if [ `tail -n 1 Data/windows.csv | cut -d" " -f2` == "0" ]; then
 	exit 0
-fi
+  fi
 #sudo iptables --flush
 done
 
