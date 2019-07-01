@@ -73,5 +73,12 @@ def runJob(url_id,profile_id):
 
     command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)
     subprocess.call([command],shell=True,executable='/bin/bash')
+    os.chdir("..")
 
-runJob(0,6)
+for i in range(3):
+    if( i is not 0):
+        runJob(i+1,3)
+    runJob(i+1,4)
+    runJob(i+1,5)
+    runJob(i+1,6)
+    runJob(i+1,7)

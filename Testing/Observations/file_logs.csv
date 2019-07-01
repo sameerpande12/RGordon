@@ -3,3 +3,12 @@ apnmedia-3.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemov
 apnmedia-4.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe       40    50           4000    6000    25    16      1500
 apnmedia-6.csv      http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe       40    100          2000    3000    100   67      1500
 tokopedia-6.csv     https://www.tokopedia.com/hot/peralatan-gambar-sekolah                   40    100          2000    3000    100   67      1500
+asset.kompass-3.csv https://asset.kompas.com/data/2017/widget/css/ace-rev.css 40 50 2000 3000 50 33 1500
+asset.kompass-4.csv https://asset.kompas.com/data/2017/widget/css/ace-rev.css 40 50 4000 6000 25 16 1500
+asset.kompass-5.csv https://asset.kompas.com/data/2017/widget/css/ace-rev.css 40 25 2000 3000 25 16 1500
+asset.kompass-6.csv https://asset.kompas.com/data/2017/widget/css/ace-rev.css 40 100 2000 3000 100 67 1500
+asset.kompass-7.csv https://asset.kompas.com/data/2017/widget/css/ace-rev.css 40 50 1000 1500 100 67 1500
+archives.ndtv-3.csv http://archives.ndtv.com/articles/2012-03.html 40 50 2000 3000 50 33 1500
+archives.ndtv-4.csv http://archives.ndtv.com/articles/2012-03.html 40 50 4000 6000 25 16 1500
+archives.ndtv-5.csv http://archives.ndtv.com/articles/2012-03.html 40 25 2000 3000 25 16 1500
+archives.ndtv-6.csv http://archives.ndtv.com/articles/2012-03.html 40 100 2000 3000 100 67 1500
