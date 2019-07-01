@@ -11,11 +11,11 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
-domain = 'http://10.255.255.1:4000'
-# domain = 'http://137.132.83.199:4000'
+# domain = 'http://10.255.255.1:4000'
+domain = 'http://137.132.83.199:4000'
 # domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
-numParallelJobs=12
+numParallelJobs=2
 
 path="/api/worker/job"
 #isFree=True;
@@ -99,7 +99,7 @@ def runJob(i,data):
 
         for j in range(endRTT-startRTT+1):
             # print("Calling Calculate")
-            calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime))
+            calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime),(mtu))
             infile="./RData"+str(jobID)+"/windows"+".csv"
             read=open(infile,'r')
             line=[int (x) for x in read.readline().split(' ')]
@@ -165,7 +165,7 @@ def getNewNumTrials(trials,jobID):
         return trials
     except Exception as e:
         print(e)
-def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime):
+def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
     # print("Entering Calculate")
     targetURL=url
     response=None
