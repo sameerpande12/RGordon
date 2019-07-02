@@ -12,3 +12,9 @@ archives.ndtv-3.csv http://archives.ndtv.com/articles/2012-03.html 40 50 2000 30
 archives.ndtv-4.csv http://archives.ndtv.com/articles/2012-03.html 40 50 4000 6000 25 16 1500
 archives.ndtv-5.csv http://archives.ndtv.com/articles/2012-03.html 40 25 2000 3000 25 16 1500
 archives.ndtv-6.csv http://archives.ndtv.com/articles/2012-03.html 40 100 2000 3000 100 67 1500
+archives.ndtv-7.csv http://archives.ndtv.com/articles/2012-03.html 40 50 1000 1500 100 67 1500
+mobile.gmarket-3.csv http://mobile.gmarket.co.kr/ 40 50 2000 3000 50 33 1500
+mobile.gmarket-4.csv http://mobile.gmarket.co.kr/ 40 50 4000 6000 25 16 1500
+mobile.gmarket-5.csv http://mobile.gmarket.co.kr/ 40 25 2000 3000 25 16 1500
+mobile.gmarket-6.csv http://mobile.gmarket.co.kr/ 40 100 2000 3000 100 67 1500
+mobile.gmarket-7.csv http://mobile.gmarket.co.kr/ 40 50 1000 1500 100 67 1500
