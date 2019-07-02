@@ -75,10 +75,7 @@ def runJob(url_id,profile_id):
     subprocess.call([command],shell=True,executable='/bin/bash')
     os.chdir("..")
 
-for i in range(2):
-    if( i is not 0):
-        runJob(i+2,3)
-        runJob(i+2,4)
-        runJob(i+2,5)
-        runJob(i+2,6)
-    runJob(i+2,7)
+for i in range(11):
+    if(i>3):
+        for j in range(5):
+            runJob(i,j+3)
