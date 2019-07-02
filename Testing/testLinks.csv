@@ -1,8 +1,13 @@
-id                      url                                                 name                  trials rtts    fname
-0   http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe   apnmedia                   10    50    108.csv
-1   https://asset.kompas.com/data/2017/widget/css/ace-rev.css            asset.kompass              10    50    184.csv
-2   http://archives.ndtv.com/articles/2012-03.html                       archives.ndtv              10    50    405.csv
-3   http://mobile.gmarket.co.kr/                                         mobile.gmarket             10    50    555.csv
-4   https://connect.secure.wellsfargo.com/auth/login/smsalert            connect.secure.wellsfargo  10    50    192.csv
-5   http://stock.17ok.com/news/335/2007/1018/219659.html  10  50         stock.17ok                 10    50    255.csv
-6   https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 10 50    community.weebly           10    50    345.csv
+id                      url                                                 name                  trials rtts    fname    type
+0   http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe   apnmedia                   10    50    108.csv    1
+1   https://asset.kompas.com/data/2017/widget/css/ace-rev.css            asset.kompass              10    50    184.csv    1
+2   http://archives.ndtv.com/articles/2012-03.html                       archives.ndtv              10    50    405.csv    1
+3   http://mobile.gmarket.co.kr/                                         mobile.gmarket             10    50    555.csv    1
+4   https://connect.secure.wellsfargo.com/auth/login/smsalert            connect.secure.wellsfargo  10    50    192.csv    2
+5   http://stock.17ok.com/news/335/2007/1018/219659.html  10  50         stock.17ok                 10    50    255.csv    2
+6   https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 10 50    community.weebly           10    50    345.csv    2
+7   https://musik.kapanlagi.com/                                         music.kapanlagi            10    50    565.csv    2
+8   https://marketing.rbc.ru/landings/36/                                marketing.rbc.ru           10    50    588.csv    2
+9   https://archiveofourown.org/works/14437563?view_full_work=true       archiveofourown            10    50    800.csv    2
+10  http://img04.tnt-online.ru/Documents/Icon2/0b/ds0biext2y9v.png       img04.tnt-online.ru        10    50    860.csv    2
+11  https://badoo.com/                                                   badoo                      10    40    979.csv    2
