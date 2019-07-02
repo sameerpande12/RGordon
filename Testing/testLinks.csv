@@ -1,5 +1,8 @@
-id                      url                                  name            trials rtts
-0   http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe   apnmedia         10    50
-1   https://asset.kompas.com/data/2017/widget/css/ace-rev.css asset.kompass 10  50
-2   http://archives.ndtv.com/articles/2012-03.html  archives.ndtv 10  50
-3   http://mobile.gmarket.co.kr/  mobile.gmarket  10 50
+id                      url                                                 name                  trials rtts    fname
+0   http://apnmedia.ask.com/media/toolbar/utilities/ToolbarRemover.exe   apnmedia                   10    50    108.csv
+1   https://asset.kompas.com/data/2017/widget/css/ace-rev.css            asset.kompass              10    50    184.csv
+2   http://archives.ndtv.com/articles/2012-03.html                       archives.ndtv              10    50    405.csv
+3   http://mobile.gmarket.co.kr/                                         mobile.gmarket             10    50    555.csv
+4   https://connect.secure.wellsfargo.com/auth/login/smsalert            connect.secure.wellsfargo  10    50    192.csv
+5   http://stock.17ok.com/news/335/2007/1018/219659.html  10  50         stock.17ok                 10    50    255.csv
+6   https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 10 50    community.weebly           10    50    345.csv
