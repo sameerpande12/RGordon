@@ -11,6 +11,7 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
+from multiprocessing import Process,Value,Lock
 # domain = 'http://10.255.255.1:4000'
 # domain = 'http://137.132.83.199:4000'
 domain = 'http://localhost:3000'
@@ -22,10 +23,10 @@ path="/api/worker/job"
 minimumTrials=5
 threshold=80
 defaultEmu=100000
-
-r=[]#make sure that you make this empty list after pingServer
-nextJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
-maxJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
+#
+# r=[]#make sure that you make this empty list after pingServer
+# nextJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
+# maxJobID=0#make sure that you make this 0 at the end of pingServer - this needs to be kept global to be easily accessible by all the processes in the pool
 
 def pingServer():
     postData={'viewpoint':"Singapore"}
@@ -35,17 +36,17 @@ def pingServer():
     print(response)
     if(response['message']=='JOB'):
         #print(len(response['data']))
-        nextJobID=0#to store the first job yet to be asssigned
-        maxJobID=len(response['data'])
-        pool = mp.Pool(max(mp.cpu_count(),5))
-
-        nextJobID+=numParallelJobs#increased before assigning the jobs in order to avoid reworking in worst case
-        r = [pool.apply_async(runJob,args=[i,response['data']]) for i in range(numParallelJobs)]
-        p=[x.wait() for x in r]
-        pool.close()
-        r=[]#restoring the default values for global parameters so that they
-        nextJobID=0#
-        maxJobs=0#
+        # nextJobID=0#to store the first job yet to be asssigned
+        # maxJobID=len(response['data'])
+        # pool = mp.Pool(max(mp.cpu_count(),5))
+        #
+        # nextJobID+=numParallelJobs#increased before assigning the jobs in order to avoid reworking in worst case
+        # r = [pool.apply_async(runJob,args=[i,response['data']]) for i in range(numParallelJobs)]
+        # p=[x.wait() for x in r]
+        # pool.close()
+        # r=[]#restoring the default values for global parameters so that they
+        # nextJobID=0#
+        # maxJobs=0#
         # while True:
         #     if(jobNum >= len(response['data'])):
         #         break
@@ -55,10 +56,39 @@ def pingServer():
         #     pool.close()
         #     subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
         #     jobNum=jobNum+numParallelJobs
+        global numParallelJobs
+        numMaxJobs= len(response['data'])
+        lock=Lock()
+        nextjobid=Value('i',numParallelJobs)
+        procs=[Process(target=run,args=(i,response['data'],nextjobid,lock)) for i in range(numMaxJobs)]
+
+        for i in range(numParallelJobs):
+            procs[i].start()
+
+        numJobsStarted=numParallelJobs
+        lastJobStarted=numParallelJobs-1# contains the id (0 based indexing of the last job started)
+
+        while True:
+            if(numJobsStarted >= numMaxJobs):# >= instead of == just to be on safe side
+                break
+            time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
+            with lock:
+                count = 0
+                while count < numParallelJobs and lastJobStarted < nextjobid.value:
+                    if(lastJobStarted >= numMaxJobs-1):
+                        numJobsStarted=numMaxJobs
+                        break
+                    lastJobStarted+=1
+                    procs[lastJobStarted].start()
+                    numJobsStarted+=1
+                    count = count + 1
 
 
-def runJob(i,data):
+
+
+def runJob(i,data,nextJobID,nextjobid,lock):
     # print("Entered runJob "+str(i))
+    maxJobID=len(data)-1
     if i<len(data):
         startRTT=int(data[i]['startRTT'])
         # print("startRTT %d" %(startRTT))
@@ -140,10 +170,10 @@ def runJob(i,data):
             if(toBreak):
                 break
             rnum=rnum+1
-            if(nextJobID <= maxJobID):
-                nextJobID=nextJobID+1
-                r.append(pool.apply_async(runJob,args=[nextJobID-1,data]))
-                time.sleep(0.1)
+            with lock:
+                if(nextJobID.value <= maxJobID):
+                    nextJobID.value=nextJobID.value+1
+
 
 def getNewNumTrials(trials,jobID):
 
