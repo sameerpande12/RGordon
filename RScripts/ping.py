@@ -59,19 +59,17 @@ def pingServer():
         numParallelJobs=2
         numMaxJobs= len(response['data'])
         lock=Lock()
-        nextjobid=Value('i',numParallelJobs)
+        nextjobid=Value('i',numParallelJobs-1)#set for initializing the initial batche to the numParallel job size
         procs=[Process(target=runJob,args=(i,response['data'],nextjobid,lock)) for i in range(numMaxJobs)]
 
-        for i in range(numParallelJobs):
-            procs[i].start()
+        # for i in range(numParallelJobs):
+            # procs[i].start()
 
-        numJobsStarted=numParallelJobs
-        lastJobStarted=numParallelJobs-1# contains the id (0 based indexing of the last job started)
-
+        numJobsStarted=0
+        lastJobStarted=-1# contains the id (0 based indexing of the last job started)
         while True:
             if(numJobsStarted >= numMaxJobs):# >= instead of == just to be on safe side
                 break
-            time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
             with lock:
                 count = 0
                 while count < numParallelJobs and lastJobStarted < nextjobid.value:
@@ -83,6 +81,7 @@ def pingServer():
                     numJobsStarted+=1
                     count = count + 1
 
+            time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
 
 
 

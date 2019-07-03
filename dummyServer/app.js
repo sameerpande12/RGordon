@@ -30,7 +30,7 @@ var sigma_cwnd=[0,0,0,0,0]
 var cwnd = [0,0,0,0,0]
 var emuDrop=[100000,100000,100000,100000,100000]
 var rtt = [1,1,1,1,1]
-var numRTTs=[5,5,5,5,5]
+var numRTTs=[5,50,5,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
@@ -179,7 +179,7 @@ app.post('/api/worker/update',function(req,res){
     }
   }
   console.log(index)
-  console.log(req.body.url)
+  // console.log(req.body.url)
 
 
     if(req.body.cwnd > 80 && !assigned[index]){
