@@ -1,4 +1,4 @@
-sudo sysctl net.ipv4.tcp_sack=0
+#sudo sysctl net.ipv4.tcp_sack=0
 sudo ifconfig ingress mtu 100
 ip="$(ifconfig | grep -A 1 'ingress' | tail -1 | cut -d ':' -f 2 | cut -d ' ' -f 1)"
 # echo $MAHIMAHI_BASE >> a.txt
