@@ -11,18 +11,18 @@ from urllib.request import urlopen
 from urllib.error import HTTPError
 import re
 import sys
+from multiprocessing import Process,Value,Lock
 # domain = 'http://10.255.255.1:4000'
-domain = 'http://137.132.83.199:4000'
-# domain = 'http://localhost:3000'
+# domain = 'http://137.132.83.199:4000'
+domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
 numParallelJobs=2
 
 path="/api/worker/job"
-#isFree=True;
+
 minimumTrials=5
 threshold=80
 defaultEmu=100000
-
 
 def pingServer():
     postData={'viewpoint':"Singapore"}
@@ -31,24 +31,36 @@ def pingServer():
     response=response.json()
     print(response)
     if(response['message']=='JOB'):
-        #print(len(response['data']))
-        jobNum=0
+        numParallelJobs=2
+        numMaxJobs= len(response['data'])
+        lock=Lock()
+        nextjobid=Value('i',numParallelJobs-1)#set for initializing the initial batche to the numParallel job size
+        procs=[Process(target=runJob,args=(i,response['data'],nextjobid,lock)) for i in range(numMaxJobs)]
+
+
+        numJobsStarted=0
+        lastJobStarted=-1# contains the id (0 based indexing of the last job started)
         while True:
-            if(jobNum >= len(response['data'])):
+            if(numJobsStarted >= numMaxJobs):# >= instead of == just to be on safe side
                 break
-            pool = mp.Pool(max(mp.cpu_count(), 5))
-            r=[pool.apply_async(runJob,args=[i+jobNum,response['data']]) for i in range(numParallelJobs)]
-            p=[x.wait() for x in r]
-            pool.close()
-            subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
-            jobNum=jobNum+numParallelJobs
-        #for i in range(len(response['data'])):
-        #    print("Calling RunJob "+str(i))
-        #    runJob(i,response['data'])
+            with lock:
+                count = 0
+                while count < numParallelJobs and lastJobStarted < nextjobid.value:
+                    if(lastJobStarted >= numMaxJobs-1):
+                        numJobsStarted=numMaxJobs
+                        break
+                    lastJobStarted+=1
+                    procs[lastJobStarted].start()
+                    numJobsStarted+=1
+                    count = count + 1
+
+            time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
 
 
-def runJob(i,data):
-    # print("Entered runJob "+str(i))
+
+def runJob(i,data,nextjobid,lock):
+    print("Entered runJob "+str(i))
+    maxJobID=len(data)-1
     if i<len(data):
         startRTT=int(data[i]['startRTT'])
         # print("startRTT %d" %(startRTT))
@@ -124,13 +136,18 @@ def runJob(i,data):
                 # trials = getNewNumTrials(trials,jobID)
                 # subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
                 postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
-                print(postData)
+                # print(postData)
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
             if(toBreak):
                 break
             rnum=rnum+1
+        ### END OF ALL QUERIED RTTS OF THE GIVEN URL
+        with lock:
+            if(nextjobid.value <= maxJobID):
+                nextjobid.value=nextjobid.value+1
+
 
 def getNewNumTrials(trials,jobID):
 
@@ -180,7 +197,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         #subprocess.call(["sudo sysctl -w net.ipv4.ip_forward=1"],shell=True,executable='/bin/bash')
         #subprocess.call(["sudo sysctl net.ipv4.tcp_sack=0"],shell=True,executable='/bin/bash')
         #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
-        subprocess.call(["sudo rm ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
+        subprocess.call(["sudo rm -f ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
         def runTrial(Trial_Number):
             # print("entering trial "+str(Trial_Number))
             try:
