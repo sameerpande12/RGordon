@@ -173,7 +173,7 @@ app.post('/api/worker/update',function(req,res){
   console.log("received update");
   // console.log(req.body);
   index=0
-  for ( iter = 0;iter< batchSize;iter++){
+  for ( index = 0;index< batchSize;index++){
     if(req.body.url == url[index]){
       break;
     }
@@ -203,7 +203,7 @@ app.post('/api/worker/updateError',function(req,res){
   console.log("received error");
   // console.log(req.body);
   index=0
-  for ( iter = 0;iter< batchSize;iter++){
+  for ( index = 0;index< batchSize;index++){
     if(req.body.url == url[index]){
       break;
     }
@@ -232,7 +232,7 @@ app.post('/api/worker/complete',function(req,res){
   console.log("received-> COMPLETE");
   // console.log(req.body);
   index=0
-  for ( iter = 0;iter< batchSize;iter++){
+  for ( index = 0;index< batchSize;index++){
     if(req.body.url == url[index]){
       break;
     }

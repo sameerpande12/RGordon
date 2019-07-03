@@ -170,9 +170,10 @@ def runJob(i,data,nextjobid,lock):
             if(toBreak):
                 break
             rnum=rnum+1
-            with lock:
-                if(nextjobid.value <= maxJobID):
-                    nextjobid.value=nextjobid.value+1
+        ### END OF ALL QUERIED RTTS OF THE GIVEN URL
+        with lock:
+            if(nextjobid.value <= maxJobID):
+                nextjobid.value=nextjobid.value+1
 
 
 def getNewNumTrials(trials,jobID):
