@@ -56,11 +56,11 @@ def pingServer():
         #     pool.close()
         #     subprocess.call(["./clean.sh"],shell=True,executable='/bin/bash')
         #     jobNum=jobNum+numParallelJobs
-        global numParallelJobs
+        numParallelJobs=2
         numMaxJobs= len(response['data'])
         lock=Lock()
         nextjobid=Value('i',numParallelJobs)
-        procs=[Process(target=run,args=(i,response['data'],nextjobid,lock)) for i in range(numMaxJobs)]
+        procs=[Process(target=runJob,args=(i,response['data'],nextjobid,lock)) for i in range(numMaxJobs)]
 
         for i in range(numParallelJobs):
             procs[i].start()
@@ -86,8 +86,8 @@ def pingServer():
 
 
 
-def runJob(i,data,nextJobID,nextjobid,lock):
-    # print("Entered runJob "+str(i))
+def runJob(i,data,nextjobid,lock):
+    print("Entered runJob "+str(i))
     maxJobID=len(data)-1
     if i<len(data):
         startRTT=int(data[i]['startRTT'])
@@ -171,8 +171,8 @@ def runJob(i,data,nextJobID,nextjobid,lock):
                 break
             rnum=rnum+1
             with lock:
-                if(nextJobID.value <= maxJobID):
-                    nextJobID.value=nextJobID.value+1
+                if(nextjobid.value <= maxJobID):
+                    nextjobid.value=nextjobid.value+1
 
 
 def getNewNumTrials(trials,jobID):

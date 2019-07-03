@@ -179,6 +179,7 @@ app.post('/api/worker/update',function(req,res){
     }
   }
   console.log(index)
+  console.log(req.body.url)
 
 
     if(req.body.cwnd > 80 && !assigned[index]){
