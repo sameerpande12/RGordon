@@ -19,3 +19,17 @@ mobile.gmarket-5.csv http://mobile.gmarket.co.kr/ 40 25 2000 3000 25 16 1500
 mobile.gmarket-6.csv http://mobile.gmarket.co.kr/ 40 100 2000 3000 100 67 1500
 mobile.gmarket-7.csv http://mobile.gmarket.co.kr/ 40 50 1000 1500 100 67 1500
 archives.ndtv-7.csv http://archives.ndtv.com/articles/2012-03.html 40 50 1000 1500 100 67 1500
+stock.17ok-3.csv http://stock.17ok.com/news/335/2007/1018/219659.html 40 50 2000 3000 50 33 1500
+stock.17ok-4.csv http://stock.17ok.com/news/335/2007/1018/219659.html 40 50 4000 6000 25 16 1500
+community.weebly-3.csv https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 40 50 2000 3000 50 33 1500
+community.weebly-4.csv https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 40 50 4000 6000 25 16 1500
+community.weebly-5.csv https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 40 25 2000 3000 25 16 1500
+community.weebly-6.csv https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 40 100 2000 3000 100 67 1500
+community.weebly-7.csv https://community.weebly.com/t5/ideas/ideaprintpage/blog-id 40 50 1000 1500 100 67 1500
+music.kapanlagi-3.csv https://musik.kapanlagi.com/ 40 50 2000 3000 50 33 1500
+music.kapanlagi-4.csv https://musik.kapanlagi.com/ 40 50 4000 6000 25 16 1500
+music.kapanlagi-5.csv https://musik.kapanlagi.com/ 40 25 2000 3000 25 16 1500
+music.kapanlagi-6.csv https://musik.kapanlagi.com/ 40 100 2000 3000 100 67 1500
+music.kapanlagi-7.csv https://musik.kapanlagi.com/ 40 50 1000 1500 100 67 1500
+marketing.rbc.ru-3.csv https://marketing.rbc.ru/landings/36/ 40 50 2000 3000 50 33 1500
+marketing.rbc.ru-4.csv https://marketing.rbc.ru/landings/36/ 40 50 4000 6000 25 16 1500
