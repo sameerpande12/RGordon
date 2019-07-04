@@ -26,58 +26,74 @@ var chancesLeft1 = 5;
 var url1 = "https://www.youtube.com";
 */
 
-var sigma_cwnd1 = 0;
-var cwnd1 = 0;
-var emuDrop1 = 100000;
-var rtt1 = 0;
-var assigned1 = false;
-var trials1 = 10;
-var mtu1=100;
-var chancesLeft1 = 5;
-var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-// var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
-// var url1 = 'https://dll.z1.fm/music/9/b9/chotkij_paca_-_taksist_(zf.fm).mp3?download=force';
+var sigma_cwnd=[0,0,0,0,0]
+var cwnd = [0,0,0,0,0]
+var emuDrop=[100000,100000,100000,100000,100000]
+var rtt = [1,1,1,1,1]
+var numRTTs=[5,50,5,50,5]
+var assigned = [false,false,false,false,false]
+var trials = [10,10,10,10,10,10]
+var chancesLeft=[5,5,5,5,5]
+var url = ["https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
+"https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/",
+"https://www.youtube.com/",
+"https://ja-jp.facebook.com/",
+"https://twitter.com/hashtag/ArtistToFollow?src=hash"
+]
 
-
-var sigma_cwnd2 = 0;
-var cwnd2 = 0;
-var emuDrop2 = 100000;
-var rtt2 = 0;
-var assigned2 = false;
-var trials2 = 10;
-var chancesLeft2 = 5;
-var url2 ="https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl";
-
-var sigma_cwnd3 = 0;
-var cwnd3 = 0;
-var emuDrop3 = 100000;
-var rtt3 = 0;
-var assigned3 = false;
-var trials3 = 10;
-var chancesLeft3 = 5;
-// var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-var url3="https://hao.360.cn/";
-
-
-var sigma_cwnd4 = 0;
-var cwnd4 = 0;
-var emuDrop4 = 100000;
-var rtt4 = 0;
-var assigned4 = false;
-var trials4 = 10;
-var chancesLeft4 = 5;
-// var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
-var url4="http://iptorrents.com";
-
-
-var sigma_cwnd5 = 0;
-var cwnd5 = 0;
-var emuDrop5 = 100000;
-var rtt5 = 0;
-var assigned5 = false;
-var trials5 = 10;
-var chancesLeft5 = 5;
-var url5="https://hao.360.cn/";
+var batchSize=5
+// var sigma_cwnd1 = 0;
+// var cwnd1 = 0;
+// var emuDrop1 = 100000;
+// var rtt1 = 1;
+// var assigned1 = false;
+// var trials1 = 10;
+// var chancesLeft1 = 5;
+// // var url1 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+// // var url1="http://caprica.d2.comp.nus.edu.sg/test.txt";
+// // var url1 = 'https://dll.z1.fm/music/9/b9/chotkij_paca_-_taksist_(zf.fm).mp3?download=force';
+// var url1 = 'https://nl.xhamster.com/users/oceanbreeze833';
+//
+//
+// var sigma_cwnd2 = 0;
+// var cwnd2 = 0;
+// var emuDrop2 = 100000;
+// var rtt2 = 0;
+// var assigned2 = false;
+// var trials2 = 10;
+// var chancesLeft2 = 5;
+// var url2 ="https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl";
+//
+// var sigma_cwnd3 = 0;
+// var cwnd3 = 0;
+// var emuDrop3 = 100000;
+// var rtt3 = 0;
+// var assigned3 = false;
+// var trials3 = 10;
+// var chancesLeft3 = 5;
+// // var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+// var url3="https://hao.360.cn/";
+//
+//
+// var sigma_cwnd4 = 0;
+// var cwnd4 = 0;
+// var emuDrop4 = 100000;
+// var rtt4 = 0;
+// var assigned4 = false;
+// var trials4 = 10;
+// var chancesLeft4 = 5;
+// // var url3 = "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/";
+// var url4="http://iptorrents.com";
+//
+//
+// var sigma_cwnd5 = 0;
+// var cwnd5 = 0;
+// var emuDrop5 = 100000;
+// var rtt5 = 0;
+// var assigned5 = false;
+// var trials5 = 10;
+// var chancesLeft5 = 5;
+// var url5="https://hao.360.cn/";
 
 
 
@@ -87,33 +103,62 @@ app.post('/api/worker/job',function(req,res){
     message:'JOB',
     //url:"www.google.co.in/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA#imgrc=_",
     data:[{
-      //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
-      //url:"https://sg.yahoo.com/?p=us",
-    url:url1,
+    url:url[0],
     viewpoint:req.body.viewpoint,
-    sigma_cwnd:sigma_cwnd1.toString(),
-    cwnd:cwnd1.toString(),
-    startRTT:rtt1.toString(),
-    endRTT:(rtt1+4).toString(),
-    trials:trials1.toString(),
-    start_emudrop:emuDrop1.toString(),
-    chances_left:chancesLeft1.toString(),
-    mtu:mtu1.toString()
-  }
- /*,   {
-      //url:" https://www.google.com.ph/search?q=Valdemar+Poulsen&sa=X&hl=en&tbm=isch&source=iu&ictx=1&fir=AkQRON4e7zgjWM%253A%252Ch3kyesQBUnEicM%252C_&usg=AI4_-kSPFA-FLXL_4qaZP2B7aL3UDKH2Ew&ved=2ahUKEwjRgfT4tereAhXCb30KHQL9DEgQ_h0wEnoECAYQCA&gws_rd=ssl",
-      //url:"https://sg.yahoo.com/?p=us",
-    url:url2,
-    viewpoint:req.body.viewpoint,
-    sigma_cwnd:sigma_cwnd2.toString(),
-    cwnd:cwnd2.toString(),
-    startRTT:rtt2.toString(),
-    endRTT:(rtt2+4).toString(),
-    trials:trials2.toString(),
-    start_emudrop:emuDrop2.toString(),
-    chances_left:chancesLeft2.toString()
-  }
-*/
+    sigma_cwnd:sigma_cwnd[0].toString(),
+    cwnd:cwnd[0].toString(),
+    startRTT:rtt[0].toString(),
+    endRTT:(rtt[0]+numRTTs[0]-1).toString(),
+    trials:trials[0].toString(),
+    start_emudrop:emuDrop[0].toString(),
+    chances_left:chancesLeft[0].toString()
+    }
+    ,
+        {
+       url:url[1],
+       viewpoint:req.body.viewpoint,
+       sigma_cwnd:sigma_cwnd[1].toString(),
+       cwnd:cwnd[1].toString(),
+       startRTT:rtt[1].toString(),
+       endRTT:(rtt[1]+numRTTs[1]-1).toString(),
+       trials:trials[1].toString(),
+       start_emudrop:emuDrop[1].toString(),
+       chances_left:chancesLeft[1].toString()
+        }
+      ,
+      {
+      url:url[2],
+      viewpoint:req.body.viewpoint,
+      sigma_cwnd:sigma_cwnd[2].toString(),
+      cwnd:cwnd[2].toString(),
+      startRTT:rtt[2].toString(),
+      endRTT:(rtt[2]+numRTTs[2]-1).toString(),
+      trials:trials[2].toString(),
+      start_emudrop:emuDrop[2].toString(),
+      chances_left:chancesLeft[2].toString()
+      },
+      {
+      url:url[3],
+      viewpoint:req.body.viewpoint,
+      sigma_cwnd:sigma_cwnd[3].toString(),
+      cwnd:cwnd[3].toString(),
+      startRTT:rtt[3].toString(),
+      endRTT:(rtt[3]+numRTTs[3]-1).toString(),
+      trials:trials[3].toString(),
+      start_emudrop:emuDrop[3].toString(),
+      chances_left:chancesLeft[3].toString()
+      },
+      {
+      url:url[4],
+      viewpoint:req.body.viewpoint,
+      sigma_cwnd:sigma_cwnd[4].toString(),
+      cwnd:cwnd[4].toString(),
+      startRTT:rtt[4].toString(),
+      endRTT:(rtt[4]+numRTTs[4]-1).toString(),
+      trials:trials[4].toString(),
+      start_emudrop:emuDrop[4].toString(),
+      chances_left:chancesLeft[4].toString()
+      }
    ]
   });
 
@@ -125,72 +170,57 @@ app.post('/api/worker/job',function(req,res){
 
 
 app.post('/api/worker/update',function(req,res){
-  // console.log("received");
+  console.log("received update");
   // console.log(req.body);
-
-  if(req.body.url==url1){
-        if(req.body.cwnd > 80 && !assigned1){
-            emuDrop1 = sigma_cwnd1;
-            assigned1 = true;
-        }
-          sigma_cwnd1 = req.body.sigma_cwnd;
-          cwnd1 = req.body.cwnd;
-          trials1=req.body.max_trials;
-          console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt1);
-          rtt1 = rtt1+1;
-          //chancesLeft1 = 5;
+  index=0
+  for ( index = 0;index< batchSize;index++){
+    if(req.body.url == url[index]){
+      break;
     }
-    else {
-      if(req.body.cwnd > 80 && !assigned1){
-          emuDrop2 = sigma_cwnd2;
-          assigned2 = true;
-      }
-        sigma_cwnd2 = req.body.sigma_cwnd;
-        cwnd2 = req.body.cwnd;
-        rtt2 = rtt2+1;
-        console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt2);
-        //chancesLeft2 = 5;
+  }
+  console.log(index)
+  // console.log(req.body.url)
 
+
+    if(req.body.cwnd > 80 && !assigned[index]){
+        emuDrop[index] = sigma_cwnd[index];
+        assigned[index] = true;
     }
+      sigma_cwnd[index] = req.body.sigma_cwnd;
+      cwnd[index] = req.body.cwnd;
+      trials[index]=req.body.max_trials;
+      console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt[index]);
+      rtt[index] = rtt[index]+1;
+      //chancesLeft1 = 5;
+
+
     res.status(200);
     res.json({fname:"Data updated successfully"});
     res.end();
 })
 
 app.post('/api/worker/updateError',function(req,res){
-  // console.log("received");
+  console.log("received error");
   // console.log(req.body);
-     chancesLeft1 = parseInt(req.body.chances_left);
-     if(req.body.url == url1){
-         if(chancesLeft1 < 1){
-           sigma_cwnd1 = 0;
-           cwnd1 = 0;
-           rtt1= 1;
-           chancesLeft1 = 5;
-           emu1 = 100000;
-           assigned1 = false;
+  index=0
+  for ( index = 0;index< batchSize;index++){
+    if(req.body.url == url[index]){
+      break;
+    }
+  }
+  console.log(index)
+     chancesLeft[index] = parseInt(req.body.chances_left);
 
-         }
-       }
-       else{
-         if(chancesLeft2 < 1){
-           sigma_cwnd2 = 0;
-           cwnd2 = 0;
-           rtt2= 1;  if(req.body.cwnd > 80 && !assigned1){
-            emuDrop1 = sigma_cwnd1;
-            assigned1 = true;
-        }
-          sigma_cwnd1 = req.body.sigma_cwnd;
-          cwnd1 = req.body.cwnd;
-          rtt1 = rtt1+1;
-          chancesLeft1 = 5;
-           chancesLeft2 = 5;
-           emuDrop2 = 100000;
-           assigned2 = false;
+     if(chancesLeft[index] < 1){
+       sigma_cwnd[index] = 0;
+       cwnd[index] = 0;
+       rtt[index]= 1;
+       chancesLeft[index] = 5;
+       emu[index] = 100000;
+       assigned[index] = false;
 
-         }
+     }
 
-       }
 
       res.status(200);
       res.json({fname:"updated error"});
@@ -200,29 +230,27 @@ app.post('/api/worker/updateError',function(req,res){
 
 app.post('/api/worker/complete',function(req,res){
   console.log("received-> COMPLETE");
-  console.log(req.body);
-   if(req.body.url == url1){
-       sigma_cwnd1 = 0;
-       cwnd1 = 0;
-       rtt1= 1;
-       chancesLeft1 = 5;
-       emuDrop1 = 100000;
-       assigned1 = false;
-        res.status(200);
-        res.json({fname:"One communitcation done"});
-        res.end();
+  // console.log(req.body);
+  index=0
+  for ( index = 0;index< batchSize;index++){
+    if(req.body.url == url[index]){
+      break;
     }
-    else{
-      sigma_cwnd2 = 0;
-      cwnd2 = 0;
-      rtt2= 1;
-      chancesLeft2 = 5;
-      emuDrop2 = 100000;
-      assigned2 = false;
-       res.status(200);
-       res.json({fname:"One communitcation done"});
-       res.end();
-    }
+  }
+  console.log(index)
+
+
+   sigma_cwnd[index] = 0;
+   cwnd[index] = 0;
+   rtt[index]= 1;
+   chancesLeft[index] = 5;
+   emuDrop[index] = 100000;
+   assigned[index] = false;
+    res.status(200);
+    res.json({fname:"One communitcation done"});
+    res.end();
+
+
 })
 
 
