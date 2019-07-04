@@ -55,7 +55,8 @@ def pingServer():
                     count = count + 1
 
             time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
-
+        for p in procs:
+            p.join()
 
 
 def runJob(i,data,nextjobid,lock):
@@ -123,6 +124,26 @@ def runJob(i,data,nextjobid,lock):
             if (values[1] == 0):
                 toBreak=True
                 chances_left=chances_left-1
+
+
+                subprocess.call(["wget --no-check-certificate -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages"+str(jobID)+"/index.html -T 10 \""+url+"\""],shell=True,executable='/bin/bash')
+                page_size = os.path.getsize("indexPages"+str(jobID)+"/index.html")
+                print("Expected page size:-"+str(page_size))
+                max_size=0
+                for i in range(trials):
+                    try:
+                        temp_size = os.path.getsize("indexPages"+str(jobID)+"/indexPage"+str(i))
+                        if(temp_size > max_size):
+                            max_size=temp_size
+                    except Exception as e:
+                        print(e)
+                if(page_size == 0 or max_size < 0.6 * page_size):
+                    postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+                    path='/api/worker/updateError'
+                else:
+                    postData={'last_rtt_done':str(rnum),'viewpoint':viewPoint,'url':url}
+                    path = '/api/worker/complete'
+
                 postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
                 path='/api/worker/updateError'
 
@@ -199,7 +220,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
         subprocess.call(["sudo rm -f ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
         def runTrial(Trial_Number):
-            # print("entering trial "+str(Trial_Number))
+            print("entering trial "+str(Trial_Number))
             try:
                 subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+str(sigma_cwnd)+ " "+str(cwnd) + " "+str(rtt)+" "+str(emuDrop)+" "+str(jobID)+" "+str(mtu)+" >> Logs"+str(jobID)+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
                 # print("Exitting trial " +str(Trial_Number))
@@ -209,6 +230,10 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         for i in range(numTrials):
             runTrial(i)
             # print("Exitted trial "+str(i))
+        history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
+        subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
+        subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
+
         windows = list()
         counter=0
         for i in range(numTrials):

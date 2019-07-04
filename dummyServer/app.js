@@ -35,14 +35,18 @@ var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
 var mtu = [100,100,100,100,100]
-var url = ["https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
+var url = [
+"http://yts.am",
+//"https://download1892.mediafire.com/p99uu2k135hg/trfwrzkc3211b71/Hrvrd+-+French+Girls.mp3",
+//"https://cz.pornhub.com/view_video.php?viewkey=ph5c5227d1350e6",
+//"https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
 "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/",
 "https://www.youtube.com/",
 "https://ja-jp.facebook.com/",
 "https://twitter.com/hashtag/ArtistToFollow?src=hash"
 ]
 
-var batchSize=5
+var batchSize=1
 // var sigma_cwnd1 = 0;
 // var cwnd1 = 0;
 // var emuDrop1 = 100000;
@@ -115,7 +119,7 @@ app.post('/api/worker/job',function(req,res){
     chances_left:chancesLeft[0].toString(),
     mtu:mtu[0].toString()
     }
-    ,
+  /*  ,
         {
        url:url[1],
        viewpoint:req.body.viewpoint,
@@ -164,7 +168,7 @@ app.post('/api/worker/job',function(req,res){
       start_emudrop:emuDrop[4].toString(),
       chances_left:chancesLeft[4].toString(),
       mtu:mtu[4].toString()
-      }
+    }*/
    ]
   });
 
@@ -222,7 +226,7 @@ app.post('/api/worker/updateError',function(req,res){
        cwnd[index] = 0;
        rtt[index]= 1;
        chancesLeft[index] = 5;
-       emu[index] = 100000;
+       emuDrop[index] = 100000;
        assigned[index] = false;
 
      }
