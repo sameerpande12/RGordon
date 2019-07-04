@@ -34,6 +34,7 @@ var numRTTs=[5,50,5,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
+var mtu = [100,100,100,100,100]
 var url = ["https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
 "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/",
 "https://www.youtube.com/",
@@ -111,7 +112,8 @@ app.post('/api/worker/job',function(req,res){
     endRTT:(rtt[0]+numRTTs[0]-1).toString(),
     trials:trials[0].toString(),
     start_emudrop:emuDrop[0].toString(),
-    chances_left:chancesLeft[0].toString()
+    chances_left:chancesLeft[0].toString(),
+    mtu:mtu[0].toString()
     }
     ,
         {
@@ -123,7 +125,8 @@ app.post('/api/worker/job',function(req,res){
        endRTT:(rtt[1]+numRTTs[1]-1).toString(),
        trials:trials[1].toString(),
        start_emudrop:emuDrop[1].toString(),
-       chances_left:chancesLeft[1].toString()
+       chances_left:chancesLeft[1].toString(),
+	mtu:mtu[1].toString()
         }
       ,
       {
@@ -135,7 +138,8 @@ app.post('/api/worker/job',function(req,res){
       endRTT:(rtt[2]+numRTTs[2]-1).toString(),
       trials:trials[2].toString(),
       start_emudrop:emuDrop[2].toString(),
-      chances_left:chancesLeft[2].toString()
+      chances_left:chancesLeft[2].toString(),
+      mtu:mtu[2].toString()
       },
       {
       url:url[3],
@@ -146,7 +150,8 @@ app.post('/api/worker/job',function(req,res){
       endRTT:(rtt[3]+numRTTs[3]-1).toString(),
       trials:trials[3].toString(),
       start_emudrop:emuDrop[3].toString(),
-      chances_left:chancesLeft[3].toString()
+      chances_left:chancesLeft[3].toString(),
+      mtu:mtu[3].toString()
       },
       {
       url:url[4],
@@ -157,7 +162,8 @@ app.post('/api/worker/job',function(req,res){
       endRTT:(rtt[4]+numRTTs[4]-1).toString(),
       trials:trials[4].toString(),
       start_emudrop:emuDrop[4].toString(),
-      chances_left:chancesLeft[4].toString()
+      chances_left:chancesLeft[4].toString(),
+      mtu:mtu[4].toString()
       }
    ]
   });
