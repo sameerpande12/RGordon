@@ -55,7 +55,8 @@ def pingServer():
                     count = count + 1
 
             time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
-
+        for p in procs:
+            p.join()
 
 
 def runJob(i,data,nextjobid,lock):
