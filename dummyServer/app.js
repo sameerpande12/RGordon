@@ -34,7 +34,7 @@ var numRTTs=[5,50,5,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
-var mtu = [100,100,100,100,100]
+var mtu = [-1,100,100,100,100]
 var url = [
 "http://microsoftonline.com",
 "http://yts.am",
