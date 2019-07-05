@@ -47,7 +47,7 @@ var url = [
 "https://twitter.com/hashtag/ArtistToFollow?src=hash"
 ]
 
-var batchSize=2
+var batchSize=5
 // var sigma_cwnd1 = 0;
 // var cwnd1 = 0;
 // var emuDrop1 = 100000;
@@ -133,7 +133,7 @@ app.post('/api/worker/job',function(req,res){
        chances_left:chancesLeft[1].toString(),
 	mtu:mtu[1].toString()
         }
-  /*    ,
+      ,
       {
       url:url[2],
       viewpoint:req.body.viewpoint,
@@ -169,7 +169,7 @@ app.post('/api/worker/job',function(req,res){
       start_emudrop:emuDrop[4].toString(),
       chances_left:chancesLeft[4].toString(),
       mtu:mtu[4].toString()
-    }*/
+    }
    ]
   });
 
