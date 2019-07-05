@@ -23,9 +23,9 @@ path="/api/worker/job"
 minimumTrials=5
 threshold=80
 defaultEmu=100000
-
+viewPoint="Singapore"
 def pingServer():
-    postData={'viewpoint':"Singapore"}
+    postData={'viewpoint':viewPoint}
     headers={'Content-type':'application/json','Accept':'text/plain'}
     response = requests.post(domain+path,data=json.dumps(postData),headers=headers)
     response=response.json()
