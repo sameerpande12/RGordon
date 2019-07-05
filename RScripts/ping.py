@@ -126,9 +126,9 @@ def runJob(i,data,nextjobid,lock):
                 chances_left=chances_left-1
 
 
-                subprocess.call(["wget --no-check-certificate -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages"+str(jobID)+"/index.html -T 10 \""+url+"\""],shell=True,executable='/bin/bash')
-                page_size = os.path.getsize("indexPages"+str(jobID)+"/index.html")
-                print("Expected page size:-"+str(page_size))
+                # subprocess.call(["wget --no-check-certificate -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages"+str(jobID)+"/index.html -T 10 \""+url+"\""],shell=True,executable='/bin/bash')
+                # page_size = os.path.getsize("indexPages"+str(jobID)+"/index.html")
+                # print("Expected page size:-"+str(page_size))
                 max_size=0
                 for i in range(trials):
                     try:
@@ -137,7 +137,8 @@ def runJob(i,data,nextjobid,lock):
                             max_size=temp_size
                     except Exception as e:
                         print(e)
-                if(page_size == 0 or max_size < 0.6 * page_size):
+                print("For rtt="+str(j)+" max_page size ="+str(max_size))
+                if( max_size ==0 ):
                     postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
                     path='/api/worker/updateError'
                 else:
