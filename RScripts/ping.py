@@ -60,7 +60,7 @@ def pingServer():
 
 
 def runJob(i,data,nextjobid,lock):
-    # print("Entered runJob "+str(i))
+    print("Entered runJob "+str(i))
     maxJobID=len(data)-1
     if i<len(data):
         startRTT=int(data[i]['startRTT'])
@@ -98,14 +98,14 @@ def runJob(i,data,nextjobid,lock):
                 mtu = -1
 
         if(mtu==-1):
-            print("Returning error because faulty website")
+            print("Returning error because faulty website jobID-{}".format(jobID))
             postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
             path='/api/worker/updateError'
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
-            print("mtu test for 1500 successful. Testing for {} value".format(mtu))
+            print("mtu test for 1500 successful. Testing for {} value for job {}".format(mtu,jobID))
             try:
                 response = subprocess.check_output(
                     ['ping', '-c', '1', url],
@@ -194,18 +194,18 @@ def getMinMTU(url,lower_lim,upper_lim):
     if(lower_lim == upper_lim):
         return lower_lim
     midMTU = (int)((lower_lim + upper_lim)/2)
-    print("About to test for {}".format(midMTU))
+    # print("About to test for {}".format(midMTU))
     isValidMTU= True
     try:
         subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {}".format(midMTU,url,2),shell=True,executable='/bin/bash')
-        print("Successful Test")
+        # print("Successful Test")
     except Exception as e:
         #print(e)
-        print("Failed Test")
+        # print("Failed Test")
         isValidMTU=False
 
     if(isValidMTU):
-        print("Calling for {}, {}".format(lower_lim,midMTU))
+        # print("Calling for {}, {}".format(lower_lim,midMTU))
         return getMinMTU(url,lower_lim,midMTU)
     else:
         print("Calling for {}, {}".format(midMTU+1,upper_lim))
