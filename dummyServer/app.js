@@ -34,7 +34,7 @@ var numRTTs=[5,50,5,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
-var mtu = [-1,100,100,100,100]
+var mtu = [-1,-1,-1,-1,-1]
 var url = [
 "http://microsoftonline.com",
 "http://yts.am",
@@ -202,6 +202,7 @@ app.post('/api/worker/update',function(req,res){
       trials[index]=req.body.max_trials;
       console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt[index]);
       rtt[index] = rtt[index]+1;
+      mtu[index]=req.body.mtu
       //chancesLeft1 = 5;
 
 
@@ -257,6 +258,7 @@ app.post('/api/worker/complete',function(req,res){
    chancesLeft[index] = 5;
    emuDrop[index] = 100000;
    assigned[index] = false;
+   mtu[index]=req.body.mtu
     res.status(200);
     res.json({fname:"One communitcation done"});
     res.end();
