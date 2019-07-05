@@ -81,6 +81,7 @@ def runJob(i,data,nextjobid,lock):
         # print("url "+ url)
         mtu = int(data[i]['mtu'])
         viewPoint=data[i]['viewpoint']
+
         rnum=startRTT
         jobID=i
         rnum=startRTT
@@ -88,66 +89,127 @@ def runJob(i,data,nextjobid,lock):
         targetURL=url
         response=None
         delayTime=50
-        try:
-            response = subprocess.check_output(
-                ['ping', '-c', '1', url],
-                stderr=subprocess.STDOUT,  # get all output
-                universal_newlines=True  # return string not bytes
-            )
-        except subprocess.CalledProcessError:
-            response = None
 
-        if response == None:
-            pingTime = -1
-        else:
-            pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
+        if(mtu==-1):
+            try:
+                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
+                mtu=getMinMTU(url,68,1500,jobID)
+            except Exception as e:
+                mtu = -1
 
-        if int(pingTime/2) >= 50:
-            delayTime = 1
-        elif pingTime == -1:
-            delayTime = 50
-        else:
-            delayTime = 50 - int(pingTime/2)
-
-
-        for j in range(endRTT-startRTT+1):
-            # print("Calling Calculate")
-            calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime),(mtu))
-            infile="./RData"+str(jobID)+"/windows"+".csv"
-            read=open(infile,'r')
-            line=[int (x) for x in read.readline().split(' ')]
-            values=line
-            print(line)
-            postData=''
-            path=''
-            toBreak=False
-            if (values[1] == 0):
-                toBreak=True
-                chances_left=chances_left-1
-                postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
-                path='/api/worker/updateError'
-
-            else:
-                path='/api/worker/update'
-                if(emuDrop==defaultEmu):
-                    if(values[1]>threshold):
-                        emuDrop=sigma_cwnd
-                cwnd=values[1]
-                sigma_cwnd=values[0]
-                # trials = getNewNumTrials(trials,jobID)
-                # subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
-                postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
-                # print(postData)
+        if(mtu==-1):
+            print("Returning error because faulty website jobID-{}".format(jobID))
+            postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+            path='/api/worker/updateError'
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
-            if(toBreak):
-                break
-            rnum=rnum+1
-        ### END OF ALL QUERIED RTTS OF THE GIVEN URL
+        else:## all this done only in the case of valid mtu is possible
+            print("mtu test for 1500 successful. Testing for {} value for job {}".format(mtu,jobID))
+            try:
+                response = subprocess.check_output(
+                    ['ping', '-c', '1', url],
+                    stderr=subprocess.STDOUT,  # get all output
+                    universal_newlines=True  # return string not bytes
+                )
+            except subprocess.CalledProcessError:
+                response = None
+
+            if response == None:
+                pingTime = -1
+            else:
+                pingTime = float(re.search('time=.*', response).group().replace(" ms", '')[5:])
+
+            if int(pingTime/2) >= 50:
+                delayTime = 1
+            elif pingTime == -1:
+                delayTime = 50
+            else:
+                delayTime = 50 - int(pingTime/2)
+
+
+            for j in range(endRTT-startRTT+1):
+                # print("Calling Calculate")
+                calculate(url,(trials),(sigma_cwnd),(cwnd),(rnum),(emuDrop),(jobID),(delayTime),(mtu))
+                infile="./RData"+str(jobID)+"/windows"+".csv"
+                read=open(infile,'r')
+                line=[int (x) for x in read.readline().split(' ')]
+                values=line
+                print(line)
+                postData=''
+                path=''
+                toBreak=False
+                if (values[1] == 0):
+                    toBreak=True
+                    chances_left=chances_left-1
+
+
+                    # subprocess.call(["wget --no-check-certificate -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages"+str(jobID)+"/index.html -T 10 \""+url+"\""],shell=True,executable='/bin/bash')
+                    # page_size = os.path.getsize("indexPages"+str(jobID)+"/index.html")
+                    # print("Expected page size:-"+str(page_size))## The idea was dropped because page_size turned out to be zero on single wget for a website which was blocked by NUS but when run multiple times it actually fetched a page in one of 10 trials.
+                    #Hence checking page_size = 0 for single wget is not a good way to chek if the page gives error or not
+                    max_size=0
+                    for i in range(trials):
+                        try:
+                            temp_size = os.path.getsize("indexPages"+str(jobID)+"/indexPage"+str(i))
+                            if(temp_size > max_size):
+                                max_size=temp_size
+                        except Exception as e:
+                            print(e)
+                    print("For rtt="+str(j)+" max_page size ="+str(max_size))
+                    if( max_size ==0 ):
+                        postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+                        path='/api/worker/updateError'
+                    else:
+                        postData={'last_rtt_done':str(rnum),'viewpoint':viewPoint,'url':url,'mtu':str(mtu)}
+                        path = '/api/worker/complete'
+
+                    # postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+                    # path='/api/worker/updateError'
+
+                else:
+                    path='/api/worker/update'
+                    if(emuDrop==defaultEmu):
+                        if(values[1]>threshold):
+                            emuDrop=sigma_cwnd
+                    cwnd=values[1]
+                    sigma_cwnd=values[0]
+                    # trials = getNewNumTrials(trials,jobID)
+                    # subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
+                    postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials),'mtu':str(mtu)}
+                    # print(postData)
+                headers={'Content-type':'application/json','Accept':'text/plain'}
+                #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
+                requests.post(domain+path,data=json.dumps(postData),headers=headers)
+                if(toBreak):
+                    break
+                rnum=rnum+1
+            ### END OF ALL QUERIED RTTS OF THE GIVEN URL
         with lock:
             if(nextjobid.value <= maxJobID):
                 nextjobid.value=nextjobid.value+1
+
+def getMinMTU(url,lower_lim,upper_lim,jobID):
+
+    if(lower_lim == upper_lim):
+        return lower_lim
+    midMTU = (int)((lower_lim + upper_lim)/2)
+    # print("About to test for {}".format(midMTU))
+    isValidMTU= True
+    try:
+        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
+        # print("Successful Test")
+    except Exception as e:
+        #print(e)
+        # print("Failed Test")
+        isValidMTU=False
+
+    if(isValidMTU):
+        # print("Calling for {}, {}".format(lower_lim,midMTU))
+        return getMinMTU(url,lower_lim,midMTU,jobID)
+    else:
+        print("Calling for {}, {}".format(midMTU+1,upper_lim))
+        return getMinMTU(url,midMTU+1,upper_lim,jobID)
 
 
 def getNewNumTrials(trials,jobID):
@@ -210,6 +272,10 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         for i in range(numTrials):
             runTrial(i)
             # print("Exitted trial "+str(i))
+        history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
+        subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
+        subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
+
         windows = list()
         counter=0
         for i in range(numTrials):

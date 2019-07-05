@@ -30,12 +30,17 @@ var sigma_cwnd=[0,0,0,0,0]
 var cwnd = [0,0,0,0,0]
 var emuDrop=[100000,100000,100000,100000,100000]
 var rtt = [1,1,1,1,1]
-var numRTTs=[5,50,5,50,5]
+var numRTTs=[5,5,50,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
-var mtu = [100,100,100,100,100]
-var url = ["https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
+var mtu = [-1,-1,-1,-1,-1]
+var url = [
+"http://microsoftonline.com",
+"http://yts.am",
+//"https://download1892.mediafire.com/p99uu2k135hg/trfwrzkc3211b71/Hrvrd+-+French+Girls.mp3",
+//"https://cz.pornhub.com/view_video.php?viewkey=ph5c5227d1350e6",
+//"https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
 "https://www.reddit.com/r/AskReddit/comments/brlti4/reddit_what_are_some_underrated_apps/",
 "https://www.youtube.com/",
 "https://ja-jp.facebook.com/",
@@ -115,7 +120,7 @@ app.post('/api/worker/job',function(req,res){
     chances_left:chancesLeft[0].toString(),
     mtu:mtu[0].toString()
     }
-    ,
+   ,
         {
        url:url[1],
        viewpoint:req.body.viewpoint,
@@ -164,7 +169,7 @@ app.post('/api/worker/job',function(req,res){
       start_emudrop:emuDrop[4].toString(),
       chances_left:chancesLeft[4].toString(),
       mtu:mtu[4].toString()
-      }
+    }
    ]
   });
 
@@ -197,6 +202,7 @@ app.post('/api/worker/update',function(req,res){
       trials[index]=req.body.max_trials;
       console.log(req.body.sigma_cwnd+" "+req.body.cwnd+" "+rtt[index]);
       rtt[index] = rtt[index]+1;
+      mtu[index]=req.body.mtu
       //chancesLeft1 = 5;
 
 
@@ -222,7 +228,7 @@ app.post('/api/worker/updateError',function(req,res){
        cwnd[index] = 0;
        rtt[index]= 1;
        chancesLeft[index] = 5;
-       emu[index] = 100000;
+       emuDrop[index] = 100000;
        assigned[index] = false;
 
      }
@@ -252,6 +258,7 @@ app.post('/api/worker/complete',function(req,res){
    chancesLeft[index] = 5;
    emuDrop[index] = 100000;
    assigned[index] = false;
+   mtu[index]=req.body.mtu
     res.status(200);
     res.json({fname:"One communitcation done"});
     res.end();
