@@ -60,7 +60,7 @@ def pingServer():
 
 
 def runJob(i,data,nextjobid,lock):
-    print("Entered runJob "+str(i))
+    # print("Entered runJob "+str(i))
     maxJobID=len(data)-1
     if i<len(data):
         startRTT=int(data[i]['startRTT'])
@@ -222,7 +222,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         #subprocess.call(["gcc -Wall -o prober ./probe.c -lnfnetlink -lnetfilter_queue -lpthread -lm"],shell=True,executable='/bin/bash')
         subprocess.call(["sudo rm -f ./RData"+str(jobID)+"/windows*"],shell=True,executable='/bin/bash')
         def runTrial(Trial_Number):
-            print("entering trial "+str(Trial_Number))
+            # print("entering trial "+str(Trial_Number))
             try:
                 subprocess.call(["mm-delay "+ str(delayTime) + " ./runner.sh \""+targetURL+"\" "+str(Trial_Number)+" "+str(sigma_cwnd)+ " "+str(cwnd) + " "+str(rtt)+" "+str(emuDrop)+" "+str(jobID)+" "+str(mtu)+" >> Logs"+str(jobID)+"/log"+str(Trial_Number)], shell=True, executable='/bin/bash')
                 # print("Exitting trial " +str(Trial_Number))
