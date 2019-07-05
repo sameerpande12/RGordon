@@ -92,7 +92,7 @@ def runJob(i,data,nextjobid,lock):
 
         if(mtu==-1):
             try:
-                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
+                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
                 mtu=getMinMTU(url,68,1500,jobID)
             except Exception as e:
                 mtu = -1
@@ -197,7 +197,7 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
     # print("About to test for {}".format(midMTU))
     isValidMTU= True
     try:
-        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
+        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
         # print("Successful Test")
     except Exception as e:
         #print(e)
