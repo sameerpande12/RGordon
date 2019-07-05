@@ -9,6 +9,7 @@ stats*/
 RScripts/prober
 *.log
 log*
+index*
 indexPage*
 npm-debug.log*
 yarn-debug.log*
