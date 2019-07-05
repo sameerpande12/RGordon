@@ -145,8 +145,8 @@ def runJob(i,data,nextjobid,lock):
                     postData={'last_rtt_done':str(rnum),'viewpoint':viewPoint,'url':url}
                     path = '/api/worker/complete'
 
-                postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
-                path='/api/worker/updateError'
+                # postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
+                # path='/api/worker/updateError'
 
             else:
                 path='/api/worker/update'
