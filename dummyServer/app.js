@@ -36,6 +36,7 @@ var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
 var mtu = [100,100,100,100,100]
 var url = [
+"http://microsoftonline.com",
 "http://yts.am",
 //"https://download1892.mediafire.com/p99uu2k135hg/trfwrzkc3211b71/Hrvrd+-+French+Girls.mp3",
 //"https://cz.pornhub.com/view_video.php?viewkey=ph5c5227d1350e6",
