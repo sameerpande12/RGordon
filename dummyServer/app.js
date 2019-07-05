@@ -30,7 +30,7 @@ var sigma_cwnd=[0,0,0,0,0]
 var cwnd = [0,0,0,0,0]
 var emuDrop=[100000,100000,100000,100000,100000]
 var rtt = [1,1,1,1,1]
-var numRTTs=[5,50,5,50,5]
+var numRTTs=[5,5,50,50,5]
 var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
@@ -47,7 +47,7 @@ var url = [
 "https://twitter.com/hashtag/ArtistToFollow?src=hash"
 ]
 
-var batchSize=1
+var batchSize=2
 // var sigma_cwnd1 = 0;
 // var cwnd1 = 0;
 // var emuDrop1 = 100000;
@@ -120,7 +120,7 @@ app.post('/api/worker/job',function(req,res){
     chances_left:chancesLeft[0].toString(),
     mtu:mtu[0].toString()
     }
-  /*  ,
+   ,
         {
        url:url[1],
        viewpoint:req.body.viewpoint,
@@ -133,7 +133,7 @@ app.post('/api/worker/job',function(req,res){
        chances_left:chancesLeft[1].toString(),
 	mtu:mtu[1].toString()
         }
-      ,
+  /*    ,
       {
       url:url[2],
       viewpoint:req.body.viewpoint,
