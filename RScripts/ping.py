@@ -91,14 +91,14 @@ def runJob(i,data,nextjobid,lock):
                 mtu = -1
 
         if(mtu==-1):
-            print("Returning error because faulty website. Testing for {} value".format(mtu))
+            print("Returning error because faulty website")
             postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
             path='/api/worker/updateError'
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
-            print("mtu test for 1500 successful")
+            print("mtu test for 1500 successful. Testing for {} value".format(mtu))
             rnum=startRTT
             jobID=i
             rnum=startRTT
