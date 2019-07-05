@@ -82,10 +82,17 @@ def runJob(i,data,nextjobid,lock):
         mtu = int(data[i]['mtu'])
         viewPoint=data[i]['viewpoint']
 
+        rnum=startRTT
+        jobID=i
+        rnum=startRTT
+
+        targetURL=url
+        response=None
+        delayTime=50
 
         if(mtu==-1):
             try:
-                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {}".format(1500,url,3),shell=True,executable='/bin/bash')
+                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {}".format(1500,url,2),shell=True,executable='/bin/bash')
                 mtu=getMinMTU(url,68,1500)
             except Exception as e:
                 mtu = -1
@@ -99,13 +106,6 @@ def runJob(i,data,nextjobid,lock):
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
             print("mtu test for 1500 successful. Testing for {} value".format(mtu))
-            rnum=startRTT
-            jobID=i
-            rnum=startRTT
-
-            targetURL=url
-            response=None
-            delayTime=50
             try:
                 response = subprocess.check_output(
                     ['ping', '-c', '1', url],
