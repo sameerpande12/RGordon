@@ -80,6 +80,8 @@ def runJob(i,data,nextjobid,lock):
         url=(data[i]['url'])
         # print("url "+ url)
         mtu = int(data[i]['mtu'])
+        if(mtu==-1):
+            mtu=getMinMTU(url,68,1600)
         viewPoint=data[i]['viewpoint']
         rnum=startRTT
         jobID=i
@@ -143,7 +145,7 @@ def runJob(i,data,nextjobid,lock):
                     postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
                     path='/api/worker/updateError'
                 else:
-                    postData={'last_rtt_done':str(rnum),'viewpoint':viewPoint,'url':url}
+                    postData={'last_rtt_done':str(rnum),'viewpoint':viewPoint,'url':url,'mtu':mtu}
                     path = '/api/worker/complete'
 
                 # postData={'last_error':'error','last_rtt_done':str(rnum),'url':url,'chances_left':str(chances_left),'viewpoint':viewPoint}
@@ -158,7 +160,7 @@ def runJob(i,data,nextjobid,lock):
                 sigma_cwnd=values[0]
                 # trials = getNewNumTrials(trials,jobID)
                 # subprocess.call(["echo "+str(trials)+" >> trials.txt"],shell=True,executable='/bin/bash')
-                postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials)}
+                postData={'cwnd':str(values[1]),'sigma_cwnd':str(values[0]),'last_rtt_done':str(values[2]),'url':url,'emudrop':str(emuDrop),'viewpoint':viewPoint,'max_trials':str(trials),'mtu':str(mtu)}
                 # print(postData)
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
@@ -170,6 +172,30 @@ def runJob(i,data,nextjobid,lock):
         with lock:
             if(nextjobid.value <= maxJobID):
                 nextjobid.value=nextjobid.value+1
+
+def getMinMTU(url,lower_lim,upper_lim):
+
+    if(lower_lim == upper_lim):
+        return lower_lim
+    midMTU = (int)((lower_lim + upper_lim)/2)
+    print("About to test for {}".format(midMTU))
+    isValidMTU= True
+    try:
+        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {}".format(midMTU,url),shell=True,executable='/bin/bash')
+        print("Successful Test")
+    except Exception as e:
+        #print(e)
+        print("Failed Test")
+        isValidMTU=False
+
+    if(isValidMTU):
+        print("Calling for {}, {}".format(lower_lim,midMTU))
+        return getMinMTU(url,lower_lim,midMTU)
+    else:
+        if(midMTU+1>1500):
+            return midMTU
+        print("Calling for {}, {}".format(midMTU+1,upper_lim))
+        return getMinMTU(url,midMTU+1,upper_lim)
 
 
 def getNewNumTrials(trials,jobID):
