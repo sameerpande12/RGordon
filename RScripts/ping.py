@@ -92,8 +92,8 @@ def runJob(i,data,nextjobid,lock):
 
         if(mtu==-1):
             try:
-                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {}".format(1500,url,2),shell=True,executable='/bin/bash')
-                mtu=getMinMTU(url,68,1500)
+                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
+                mtu=getMinMTU(url,68,1500,jobID)
             except Exception as e:
                 mtu = -1
 
@@ -189,7 +189,7 @@ def runJob(i,data,nextjobid,lock):
             if(nextjobid.value <= maxJobID):
                 nextjobid.value=nextjobid.value+1
 
-def getMinMTU(url,lower_lim,upper_lim):
+def getMinMTU(url,lower_lim,upper_lim,jobID):
 
     if(lower_lim == upper_lim):
         return lower_lim
@@ -197,7 +197,7 @@ def getMinMTU(url,lower_lim,upper_lim):
     # print("About to test for {}".format(midMTU))
     isValidMTU= True
     try:
-        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {}".format(midMTU,url,2),shell=True,executable='/bin/bash')
+        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} {} {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
         # print("Successful Test")
     except Exception as e:
         #print(e)
@@ -206,10 +206,10 @@ def getMinMTU(url,lower_lim,upper_lim):
 
     if(isValidMTU):
         # print("Calling for {}, {}".format(lower_lim,midMTU))
-        return getMinMTU(url,lower_lim,midMTU)
+        return getMinMTU(url,lower_lim,midMTU,jobID)
     else:
         print("Calling for {}, {}".format(midMTU+1,upper_lim))
-        return getMinMTU(url,midMTU+1,upper_lim)
+        return getMinMTU(url,midMTU+1,upper_lim,jobID)
 
 
 def getNewNumTrials(trials,jobID):
