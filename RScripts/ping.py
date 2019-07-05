@@ -128,7 +128,8 @@ def runJob(i,data,nextjobid,lock):
 
                 # subprocess.call(["wget --no-check-certificate -t 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPages"+str(jobID)+"/index.html -T 10 \""+url+"\""],shell=True,executable='/bin/bash')
                 # page_size = os.path.getsize("indexPages"+str(jobID)+"/index.html")
-                # print("Expected page size:-"+str(page_size))
+                # print("Expected page size:-"+str(page_size))## The idea was dropped because page_size turned out to be zero on single wget for a website which was blocked by NUS but when run multiple times it actually fetched a page in one of 10 trials.
+                #Hence checking page_size = 0 for single wget is not a good way to chek if the page gives error or not
                 max_size=0
                 for i in range(trials):
                     try:
