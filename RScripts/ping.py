@@ -272,9 +272,9 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
         for i in range(numTrials):
             runTrial(i)
             # print("Exitted trial "+str(i))
-        history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
-        subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
-        subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
+#         history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
+#         subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
+#         subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
 
         windows = list()
         counter=0
