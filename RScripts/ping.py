@@ -50,6 +50,7 @@ def pingServer():
                         numJobsStarted=numMaxJobs
                         break
                     lastJobStarted+=1
+                    print("STARTING JOB {}".format(lastJobStarted))
                     procs[lastJobStarted].start()
                     numJobsStarted+=1
                     count = count + 1
