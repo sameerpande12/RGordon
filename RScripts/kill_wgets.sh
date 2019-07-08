@@ -1,4 +1,4 @@
-while IFS=read -r line
+while IFS= read -r line
 do
   kill -9 $line
-done < indexPages$j/pids.txt
+done < indexPages$1/pids.txt
