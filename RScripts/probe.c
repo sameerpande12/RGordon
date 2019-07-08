@@ -258,6 +258,9 @@ int main(int argc, char** argv){
 		strcat(get," -T 10  \"");
 		strcat(get, argv[1]);
 		strcat(get, "\"");
+		strcat(get," & PID=`echo $!`;echo $PID>>indexPages");
+		strcat(get,jobID);
+		strcat(get,"/pids.txt ;wait $PID");
 		// strcat(get,jobID);
 		// strcat(get,"/status");
 		// strcat(get,argv[5]);

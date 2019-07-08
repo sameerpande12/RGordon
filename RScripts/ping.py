@@ -47,7 +47,7 @@ def pingServer():
                 count = 0
                 while count < numParallelJobs and lastJobStarted < nextjobid.value:
                     if(lastJobStarted >= numMaxJobs-1):
-                        numJobsStarted=numMaxJobs
+                        nucheck_mJobsStarted=numMaxJobs
                         break
                     lastJobStarted+=1
                     print("STARTING JOB {}".format(lastJobStarted))
@@ -251,7 +251,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
     targetURL=url
     response=None
     try:
-        subprocess.call(["./kill_wgets.sh "+str(jobID)],shell=True,executable='/bin/bash')
+
         subprocess.call(["rm -f indexPages"+str(jobID)+"/index*"],shell=True,executable='/bin/bash')
         subprocess.call(["rm -f indexPages"+str(jobID)+"/pid*"],shell=True,executable='/bin/bash')
         subprocess.call(["rm -f indexPages"+str(jobID)+"/size.txt"],shell=True,executable='/bin/bash')
@@ -278,6 +278,15 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
 #         history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
 #         subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
 #         subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
+        jobs=[]
+        infile = "./indexPages"+str(jobID)+"/pids.txt"
+        read = open(infile,"r")
+        for i in range(numTrials):
+            jobs.append(read.readline())
+        for job in jobs:
+            print("about to kill {} for jobID {}".format(job,jobID))
+            subprocess.call(["sudo kill -9 "+job],shell=True,executable='/bin/bash')
+
 
         windows = list()
         counter=0
