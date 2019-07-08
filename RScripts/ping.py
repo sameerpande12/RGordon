@@ -31,7 +31,7 @@ def pingServer():
     response=response.json()
     print(response)
     if(response['message']=='JOB'):
-        numParallelJobs=12
+        numParallelJobs=2
         numMaxJobs= len(response['data'])
         lock=Lock()
         nextjobid=Value('i',numParallelJobs-1)#set for initializing the initial batche to the numParallel job size
