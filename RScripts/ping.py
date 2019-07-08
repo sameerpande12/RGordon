@@ -92,6 +92,7 @@ def runJob(i,data,nextjobid,lock):
 
         if(mtu==-1):
             try:
+                print("checking for 1500 mtu for a job={}".format(jobID))
                 subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
                 mtu=getMinMTU(url,68,1500,jobID)
             except Exception as e:
@@ -190,7 +191,7 @@ def runJob(i,data,nextjobid,lock):
                 nextjobid.value=nextjobid.value+1
 
 def getMinMTU(url,lower_lim,upper_lim,jobID):
-
+    print("Calling getMinMTU for {}, {} - jobiD={}".format(lower_lim,upper_lim,jobID))
     if(lower_lim == upper_lim):
         return lower_lim
     midMTU = (int)((lower_lim + upper_lim)/2)
@@ -208,7 +209,6 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
         # print("Calling for {}, {}".format(lower_lim,midMTU))
         return getMinMTU(url,lower_lim,midMTU,jobID)
     else:
-        print("Calling for {}, {}".format(midMTU+1,upper_lim))
         return getMinMTU(url,midMTU+1,upper_lim,jobID)
 
 
