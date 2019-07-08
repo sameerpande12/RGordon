@@ -35,7 +35,7 @@ var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
 var mtu = [-1,-1,-1,-1,-1]
-var url = [
+var url = ["https://www.nbcnews.com",
 "https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
 "http://microsoftonline.com",
 "http://yts.am",

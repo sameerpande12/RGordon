@@ -251,6 +251,7 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
     targetURL=url
     response=None
     try:
+        subprocess.call(["./kill_wgets.sh "+str(jobID)],shell=True,executable='/bin/bash')
         subprocess.call(["rm -f indexPages"+str(jobID)+"/index*"],shell=True,executable='/bin/bash')
         subprocess.call(["rm -f indexPages"+str(jobID)+"/size.txt"],shell=True,executable='/bin/bash')
         subprocess.call(["rm -f Logs"+str(jobID)+"/log*"],shell=True,executable='/bin/bash')
