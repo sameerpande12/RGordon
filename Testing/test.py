@@ -79,6 +79,5 @@ def runJob(url_id,profile_id):
 #     if(i>4):
 #         for j in range(5):
 #             runJob(i,j+3)
-for urls in [17,16,15,14,13,12]:
-    for i in range(7):
-        runJob(urls,i+1)
+
+runJob(17,2)
