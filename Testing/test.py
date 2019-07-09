@@ -39,6 +39,9 @@ def runJob(url_id,profile_id):
     rtts=url_data['rtts']
     print(rtts)
 
+    type = url_data['type']
+    print(type)
+
     response = None
     try:
         response = subprocess.check_output(
@@ -71,7 +74,7 @@ def runJob(url_id,profile_id):
     command="echo "+fname+"-"+str(profile_id)+".csv  "+url+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(bdp1)+" "+str(bdp2)+" "+str(bneck_transition)+" >> file_logs.csv"
     subprocess.call([command],shell=True,executable='/bin/bash')
 
-    command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)
+    command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(type)+" "+str(domain)
     subprocess.call([command],shell=True,executable='/bin/bash')
     os.chdir("..")
 
