@@ -12,7 +12,9 @@ Localised bottlenecks for server transport layer protocol analysis.
 ```cd dummyServer```
 ```npm start```
 
-# Project Structure -> RScripts
+# Project Structure 
+
+# I.Scripts -> RScripts
 
 ## A) ping.py
 ### Important variables
@@ -40,6 +42,7 @@ The function performs the following steps:
 
 ## B) mtuHelper.sh
 ```mm-link <tracefile> <tracefile> ./mtuHelper.sh <mtu_value> <url> <num_chances for wget> <subscript>```
+
 It applies wget on the url form mm-link shell. Gives wget specified number of chances. Saves output in "index<subscript>.html".
 Used while "mtu-probing"
   
@@ -49,6 +52,131 @@ Used while "mtu-probing"
 2. Performs calculations for ***a given RTT and a given Trial*** by calling probe.c
 3. emuDrop = 100000 **(defaultEMU)** means no drop emulated (*note that the value 100000 is hardcoded as emuDrop. do not change the value to anything else*)
 
-### D)
+### D)probe.c
+```./probe.c "<url>" <delay1> <delay2> <transition_packet> <trial_number> <sigma_cwnd> <cwnd> <rtt-number> <emuDrop> <jobID> ```
+
+***delay1***:- the delay in the nfqueue to localise the bottleneck before number of packets received in total for this rtt is less than the transition_packet
+
+***delay2***:- the delay in the nfqueue to localise the bottleneck before number of packets received in total for this rtt crosses the transition_packet
+
+***transition_packet***:- the value of sigma_cwnd which determines which delay to be used to localise the bottleneck in the mm-delay shell
+
+
+1. global definitions of ***DROPWINDOW***- set to 80
+2. uses defaultEMU = 100000 to check for the case when no emulated drop occurs
+3. Creates nfqueue with id same as the job id passed to it
+4. saves the computation in the files RScripts/RData<jobID>/windows<trial_number>.csv
+   windows.csv saves the value with the maximum value of cwnd
+5. wget timeout has been set to 10 and retries to 15 ( -T 10 -t 15)
+6. appends the "PID" of the wget used to the end file "RScripts/indexPages<jobID>/pids.txt
+
+### E)start.sh
+Peforms initial configuration
+Compiles the probe.c 
+Calls ping.py
+
+### F)clean.sh
+Flushes the iptables
+kills all unkilled wget and prober processes
+
+
+# II. Data-
+
+## A)RData -
+The folder "RData<jobID>/windows<trial_number>.csv" stores a single line in the format "sigma_cwnd cwnd rtt_number".
+  
+"RData<jobID>/window.csv" contains a single line in the above format corresponding to the maximum cwnd value seen.
+  
+## B)indexPages-
+"indexPages<jobID>/indexPage<trial_number>" saves the page downloaded by wget corresponding to given trial of the given job.
+
+"indexPages<jobID>/pids.txt" contains a list of pids of wgets started within probe.c for job with jobID
+  
+
+# III.API for Server-Worker Interaction
+
+1. **Requesting  jobs:-**
+  **POST at '<server_address>/api/worker/job'**
+  
+     'viewpoint':viewPoint
+     
+   **Response**
+   
+      'message':"JOB",
+      
+      'data':[{job1},{job2},......<array of jobs>]
+      
+   **job-structure**
+   
+    url:url
+    
+    viewpoint: location
+    
+    sigma_cwnd: the value of sigma_cwnd for rtt number "startRTT -1"
+    
+    cwnd: the value for rtt number "startRTT -1" 
+    
+    startRTT: the first rtt to be computed
+    
+    endRTT: the last rtt to be computed
+    
+    trials: number of trials to perform
+    
+    start_emudrop: the value of emuDrop just before starting from "startRTT". If it is 100000 then  no emulated drop
+    
+    chances_left: number of chances left (to complete its data collection) for the current job
+    
+    mtu: mtu value to be used ( if -1 worker does mtu Probing for itself )
+    
+    
+    
+2. **Updating Data for a single rtt:-**
+    **POST at '<server_address>/api/worker/update'**
+
+      'cwnd':cwnd,
+
+      'sigma_cwnd':sigma_cwnd
+ 
+      'last_rtt_done':(rtt whose data is being sent),
+  
+      'url':url,
+  
+      'emudrop':emuDrop  (* set to 100000 when no emuDrop *)
+  
+      'viewpoint': viewPoint,
+      
+      'max_trials': number of trials,
+      
+      'mtu': mtu value used
+      
+      
+    
+3. **Updating Data Collection Completed:-**
+    **POST at '<server_address>/api/worker/complete'**
+
+      'last_rtt_done':(rtt whose data is being sent),
+  
+      'url':url,
+  
+      'viewpoint': viewPoint,
+      
+      'mtu': mtu value used
+
+4. **Reporting error**
+    **POST at '<server_address>/api/worker/updateError'**
+
+      'last_rtt_done':(rtt whose data is being sent),
+  
+      'url':url,
+  
+      'viewpoint': viewPoint,
+      
+      'mtu': mtu value used
+      
+      'chances_left': chances left for this job
+      
+  
+  
+   
 
 
