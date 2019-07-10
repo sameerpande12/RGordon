@@ -106,27 +106,27 @@ The folder "RData<jobID>/windows<trial_number>.csv" stores a single line in the 
       
       'data':[{job1},{job2},......<array of jobs>]
       
-   **job-structure**
+   **Job-structure for jobs inside 'data'**
    
-    url:url
+    'url':url
     
-    viewpoint: location
+    'viewpoint': location
     
-    sigma_cwnd: the value of sigma_cwnd for rtt number "startRTT -1"
+    'sigma_cwnd': the value of sigma_cwnd for rtt number "startRTT -1"
     
-    cwnd: the value for rtt number "startRTT -1" 
+    'cwnd': the value for rtt number "startRTT -1" 
     
-    startRTT: the first rtt to be computed
+    'startRTT': the first rtt to be computed
     
-    endRTT: the last rtt to be computed
+    'endRTT': the last rtt to be computed
     
-    trials: number of trials to perform
+    'trials': number of trials to perform
     
-    start_emudrop: the value of emuDrop just before starting from "startRTT". If it is 100000 then  no emulated drop
+    'start_emudrop': the value of emuDrop just before starting from "startRTT". If it is 100000 then  no emulated drop
     
-    chances_left: number of chances left (to complete its data collection) for the current job
+    'chances_left': number of chances left (to complete its data collection) for the current job
     
-    mtu: mtu value to be used ( if -1 worker does mtu Probing for itself )
+    'mtu': mtu value to be used ( if -1 worker does mtu Probing for itself )
     
     
     
