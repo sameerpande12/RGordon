@@ -13,8 +13,8 @@ import re
 import sys
 from multiprocessing import Process,Value,Lock
 # domain = 'http://10.255.255.1:4000'
-#domain = 'http://137.132.83.199:4000'
-domain = 'http://localhost:3000'
+domain = 'http://137.132.83.199:4000'
+# domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
 #numParallelJobs=12
 
@@ -31,7 +31,7 @@ def pingServer():
     response=response.json()
     print(response)
     if(response['message']=='JOB'):
-        numParallelJobs=2
+        numParallelJobs=10
         numMaxJobs= len(response['data'])
         lock=Lock()
         nextjobid=Value('i',numParallelJobs-1)#set for initializing the initial batche to the numParallel job size
