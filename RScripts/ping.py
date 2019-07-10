@@ -12,12 +12,12 @@ from urllib.error import HTTPError
 import re
 import sys
 from multiprocessing import Process,Value,Lock
-# domain = 'http://10.255.255.1:4000'
-domain = 'http://137.132.83.199:4000'
-# domain = 'http://localhost:3000'
-# domain='http://172.26.191.175:4000'
-#numParallelJobs=12
+# server_address = 'http://10.255.255.1:4000'
+server_address = 'http://137.132.83.199:4000'
+# server_address = 'http://localhost:3000'
+# server_address='http://172.26.191.175:4000'
 
+numParallelJobs=12
 path="/api/worker/job"
 
 minimumTrials=5
@@ -27,8 +27,9 @@ viewPoint="Singapore"
 def pingServer():
     postData={'viewpoint':viewPoint}
     headers={'Content-type':'application/json','Accept':'text/plain'}
-    response = requests.post(domain+path,data=json.dumps(postData),headers=headers)
+    response = requests.post(server_address+path,data=json.dumps(postData),headers=headers)
     response=response.json()
+    global numParallelJobs
     print(response)
     if(response['message']=='JOB'):
         numParallelJobs=10
@@ -118,7 +119,7 @@ def runJob(i,data,nextjobid,lock):
             path='/api/worker/updateError'
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
-            requests.post(domain+path,data=json.dumps(postData),headers=headers)
+            requests.post(server_address+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
             print("mtu test for 1500 successful.\nRunning job with  {} mtu value for job {}".format(mtu,jobID))
             try:
@@ -195,7 +196,7 @@ def runJob(i,data,nextjobid,lock):
                     # print(postData)
                 headers={'Content-type':'application/json','Accept':'text/plain'}
                 #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
-                requests.post(domain+path,data=json.dumps(postData),headers=headers)
+                requests.post(server_address+path,data=json.dumps(postData),headers=headers)
                 if(toBreak):
                     break
                 rnum=rnum+1
@@ -225,40 +226,40 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
     else:
         return getMinMTU(url,midMTU+1,upper_lim,jobID)
 
-
-def getNewNumTrials(trials,jobID):
-
-
-    try:
-        fileName='./RData'+str(jobID)+'/windows'
-        cwnds=[]
-        cwnds_nz=[]
-        for i in range(trials):
-            file = open(fileName+str(i)+".csv",'r')
-            line=[int(x)  for x in file.readline().split(' ')]
-            file.close()
-            cwnds.append(line[1])
-            if(line[1]>0):
-                cwnds_nz.append(line[1])
-        max_cwnd=max(cwnds)
-        if(len(cwnds_nz)>0.3*len(cwnds)):
-            if(max_cwnd > 10):
-                values_in_range=0
-                for i in cwnds_nz:
-                    if(i > 0.9* max_cwnd):
-                        values_in_range=values_in_range+1
-                if(values_in_range > 0.2*len(cwnds)):
-                    trials=trials-2
-                elif(values_in_range < 0.1*len(cwnds)):
-                    trials=trials+2
-        else:
-            trials=trials+2
-
-        if(trials < minimumTrials ):
-            trials=minimumTrials
-        return trials
-    except Exception as e:
-        print(e)
+# 
+# def getNewNumTrials(trials,jobID):
+#
+#
+#     try:
+#         fileName='./RData'+str(jobID)+'/windows'
+#         cwnds=[]
+#         cwnds_nz=[]
+#         for i in range(trials):
+#             file = open(fileName+str(i)+".csv",'r')
+#             line=[int(x)  for x in file.readline().split(' ')]
+#             file.close()
+#             cwnds.append(line[1])
+#             if(line[1]>0):
+#                 cwnds_nz.append(line[1])
+#         max_cwnd=max(cwnds)
+#         if(len(cwnds_nz)>0.3*len(cwnds)):
+#             if(max_cwnd > 10):
+#                 values_in_range=0
+#                 for i in cwnds_nz:
+#                     if(i > 0.9* max_cwnd):
+#                         values_in_range=values_in_range+1
+#                 if(values_in_range > 0.2*len(cwnds)):
+#                     trials=trials-2
+#                 elif(values_in_range < 0.1*len(cwnds)):
+#                     trials=trials+2
+#         else:
+#             trials=trials+2
+#
+#         if(trials < minimumTrials ):
+#             trials=minimumTrials
+#         return trials
+#     except Exception as e:
+#         print(e)
 def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
     # print("Entering Calculate")
     targetURL=url
