@@ -204,7 +204,7 @@ To send the 'n' number of jobs
 
 # V Unknown_Website_Prober
 
-It consistes of simpler implementation of tool which just launches tests for a given url and a network profiles.
+It consists of simpler implementation of tool which just launches tests for a given url and a network profiles.
 
 network_profiles.csv contains network profiles to be used
 
