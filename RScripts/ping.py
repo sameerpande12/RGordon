@@ -13,8 +13,8 @@ import re
 import sys
 from multiprocessing import Process,Value,Lock
 # domain = 'http://10.255.255.1:4000'
-domain = 'http://137.132.83.199:4000'
-# domain = 'http://localhost:3000'
+#domain = 'http://137.132.83.199:4000'
+domain = 'http://localhost:3000'
 # domain='http://172.26.191.175:4000'
 #numParallelJobs=12
 
@@ -94,18 +94,18 @@ def runJob(i,data,nextjobid,lock):
         if(mtu==-1):
             try:
                 print("checking for 68 mtu for a job={}".format(jobID))
-                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
+                subprocess.check_output("mm-link 400Kbps_trace 400Kbps_trace ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
                 print("Test for 68 mtu is successful")
                 mtu = 68
                 # try:##first check if it works for 68 then check if it works
-                #     subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
+                #     subprocess.check_output("mm-link 400Kbps_trace 400Kbps_trace ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
                 #     mtu = 68
                 # except Exception as e:
                 #     mtu=getMinMTU(url,68,1500,jobID)
             except Exception as e:
                 try:
                     print("checking for 1500 mtu for job={}".format(jobID))
-                    subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')##check for 1500. if it works then check for minMTU
+                    subprocess.check_output("mm-link 400Kbps_trace 400Kbps_trace ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')##check for 1500. if it works then check for minMTU
                     print("test for 1500 mtu successful. now calling getMinMTU")
                     mtu = getMinMTU(ur,68,1500,jobID)
                 except Exception as e:##if it doesn't work for 68, 1500 then mtu = -1
@@ -212,7 +212,7 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
     # print("About to test for {}".format(midMTU))
     isValidMTU= True
     try:
-        subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
+        subprocess.check_output("mm-link 400Kbps_trace 400Kbps_trace ./mtuHelper.sh {} \"{}\" {} {}".format(midMTU,url,2,jobID),shell=True,executable='/bin/bash')
         # print("Successful Test")
     except Exception as e:
         #print(e)
