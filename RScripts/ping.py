@@ -93,11 +93,24 @@ def runJob(i,data,nextjobid,lock):
 
         if(mtu==-1):
             try:
-                print("checking for 1500 mtu for a job={}".format(jobID))
-                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')
-                mtu=getMinMTU(url,68,1500,jobID)
+                print("checking for 68 mtu for a job={}".format(jobID))
+                subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
+                print("Test for 68 mtu is successful")
+                mtu = 68
+                # try:##first check if it works for 68 then check if it works
+                #     subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(68,url,2,jobID),shell=True,executable='/bin/bash')
+                #     mtu = 68
+                # except Exception as e:
+                #     mtu=getMinMTU(url,68,1500,jobID)
             except Exception as e:
-                mtu = -1
+                try:
+                    print("checking for 1500 mtu for job={}".format(jobID))
+                    subprocess.check_output("mm-delay 1 ./mtuHelper.sh {} \"{}\" {} {}".format(1500,url,2,jobID),shell=True,executable='/bin/bash')##check for 1500. if it works then check for minMTU
+                    print("test for 1500 mtu successful. now calling getMinMTU")
+                    mtu = getMinMTU(ur,68,1500,jobID)
+                except Exception as e:##if it doesn't work for 68, 1500 then mtu = -1
+                    print("failed for 1500. Hence of no use")
+                    mtu = -1
 
         if(mtu==-1):
             print("Returning error because faulty website jobID-{}".format(jobID))
@@ -107,7 +120,7 @@ def runJob(i,data,nextjobid,lock):
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(domain+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
-            print("mtu test for 1500 successful. Testing for {} value for job {}".format(mtu,jobID))
+            print("mtu test for 1500 successful.\nRunning job with  {} mtu value for job {}".format(mtu,jobID))
             try:
                 response = subprocess.check_output(
                     ['ping', '-c', '1', url],
