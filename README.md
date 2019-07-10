@@ -53,7 +53,7 @@ Used while "mtu-probing"
 3. emuDrop = 100000 **(defaultEMU)** means no drop emulated (*note that the value 100000 is hardcoded as emuDrop. do not change the value to anything else*)
 
 ### D)probe.c
-```./probe.c "<url>" <delay1> <delay2> <transition_packet> <trial_number> <sigma_cwnd> <cwnd> <rtt-number> <emuDrop> <jobID> ```
+```./prober "<url>" <delay1> <delay2> <transition_packet> <trial_number> <sigma_cwnd> <cwnd> <rtt-number> <emuDrop> <jobID> ```
 
 ***delay1***:- the delay in the nfqueue to localise the bottleneck before number of packets received in total for this rtt is less than the transition_packet
 
