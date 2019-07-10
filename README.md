@@ -2,14 +2,18 @@
 Localised bottlenecks for server transport layer protocol analysis.  
 
 # Dependancies:
+
 ```quick_dependancies.sh```
 
 # Actual Runs
 1. To configure as well as run the worker
+
 ```$ cd RScripts```
 
 ```$ ./start.sh```
+
 2. To use dummyServer for testing, follow 
+
 ```$ cd dummyServer```
 
 ```$ npm start```
