@@ -7,10 +7,12 @@ Localised bottlenecks for server transport layer protocol analysis.
 # Actual Runs
 1. To configure as well as run the worker
 ```$ cd RScripts```
+
 ```$ ./start.sh```
 2. To use dummyServer for testing, follow 
-```cd dummyServer```
-```npm start```
+```$ cd dummyServer```
+
+```$ npm start```
 
 # Project Structure 
 
@@ -176,7 +178,28 @@ The folder "RData<jobID>/windows<trial_number>.csv" stores a single line in the 
       'chances_left': chances left for this job
       
   
-  
+# IV Dummy Server
+
+``` $ cd dummyServer```
+
+``` npm start```
+There are various arrays named "sigma_cwnd", "cwnd",  etc. These represent values of the parameters of various jobs. 
+
+Example, url[0] is url for job number 0
+
+To send the 'n' number of jobs
+1. Fill all the arrays with corresponding data
+2. set variable **batchSize = n**
+3. Update the following part of code as follows:
+
+   app.post('/api/worker/job',function(req,res){
    
+    .....
+
+    **data: \[ {job0},{job1},.....,{job n-1}\]**
+
+    ......
+
+    }
 
 
