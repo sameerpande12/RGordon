@@ -12,8 +12,8 @@ from urllib.error import HTTPError
 import re
 import sys
 from multiprocessing import Process,Value,Lock
-# server_address = 'http://10.255.255.1:4000'
-server_address = 'http://137.132.83.199:4000'
+server_address = 'http://10.255.255.1:4000'
+# server_address = 'http://137.132.83.199:4000'
 # server_address = 'http://localhost:3000'
 # server_address='http://172.26.191.175:4000'
 
@@ -41,6 +41,8 @@ def pingServer():
 
         numJobsStarted=0
         lastJobStarted=-1# contains the id (0 based indexing of the last job started)
+
+        ### To make sure at a new job is allocated once an old one is finished. nextjobid stores the id of job to be alloted once there is a vacancy for job
         while True:
             if(numJobsStarted >= numMaxJobs):# >= instead of == just to be on safe side
                 break
@@ -58,7 +60,7 @@ def pingServer():
 
             time.sleep(10)#to make sure the runJob function gets enough chances to acquire lock on nextjobid
         for p in procs:
-            p.join()
+            p.join()##join all to make sure all the jobs are completed
 
 
 def runJob(i,data,nextjobid,lock):
@@ -121,7 +123,7 @@ def runJob(i,data,nextjobid,lock):
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
             requests.post(server_address+path,data=json.dumps(postData),headers=headers)
         else:## all this done only in the case of valid mtu is possible
-            print("mtu test for 1500 successful.\nRunning job with  {} mtu value for job {}".format(mtu,jobID))
+            print("Correct mtu has been found .\nRunning job with  {} mtu value for job {}".format(mtu,jobID))
             try:
                 response = subprocess.check_output(
                     ['ping', '-c', '1', url],
@@ -205,7 +207,7 @@ def runJob(i,data,nextjobid,lock):
             if(nextjobid.value <= maxJobID):
                 nextjobid.value=nextjobid.value+1
 
-def getMinMTU(url,lower_lim,upper_lim,jobID):
+def getMinMTU(url,lower_lim,upper_lim,jobID): ## performs binary search to find the minimum value of mtu within given range that works with wget
     print("Calling getMinMTU for {}, {} - jobiD={}".format(lower_lim,upper_lim,jobID))
     if(lower_lim == upper_lim):
         return lower_lim
@@ -226,7 +228,7 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
     else:
         return getMinMTU(url,midMTU+1,upper_lim,jobID)
 
-# 
+#
 # def getNewNumTrials(trials,jobID):
 #
 #
@@ -260,7 +262,9 @@ def getMinMTU(url,lower_lim,upper_lim,jobID):
 #         return trials
 #     except Exception as e:
 #         print(e)
-def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
+
+
+def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):##calculates all trials of given rtt
     # print("Entering Calculate")
     targetURL=url
     response=None
@@ -292,16 +296,20 @@ def calculate(url,numTrials,sigma_cwnd,cwnd,rtt,emuDrop,jobID,delayTime,mtu):
 #         history_loc="History/job-"+str(jobID)+"/rtt-"+str(rtt)+"/"
 #         subprocess.call(["mkdir -p "+history_loc],shell=True,executable='/bin/bash')
 #         subprocess.call(["cp -r indexPages"+str(jobID)+" RData"+str(jobID)+" "+history_loc],shell=True,executable='/bin/bash')
+
+        ## KILLING THE UNKILLED WGETS
         jobs=[]
         infile = "./indexPages"+str(jobID)+"/pids.txt"
         read = open(infile,"r")
         for i in range(numTrials):
             jobs.append(read.readline())
         for job in jobs:
-            print("about to kill {} for jobID {}".format(job,jobID))
+            print("Might kill {} for jobID {}".format(job,jobID))
             subprocess.call(["sudo kill -9 "+job],shell=True,executable='/bin/bash')
+            ##To kill the unkilled wgets. All wgets need not be killed manually since some of them die on their own. Only those who don't die need to be killed
 
 
+        ## FINDING THE MAXIMUM CWND
         windows = list()
         counter=0
         for i in range(numTrials):
