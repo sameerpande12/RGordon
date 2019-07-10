@@ -15,31 +15,31 @@ def runJob(url_id,profile_id):
     url_data = df_link.loc[url_id]
     network_data=df_network.loc[profile_id]
 
-    delayTime = network_data['mm_delay']
+    delayTime = (int)(network_data['mm_delay'])
     print(delayTime)
-    drop = network_data['drop']
+    drop = (int)(network_data['drop'])
     print(drop)
-    bneck_delay1 = network_data['delay_1']
+    bneck_delay1 = (int)(network_data['delay_1'])
     print(bneck_delay1)
-    bneck_delay2 = network_data['delay_2']
+    bneck_delay2 = (int)(network_data['delay_2'])
     print(bneck_delay2)
-    bneck_transition= network_data['transition_point']
+    bneck_transition= (int)(network_data['transition_point'])
     print(bneck_transition)
-    bdp1 = network_data['BDP1']
+    bdp1 = (int)(network_data['BDP1'])
     print(bdp1)
-    bdp2 = network_data['BDP2']
+    bdp2 = (int)(network_data['BDP2'])
     print(bdp2)
 
     url = url_data['url']
     print(url)
-    trials =url_data['trials']
+    trials =(int)(url_data['trials'])
     print(trials)
     fname = url_data['name']
     print(fname)
-    rtts=url_data['rtts']
+    rtts=(int)(url_data['rtts'])
     print(rtts)
 
-    type = url_data['type']
+    type = (int)(url_data['type'])
     print(type)
 
     response = None
@@ -74,7 +74,7 @@ def runJob(url_id,profile_id):
     command="echo "+fname+"-"+str(profile_id)+".csv  "+url+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(bdp1)+" "+str(bdp2)+" "+str(bneck_transition)+" >> file_logs.csv"
     subprocess.call([command],shell=True,executable='/bin/bash')
 
-    command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(type)+" "+str(domain)
+    command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(type)+" "+str(fname)
     subprocess.call([command],shell=True,executable='/bin/bash')
     os.chdir("..")
 
