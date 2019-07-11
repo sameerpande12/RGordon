@@ -71,8 +71,8 @@ def runJob(url_id,profile_id):
     subprocess.call([command],shell=True,executable='/bin/bash')
 
     os.chdir("Observations")
-    command="echo "+fname+"-"+str(profile_id)+".csv  "+url+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(bdp1)+" "+str(bdp2)+" "+str(bneck_transition)+" >> file_logs.csv"
-    subprocess.call([command],shell=True,executable='/bin/bash')
+    # command="echo "+fname+"-"+str(profile_id)+".csv  "+url+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(bdp1)+" "+str(bdp2)+" "+str(bneck_transition)+" >> file_logs.csv"
+    # subprocess.call([command],shell=True,executable='/bin/bash')
 
     command = "./plot.sh "+str(fname)+"-"+str(profile_id)+" "+str(bdp1)+" "+str(bdp2)+" "+str(drop)+" "+str(delayTime)+" "+str(bneck_delay1)+" "+str(bneck_delay2)+" "+str(type)+" "+str(fname)
     subprocess.call([command],shell=True,executable='/bin/bash')
@@ -82,7 +82,7 @@ def runJob(url_id,profile_id):
 #     if(i>4):
 #         for j in range(5):
 #             runJob(i,j+3)
-index = 18
+index = (int)(sys.argv[1])
 for i in [index,index+1,index+2]:
     for j in range(5):
         runJob(i,j+3)
