@@ -26,9 +26,9 @@ Localised bottlenecks for server transport layer protocol analysis.
 ### Important variables
 1. numParallelJobs : number of jobs (urls) that your worker will carry out
 2. threshold : the value of cwnd after which we emulate drop
-3. defaultEmu :  100000 (*Note that the value 100000 is mutually agreed upon by both scheduler and worker. Changing this will require it to be changed on both sides. This is used to check when for the first time cwnd crossed threshold*)
-4.viewPoint: String represents the viewpoint
-5.nextjobid : the variable storing the minimum index of jobs which have not been assigned yet
+3. defaultEmu :  100000 (*Note that the value 100000 is mutually agreed upon by both scheduler and worker. Changing this will require it to be changed on both sides. This is used to check when for the first time cwnd crossed threshold*)  
+4. viewPoint: String represents the viewpoint  
+5. nextjobid : the variable storing the minimum index of jobs which have not been assigned yet  
 6. lock: used the lock to make sure that the variable "nextjobid" could be shared among multiple parallel processses and can be updated by any of the processes without any error.
 
 ### Control Flow:-

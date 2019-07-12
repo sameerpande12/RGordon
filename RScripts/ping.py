@@ -32,7 +32,7 @@ def pingServer():
     global numParallelJobs
     print(response)
     if(response['message']=='JOB'):
-        numParallelJobs=10
+        #numParallelJobs=10
         numMaxJobs= len(response['data'])
         lock=Lock()
         nextjobid=Value('i',numParallelJobs-1)#set for initializing the initial batche to the numParallel job size
