@@ -3,6 +3,7 @@ RData*/
 status*
 .fuse*
 logs
+Logs*/
 wget*
 stats*/
 RScripts/prober
