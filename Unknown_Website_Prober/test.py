@@ -90,4 +90,4 @@ def runJob(url_id,profile_id):
 index = (int)(sys.argv[1])
 for i in [index,index+1,index+2,index+3,index+4,index+5,index+6,index+7]:
     for j in [3,4,5,6]:
-        runjob(i,j)
+        runJob(i,j)
