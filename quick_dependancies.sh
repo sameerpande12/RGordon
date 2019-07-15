@@ -1,6 +1,7 @@
 sudo apt-get install -y python
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
+sudo apt install -y python3-pip
 python3 -m pip install numpy
 python3 -m pip install pandas
 python3 -m pip install matplotlib
