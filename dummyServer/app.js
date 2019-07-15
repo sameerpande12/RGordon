@@ -35,7 +35,7 @@ var assigned = [false,false,false,false,false]
 var trials = [10,10,10,10,10,10]
 var chancesLeft=[5,5,5,5,5]
 var mtu = [-1,-1,-1,-1,-1]
-var url = ["https://www.nbcnews.com",
+var url = ["https://policy.pinterest.com/sites/default/files/css/css_MAgrXYD4tx0dXkJi4tPovo5LPUpW5VGTp32IzXlBS_k.css?prnvbu",
 "https://accounts.google.com/ServiceLogin?hl=en&passive=true&continue=https://www.google.com/%3Fgws_rd%3Dssl",
 "http://microsoftonline.com",
 "http://yts.am",
@@ -47,7 +47,7 @@ var url = ["https://www.nbcnews.com",
 "https://twitter.com/hashtag/ArtistToFollow?src=hash"
 ]
 
-var batchSize=1
+var batchSize=5
 // var sigma_cwnd1 = 0;
 // var cwnd1 = 0;
 // var emuDrop1 = 100000;
@@ -120,7 +120,7 @@ app.post('/api/worker/job',function(req,res){
     chances_left:chancesLeft[0].toString(),
     mtu:mtu[0].toString()
     }
-/*   ,
+   ,
         {
        url:url[1],
        viewpoint:req.body.viewpoint,
@@ -169,7 +169,7 @@ app.post('/api/worker/job',function(req,res){
       start_emudrop:emuDrop[4].toString(),
       chances_left:chancesLeft[4].toString(),
       mtu:mtu[4].toString()
-    }*/
+    }
    ]
   });
 
