@@ -2,9 +2,12 @@ sudo apt-get install -y python
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
 sudo apt install -y python3-pip
-python3 -m pip install numpy
-python3 -m pip install pandas
-python3 -m pip install matplotlib
+pip3 install pandas
+pip3 install numpy
+pip3 install matplotlib
+# python3 -m pip install numpy
+# python3 -m pip install pandas
+# python3 -m pip install matplotlib
 pip3 install --upgrade pip
 pip install --user matplotlib
 #sudo python3-pip install numpy
