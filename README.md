@@ -89,14 +89,14 @@ Used while "mtu-probing"
 # II. Data-
 
 ## A. RData -
-The folder "RData<jobID>/windows<trial_number>.csv" stores a single line in the format "sigma_cwnd cwnd rtt_number".
+The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in the format ***"sigma_cwnd cwnd rtt_number".***
   
-"RData<jobID>/window.csv" contains a single line in the above format corresponding to the maximum cwnd value seen.
+**"RData<jobID>/window.csv"** contains a single line in the above format corresponding to the maximum cwnd value seen.
   
 ## B. indexPages-
-"indexPages<jobID>/indexPage<trial_number>" saves the page downloaded by wget corresponding to given trial of the given job.
+***"indexPages<jobID>/indexPage<trial_number>"*** saves the page downloaded by wget corresponding to given trial of the given job.
 
-"indexPages<jobID>/pids.txt" contains a list of pids of wgets started within probe.c for job with jobID
+***"indexPages<jobID>/pids.txt"*** contains a list of pids of wgets started within probe.c for job with jobID
   
 
 # III. API for Server-Worker Interaction
