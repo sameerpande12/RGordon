@@ -103,15 +103,15 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
 
 1. **Requesting  jobs:-**
   **POST at '<server_address>/api/worker/job'**
-    ```json
+    ```javascript
       {'viewpoint':viewPoint}
      ```
    **Response**
-   ```json
+   ```javascript
       {'message':"JOB",'data':[{job1},{job2},......<array of jobs>]}
     ```
    **Job-structure for jobs inside 'data'**
-   ```json
+   ```javascript
     {
     'url':url
     
@@ -137,7 +137,7 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
     
 2. **Updating Data for a single rtt:-**
     **POST at '<server_address>/api/worker/update'**
-    ```json
+    ```javascript
       {
       'cwnd':cwnd,
 
@@ -160,7 +160,7 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
     
 3. **Updating Data Collection Completed:-**
     **POST at '<server_address>/api/worker/complete'**
-    ```json
+    ```javascript
       {
       'last_rtt_done':(rtt whose data is being sent),
   
@@ -174,7 +174,7 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
       
 4. **Reporting error**
     **POST at '<server_address>/api/worker/updateError'**
-     ```json
+     ```javascript
       {
       'last_rtt_done':(rtt whose data is being sent),
   
