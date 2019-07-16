@@ -32,19 +32,19 @@ Localised bottlenecks for server transport layer protocol analysis.
   6. lock: used the lock to make sure that the variable "nextjobid" could be shared among multiple parallel processses and can be updated by any of the processes without any error.
 
 * ### Control Flow:-
-### 1. pingServer() :
-  The function performs the following things-
-  1. requests for a job from the scheduler
-  2. initialize appropriate number of jobs
-  3. starts job represented by "nextjobid" once any of current jobs ends
+  ### 1. pingServer() :
+    The function performs the following things-
+    1. requests for a job from the scheduler
+    2. initialize appropriate number of jobs
+    3. starts job represented by "nextjobid" once any of current jobs ends
 
-### 2. runJob(index,data,nextjobid,lock):
-  The function performs the following steps:
-  1. Checks if the "mtu" provided by the server is -1. If not then use this mtu to perform the calculations
-  2. If mtu = -1, then perform "mtuProbing" to get minimum mtu that works. (Begin by checking 68, since most websites work for this. Check for 1500 to check if a website works at all)
-### 3. calculate(url,numTrials,.....):
-  1. Given appropriate inputs it performs all the trials for a "single" rtt.
-  2. Makes sure all the unkilled wgets are killed once all trials of single rtt are completed since (*it was observed that some wgets are not killed even if they have completed their downloads*)
+  ### 2. runJob(index,data,nextjobid,lock):
+    The function performs the following steps:
+    1. Checks if the "mtu" provided by the server is -1. If not then use this mtu to perform the calculations
+    2. If mtu = -1, then perform "mtuProbing" to get minimum mtu that works. (Begin by checking 68, since most websites work for this. Check for 1500 to check if a website works at all)
+  ### 3. calculate(url,numTrials,.....):
+    1. Given appropriate inputs it performs all the trials for a "single" rtt.
+    2. Makes sure all the unkilled wgets are killed once all trials of single rtt are completed since (*it was observed that some wgets are not killed even if they have completed their downloads*)
 
 ## B. mtuHelper.sh
 * ```mm-link <tracefile> <tracefile> ./mtuHelper.sh <mtu_value> <url> <num_chances for wget> <subscript>```
