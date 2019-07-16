@@ -88,6 +88,8 @@ def runJob(url_id,profile_id):
 #     for j in range(5):
 #         runJob(i,j+3)
 index = (int)(sys.argv[1])
-for i in [index,index+1,index+2,index+3,index+4,index+5,index+6,index+7]:
+endIndex = (int)(sys.argv[2])
+for iter in range(endIndex-index+1):
+    i = iter + index
     for j in [3,4,5,6]:
         runJob(i,j)
