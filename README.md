@@ -20,7 +20,7 @@ Localised bottlenecks for server transport layer protocol analysis.
 
 # Project Structure 
 
-# I. RScripts
+# I. Scripts
 
 ## A. ping.py
 ### Important variables
@@ -88,12 +88,12 @@ Used while "mtu-probing"
 
 # II. Data-
 
-## A. RData -
+## 1. RData -
 The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in the format ***"sigma_cwnd cwnd rtt_number".***
   
 **"RData<jobID>/window.csv"** contains a single line in the above format corresponding to the maximum cwnd value seen.
   
-## B. indexPages-
+## 2. indexPages-
 ***"indexPages<jobID>/indexPage<trial_number>"*** saves the page downloaded by wget corresponding to given trial of the given job.
 
 ***"indexPages<jobID>/pids.txt"*** contains a list of pids of wgets started within probe.c for job with jobID
