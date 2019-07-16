@@ -25,8 +25,8 @@ sudo apt-get install -y wget
 sudo apt-get install -y psmisc
 sudo apt install -y net-tools
 
-# sudo apt-get install -y curl
-# sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash
-# sudo apt-get install -y nodejs
-#
-# npm install
+sudo apt-get install -y curl
+sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash
+sudo apt-get install -y nodejs
+
+npm install
