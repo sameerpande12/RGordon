@@ -192,27 +192,27 @@ Used while "mtu-probing"
 
 ``` $ cd dummyServer```
 
-``` npm start```
+``` $ npm start```
 
 There are various arrays named "sigma_cwnd", "cwnd",  etc. These represent values of the parameters of various jobs. 
 
-Example, url[0] is url for job number 0
+For e.g, url[0] is url for job number 0
 
 To send the 'n' number of jobs
-1. Fill all the arrays with corresponding data
-2. set variable **batchSize = n**
-3. Update the following part of code as follows:
-  ```javascript
-   app.post('/api/worker/job',function(req,res){
-   
-    .....
+  1. Fill all the arrays with corresponding data
+  2. set variable **batchSize = n**
+  3. Update the following part of code as follows:
+    ```javascript
+     app.post('/api/worker/job',function(req,res){
 
-    data: [ {job0},{job1},.....,{job n-1}]
+      .....
 
-    ......
+      data: [ {job0},{job1},.....,{job n-1}]
 
-    }
-   ```
+      ......
+
+      }
+     ```
 # V Unknown_Website_Prober
 
 * It consists of simpler implementation of tool which just launches tests for a given url and a network profiles.
