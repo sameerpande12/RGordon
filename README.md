@@ -202,7 +202,8 @@ To send the 'n' number of jobs
   1. Fill all the arrays with corresponding data
   2. set variable **batchSize = n**
   3. Update the following part of code as follows:
-    ```javascript
+    
+    ```
      app.post('/api/worker/job',function(req,res){
 
       .....
