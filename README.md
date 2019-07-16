@@ -193,6 +193,7 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
 ``` $ cd dummyServer```
 
 ``` npm start```
+
 There are various arrays named "sigma_cwnd", "cwnd",  etc. These represent values of the parameters of various jobs. 
 
 Example, url[0] is url for job number 0
