@@ -103,17 +103,16 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
 
 1. **Requesting  jobs:-**
   **POST at '<server_address>/api/worker/job'**
-  
-     'viewpoint':viewPoint
-     
+    ```json
+      {'viewpoint':viewPoint}
+     ```
    **Response**
-   
-      'message':"JOB",
-      
-      'data':[{job1},{job2},......<array of jobs>]
-      
+   ```json
+      {'message':"JOB",'data':[{job1},{job2},......<array of jobs>]}
+    ```
    **Job-structure for jobs inside 'data'**
-   
+   ```json
+    {
     'url':url
     
     'viewpoint': location
@@ -133,12 +132,13 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
     'chances_left': number of chances left (to complete its data collection) for the current job
     
     'mtu': mtu value to be used ( if -1 worker does mtu Probing for itself )
-    
-    
+    }
+    ```
     
 2. **Updating Data for a single rtt:-**
     **POST at '<server_address>/api/worker/update'**
-
+    ```json
+      {
       'cwnd':cwnd,
 
       'sigma_cwnd':sigma_cwnd
@@ -154,12 +154,14 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
       'max_trials': number of trials,
       
       'mtu': mtu value used
-      
+      }
+      ```
       
     
 3. **Updating Data Collection Completed:-**
     **POST at '<server_address>/api/worker/complete'**
-
+    ```json
+      {
       'last_rtt_done':(rtt whose data is being sent),
   
       'url':url,
@@ -167,20 +169,24 @@ The folder **"RData<jobID>/windows<trial_number>.csv"** stores a single line in 
       'viewpoint': viewPoint,
       
       'mtu': mtu value used
-
+      }
+      ```
+      
 4. **Reporting error**
     **POST at '<server_address>/api/worker/updateError'**
-
+     ```json
+      {
       'last_rtt_done':(rtt whose data is being sent),
   
       'url':url,
   
       'viewpoint': viewPoint,
       
-      'mtu': mtu value used
+      'mtu': mtu value used,
       
       'chances_left': chances left for this job
-      
+      }
+       ```
   
 # IV Dummy Server
 
