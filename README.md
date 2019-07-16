@@ -22,7 +22,7 @@ Localised bottlenecks for server transport layer protocol analysis.
 
 # I. Scripts
 
-## A. ping.py
+## 1. ping.py
 * ### Important variables
   1. numParallelJobs : number of jobs (urls) that your worker will carry out
   2. threshold : the value of cwnd after which we emulate drop
@@ -46,19 +46,19 @@ Localised bottlenecks for server transport layer protocol analysis.
     1. Given appropriate inputs it performs all the trials for a "single" rtt.
     2. Makes sure all the unkilled wgets are killed once all trials of single rtt are completed since (*it was observed that some wgets are not killed even if they have completed their downloads*)
 
-## B. mtuHelper.sh
+## 2. mtuHelper.sh
 * ```mm-link <tracefile> <tracefile> ./mtuHelper.sh <mtu_value> <url> <num_chances for wget> <subscript>```
 
 * It applies wget on the url form mm-link shell. Gives wget specified number of chances. Saves output in "index<subscript>.html".
 Used while "mtu-probing"
   
-## C. runner.sh
+## 3. runner.sh
 * ```mm-delay <delayTime> ./runner.sh <url> <trial_number> <sigma_cwnd> <cwnd> <rtt-number> <emuDrop> <job_id> <mtu-value>```
   1. Sets the mtu of the mm-delay shell. Modifies the iptables to store direct the packets to ***NFQUEUE*** numbered same as ***JOB ID***
   2. Performs calculations for ***a given RTT and a given Trial*** by calling probe.c
   3. emuDrop = 100000 **(defaultEMU)** means no drop emulated (*note that the value 100000 is hardcoded as emuDrop. do not change the value to anything else*)
 
-### D. probe.c
+### 4. probe.c
 * ```./prober "<url>" <delay1> <delay2> <transition_packet> <trial_number> <sigma_cwnd> <cwnd> <rtt-number> <emuDrop> <jobID> ```
 
 *  ***delay1***:- the delay in the nfqueue to localise the bottleneck before number of packets received in total for this rtt is less than the transition_packet
@@ -76,12 +76,12 @@ Used while "mtu-probing"
     5. wget timeout has been set to 10 and retries to 15 ( -T 10 -t 15)
     6. appends the "PID" of the wget used to the end file "RScripts/indexPages<jobID>/pids.txt
 
-### E. start.sh
+### 5. start.sh
   Peforms initial configuration
   Compiles the probe.c 
   Calls ping.py
 
-### F. clean.sh
+### 6. clean.sh
   Flushes the iptables
   kills all unkilled wget and prober processes
 
