@@ -1,15 +1,22 @@
+export LANGUAGE="en_US.UTF-8"
+echo 'LANGUAGE="en_US.UTF-8"' >> /etc/default/locale
+echo 'LC_ALL="en_US.UTF-8"' >> /etc/default/locale
+sudo apt-get update
 sudo apt-get install -y python
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
+
 sudo apt install -y python3-pip
-pip3 install pandas
-pip3 install numpy
+sudo pip3 install --upgrade pip
+
+#pip3 install matplotlib
 python3 -m pip install numpy
 python3 -m pip install pandas
-python3 -m pip install matplotlib
-pip3 install --upgrade pip
-sudo -H pip3 install pandas
-sudo apt-get install python3-pandas
+python3 -m pip install requests
+#python3 -m pip install matplotlib
+#pip install --user matplotlib
+
+
 sudo add-apt-repository ppa:keithw/mahimahi -y
 sudo apt-get update
 sudo apt-get install -y mahimahi
@@ -25,7 +32,6 @@ sudo apt-get install -y psmisc
 sudo apt install -y net-tools
 
 sudo apt-get install -y curl
-pip3 install requests
 # sudo curl -sL https://deb.nodesource.com/setup_10.x | sudo bash
 # sudo apt-get install -y nodejs
 
