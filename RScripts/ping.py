@@ -12,9 +12,9 @@ from urllib.error import HTTPError
 import re
 import sys
 from multiprocessing import Process,Value,Lock
-server_address = 'http://10.255.255.1:4000'
+# server_address = 'http://10.255.255.1:4000'
 # server_address = 'http://137.132.83.199:4000'
-# server_address = 'http://localhost:3000'
+server_address = 'http://localhost:3000'
 # server_address='http://172.26.191.175:4000'
 
 numParallelJobs=12
@@ -27,8 +27,12 @@ viewPoint="Singapore"
 def pingServer():
     postData={'viewpoint':viewPoint}
     headers={'Content-type':'application/json','Accept':'text/plain'}
-    response = requests.post(server_address+path,data=json.dumps(postData),headers=headers)
-    response=response.json()
+    try:
+        response = requests.post(server_address+path,data=json.dumps(postData),headers=headers)
+        response=response.json()
+    except Exception as e:
+        print(e)
+        return
     global numParallelJobs
     print(response)
     if(response['message']=='JOB'):
@@ -50,7 +54,7 @@ def pingServer():
                 count = 0
                 while count < numParallelJobs and lastJobStarted < nextjobid.value:
                     if(lastJobStarted >= numMaxJobs-1):
-                        nucheck_mJobsStarted=numMaxJobs
+                        numJobsStarted=numMaxJobs
                         break
                     lastJobStarted+=1
                     print("STARTING JOB {}".format(lastJobStarted))
@@ -121,7 +125,10 @@ def runJob(i,data,nextjobid,lock):
             path='/api/worker/updateError'
             headers={'Content-type':'application/json','Accept':'text/plain'}
             #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
-            requests.post(server_address+path,data=json.dumps(postData),headers=headers)
+            try:
+                requests.post(server_address+path,data=json.dumps(postData),headers=headers)
+            except Exception as e:
+                print(e)
         else:## all this done only in the case of valid mtu is possible
             print("Correct mtu has been found .\nRunning job with  {} mtu value for job {}".format(mtu,jobID))
             try:
@@ -198,7 +205,12 @@ def runJob(i,data,nextjobid,lock):
                     # print(postData)
                 headers={'Content-type':'application/json','Accept':'text/plain'}
                 #print("POSTING+________________________________________________+++++++++++++++++++++++++++++++++++++++++++++")
-                requests.post(server_address+path,data=json.dumps(postData),headers=headers)
+                try:
+                    requests.post(server_address+path,data=json.dumps(postData),headers=headers)
+                except Exception as e:
+                    toBreak=True
+                    print(e)
+
                 if(toBreak):
                     break
                 rnum=rnum+1

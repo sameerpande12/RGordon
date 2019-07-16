@@ -280,7 +280,7 @@ int main(int argc, char **argv)
 		//char get[] ="wget -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O /dev/null '";
 		//as mobile client
 		//char get[] ="wget -U 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2_6 like Mac OS X) AppleWebKit/604.5.6 (KHTML, like Gecko) Version/11.0 Mobile/15D100 Safari/604.1' -O /dev/null '";
-		char get[] ="wget -T 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPage \"";
+		char get[] ="wget --no-check-certificate -T 15 -U 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:62.0) Gecko/20100101 Firefox/62.0' -O indexPage \"";
 		strcat(get, argv[1]);
 		strcat(get, "\"");
 		printf("%s\n", get);
@@ -291,24 +291,42 @@ int main(int argc, char **argv)
 	else{
 		int status = -1;
 
-		while (done == 0 && (rv = recv(fd, buf, sizeof(buf), 0)) && rv >= 0){
-			usleep(delay);
-			nfq_handle_packet(h, buf, rv);
-			if(counter>switchPoint) delay=nextDelay;
-			counter++;
-			status = kill(pid, 0);
-			if (status == 0)
-			{
-				continue;
-			}
-			else{
-				printf("\n\nWGET CHILD PROCESS HAS ENDED.\n\n");
-				done=1;
+		struct timeval tv;
+		tv.tv_sec = 15;
+		tv.tv_usec = 0;
+		setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof tv);
+
+
+		while (done == 0){
+			time_t sec1, sec2;
+			// printf("not done yet!!\n");
+			sec1 = time(NULL);
+			if((rv = recv(fd, buf, sizeof(buf), 0)) && rv >= 0){
+				sec2 = time(NULL);
+				// printf("RECV TIME %ld\n", sec2-sec1);
+				usleep(delay);
+				nfq_handle_packet(h, buf, rv);
+				if(counter>switchPoint) delay=nextDelay;
+				counter++;
+				status = kill(pid, 0);
+				// printf("abhi ka status: %d\n", status);
+				if (status == 0)
+				{
+					continue;
+				}
+				else{
+					printf("\n\nWGET CHILD PROCESS HAS ENDED ON ITS OWN.\n\n");
+					done=1;
+					break;
+				}
+			}else{
+				sec2 = time(NULL);
+				printf("RECV BREAKOUT TIME %ld\n", sec2-sec1);
 				break;
 			}
 		}
 
-		printf("\n\n================================STATUS========: %d\n", status);
+		printf("\n\n================================STATUS========: %d %d\n", status, rv);
 
 		destroySession(h, qh);
 
