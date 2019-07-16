@@ -206,7 +206,7 @@ To send the 'n' number of jobs
    
     .....
 
-    **data: \[ {job0},{job1},.....,{job n-1}\]**
+    data: [ {job0},{job1},.....,{job n-1}]
 
     ......
 
