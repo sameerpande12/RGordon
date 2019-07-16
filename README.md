@@ -67,14 +67,14 @@ Used while "mtu-probing"
 
  * ***transition_packet***:- the value of sigma_cwnd which determines which delay to be used to localise the bottleneck in the mm-delay shell
 
-
-  1. global definitions of ***DROPWINDOW***- set to 80
-  2. uses defaultEMU = 100000 to check for the case when no emulated drop occurs
-  3. Creates nfqueue with id same as the job id passed to it
-  4. saves the computation in the files RScripts/RData<jobID>/windows<trial_number>.csv
-     windows.csv saves the value with the maximum value of cwnd
-  5. wget timeout has been set to 10 and retries to 15 ( -T 10 -t 15)
-  6. appends the "PID" of the wget used to the end file "RScripts/indexPages<jobID>/pids.txt
+* ***Implementation Details***
+    1. global definitions of ***DROPWINDOW***- set to 80
+    2. uses defaultEMU = 100000 to check for the case when no emulated drop occurs
+    3. Creates nfqueue with id same as the job id passed to it
+    4. saves the computation in the files RScripts/RData<jobID>/windows<trial_number>.csv
+       windows.csv saves the value with the maximum value of cwnd
+    5. wget timeout has been set to 10 and retries to 15 ( -T 10 -t 15)
+    6. appends the "PID" of the wget used to the end file "RScripts/indexPages<jobID>/pids.txt
 
 ### E. start.sh
   Peforms initial configuration
@@ -228,4 +228,4 @@ To send the 'n' number of jobs
 
 * **file_logs.csv** consists of logs of files with their names, url and other parameters those files were created from
 
-**plot.sh and plot.gnuplot** used to plot the graphs given the values of parameters and input data files
+* **plot.sh and plot.gnuplot** used to plot the graphs given the values of parameters and input data files
