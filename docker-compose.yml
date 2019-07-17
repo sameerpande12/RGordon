@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  worker:
+    build: .
+    working_dir: /home/tester/
+    command: ./docker_entry_point.sh
+    healthcheck:
+      # test: ["CMD", "curl", "-f", "http://${HOST}:${PORT}"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: always 
+    networks:
+      - "internal"
+
+networks:
+  internal:
