@@ -15,7 +15,8 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 RScripts/index*
-Unknown_Website_Prober/Data
+Unknown_Website_Prober/Data/buff.csv
+Unknown_Website_Prober/Data/window*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
