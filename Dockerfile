@@ -25,6 +25,7 @@ RUN sudo apt-get install -y python python3 python3-pip && \
 RUN sudo echo "dash dash/sh boolean false" | sudo debconf-set-selections
 RUN sudo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure dash
 
-ADD . /home/tester
+ADD ./RScripts/ /home/tester
+ADD ./quick_dependancies.sh /home/tester
 
 CMD ["/bin/bash"]
